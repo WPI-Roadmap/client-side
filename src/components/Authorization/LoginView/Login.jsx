@@ -43,7 +43,7 @@ function LoginView(props) {
               type="primary"
               className="microsoft"
               onClick={() => {
-                loginWithMicrosoft();
+                // loginWithMicrosoft();
                 navigate("/dashboard");
               }}
             >
