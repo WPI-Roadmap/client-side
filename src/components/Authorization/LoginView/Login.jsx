@@ -2,8 +2,8 @@
 import { Button, Form } from "antd";
 
 // IMAGES
-import publicLogo from "../../assets/images/public.png";
-import microsoft from "../../assets/images/Microsoft_icon.svg.png";
+import publicLogo from "../../../assets/images/public.png";
+import microsoft from "../../../assets/images/Microsoft_icon.svg.png";
 import { useNavigate } from "react-router";
 
 // ADMIN LOGIN VIEW
