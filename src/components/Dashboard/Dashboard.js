@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import "./Dashboard.css";
 import { Button, Form, Layout, Menu, theme } from "antd";
@@ -8,31 +8,28 @@ import ReactFlow from 'reactflow';
 import Flow from './Flow.js';
 import RequirementsSidebar from './Requirements/Requirements.js';
 import Table from "../Table/Table.jsx"
-
 import 'reactflow/dist/style.css';
 
-var data = require('./courses.json');
+const data = require('./courses.json');
 
 const { Header, Sider, Content } = Layout;
+const initialNodes = [
+    { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
+    { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
+];
+const initialTabState = 1;
 
 function Dashboard() {
 
     const [collapsed, setCollapsed] = useState(false);
-
-    const initialNodes = [
-        { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
-        { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
-    ];
+    const [windowContent, setWindowContent] = useState(<></>);
+    let [tab, setTab] = useState(initialTabState);
 
     let [nodes, setNodes] = useState({});
-
     let [edges, setEdges] = useState({});
-
-
-    const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
-
     let [department, setDepartment] = useState("Computer Science Department");
 
+    const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
     let tempCourses = [];
     let tempEdges = [];
@@ -185,25 +182,27 @@ function Dashboard() {
 
     const navigate = useNavigate();
 
-    let [tab, setTab] = useState(1);
 
-    let windowContent
-    if (tab == 1) {
-        windowContent = <Content
-        style={{
-            margin: '24px 16px',
-            padding: 24,
-            minHeight: 280,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
-        }}
-    >
-        <Flow initialNodes={nodes} initialEdges={edges} />
-        {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
-    </Content>;
-    } else {
-        windowContent = <Table />
-    }
+    useEffect(() => {
+        if (tab === 1) {
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            setWindowContent(<Content
+                style={{
+                    margin: '24px 16px',
+                    padding: 24,
+                    minHeight: 280,
+                    background: colorBgContainer,
+                    borderRadius: borderRadiusLG,
+                }}
+            >
+                <Flow initialNodes={nodes} initialEdges={edges} />
+            </Content>);
+        } else {
+            setWindowContent(<Table />)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [tab])
+
 
     return (
         <Layout style={{ height: "100vh" }}>
@@ -212,10 +211,11 @@ function Dashboard() {
                 <Menu
                     onClick={(e) => {
                         setTab(e.key);
+                        console.log('key', e.key)
                     }}
                     theme="dark"
                     mode="inline"
-                    defaultSelectedKeys={['1']}
+                    defaultSelectedKeys={[`${initialTabState}`]}
                     items={[
                         {
                             key: '1',
