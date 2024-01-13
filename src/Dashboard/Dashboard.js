@@ -4,7 +4,7 @@ import "./Dashboard.css";
 import { Button, Form, Layout, Menu, theme } from "antd";
 
 import { MenuFoldOutlined, MenuUnfoldOutlined, UploadOutlined, UserOutlined, VideoCameraAddOutlined } from "@ant-design/icons";
-
+import RequirementsSidebar from "./Requirements/Requirements.js";
 
 const { Header, Sider, Content } = Layout;
 
@@ -75,6 +75,8 @@ function Dashboard() {
         >
           Content
         </Content>
+        <RequirementsSidebar switchTree={() => {}} />
+
       </Layout>
     </Layout>
     );
