@@ -14,7 +14,6 @@ import 'reactflow/dist/style.css';
 import DataParse from '../DataParse/DataParse';
 
 
-
 const elk = new ELK();
 const elkOptions = {
     "elk.algorithm": 'layered',
@@ -46,6 +45,7 @@ const getLayoutedElements = (nodes, edges, options = {}) => {
       // Hardcode a width and height for elk to use when layouting.
       width: 150,
       height: 50,
+      className: "courseNode",
     })),
     edges: edges,
   };
@@ -93,7 +93,7 @@ function FlowWithoutProvider({initialNodes, initialEdges}) {
 
   // Calculate the initial layout on mount.
   useLayoutEffect(() => {
-    onLayout({ direction: 'DOWN', useInitialNodes: true });
+    onLayout({ direction: 'UP', useInitialNodes: true });
   }, []);
 
 

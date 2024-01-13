@@ -5,7 +5,7 @@ import { Button, ConfigProvider, Dropdown, Form, Input, Layout, Menu, Modal, Sel
 import Table from "../Table/Table.jsx";
 
 import { MenuFoldOutlined, MenuUnfoldOutlined, ApartmentOutlined, FileTextOutlined, UserOutlined } from "@ant-design/icons";
-import ReactFlow from 'reactflow';
+import ReactFlow, { Background, MarkerType } from 'reactflow';
 import Flow from './Flow.js';
 import RequirementsSidebar from './Requirements/Requirements.js';
 
@@ -130,6 +130,12 @@ function Dashboard() {
                             if (tempCourses[j].data.label.match(courseCodeRegex) == courseCodes[k]) {
                                 tempEdges.push({
                                     id: 'e' + first.toString() + '-' + second.toString(),
+                                    type: 'smoothstep',
+                                    markerStart: {
+                                        type: MarkerType.ArrowClosed,
+                                        width: 20,
+                                        height: 20,
+                                    },
                                     source: tempCourses[i].id,
                                     target: tempCourses[j].id
                                 });
@@ -240,102 +246,116 @@ function Dashboard() {
 
     let [q, setQ] = useState(1);
 
+    let windowContent
+    if (tab == 1) {
+        windowContent = <Content
+        style={{
+            margin: 0,//'24px 16px',
+            padding: 24,
+            minHeight: 280,
+            background: colorBgContainer,
+            borderRadius: borderRadiusLG,
+        }}
+    >
+        <Flow initialNodes={nodes} initialEdges={edges} />
+        {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
+    </Content>;
+    } else {
+        // windowContent = <Table />
+    }
+
     return (
         <>
-            <ConfigProvider
-                theme={{
-                    token: {
-                        colorPrimary: '#AB2B37',
-
-                    },
-                }}
-            >
-                <Layout style={{ height: "100vh" }}>
-                    <Sider trigger={null} collapsible collapsed={collapsed}>
-                        <div className="demo-logo-vertical" />
-                        <Menu
-                            theme="dark"
-                            mode="inline"
-                            defaultSelectedKeys={['1']}
-                            items={[
-                                {
-                                    key: '1',
-                                    icon: <ApartmentOutlined />,
-                                    label: 'Roadmap',
-                                    onClick: () => {
-                                        setTab(0);
-                                    }
-                                },
-                                {
-                                    key: '2',
-                                    icon: <FileTextOutlined />,
-                                    label: 'Tracking Sheet',
-                                    onClick: () => {
-                                        setTab(1);
-                                    }
-                                },
-                                {
-                                    key: '3',
-                                    icon: <UserOutlined />,
-                                    label: 'Profile',
-                                    onClick: () => {
-                                        setTab(2);
-                                    }
-                                }
-                            ]}
-                        />
-                    </Sider>
-                    <Layout>
-                        <Header
-                            style={{
-                                padding: 0,
-                                background: colorBgContainer,
-                            }}
-                        >
-                            <Button
-                                type="text"
-                                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                                onClick={() => setCollapsed(!collapsed)}
-                                style={{
-                                    fontSize: '16px',
-                                    width: 64,
-                                    height: 64,
-                                }}
-                            />
-                        </Header>
-                        <Content
-                            style={{
-                                margin: '24px 16px',
-                                padding: 24,
-                                minHeight: 280,
-                                background: colorBgContainer,
-                                borderRadius: borderRadiusLG,
-                            }}
-                        >
-                            {
-                                tab == 0 ?
-                                    <Flow initialNodes={nodes} initialEdges={edges} />
-                                    : tab == 1
-                                        ? <Table />
-                                        :
-                                        <><h1>Profile</h1>
-                                            <h3>First Name: {first}</h3>
-                                            <h3>Last Name: {last}</h3>
-                                            <h3>Year: {year}</h3>
-                                            <h3>Major: {major}</h3>
-                                        </>
+        <ConfigProvider
+    theme={{
+      token: {
+        colorPrimary: '#AB2B37',
+        
+      },
+    }}
+  >
+        <Layout style={{ height: "100vh" }}>
+            <Sider trigger={null} collapsible collapsed={collapsed}>
+                <div className="demo-logo-vertical" />
+                <Menu
+                    theme="dark"
+                    mode="inline"
+                    defaultSelectedKeys={['1']}
+                    items={[
+                        {
+                            key: '1',
+                            icon: <ApartmentOutlined />,
+                            label: 'Roadmap',
+                            onClick: () => {
+                                setTab(0);
                             }
-
-                            {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
-                        </Content>
-                        <RequirementsSidebar switchTree={() => { }} />
-                    </Layout>
-                </Layout>
-                <Modal title="Get Started!" open={signup} onClose={handleClose} footer={[]}>
-
-                    <p>Tell us a little bit about yourself to customize your roadmap experience!</p>
-                    <br></br>
-                    <Form layout='vertical'>
+                        },
+                        {
+                            key: '2',
+                            icon: <FileTextOutlined />,
+                            label: 'Tracking Sheet',
+                            onClick: () => {
+                                setTab(1);
+                            }
+                        },
+                        {
+                            key: '3',
+                            icon: <UserOutlined />,
+                            label: 'Profile',
+                            onClick: () => {
+                                setTab(2);
+                            }
+                        }
+                    ]}
+                />
+            </Sider>
+            <Layout>
+                <Header
+                    style={{
+                        padding: 0,
+                        background: colorBgContainer,
+                    }}
+                >
+                    <Button
+                        type="text"
+                        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                        onClick={() => setCollapsed(!collapsed)}
+                        style={{
+                            fontSize: '16px',
+                            width: 64,
+                            height: 64,
+                        }}
+                    />
+                </Header>
+                <Content
+                    style={{
+                        margin: '24px 16px',
+                        padding: 24,
+                        minHeight: 280,
+                        background: colorBgContainer,
+                        borderRadius: borderRadiusLG,
+                    }}
+                >
+                    {
+                        tab == 0 ? <Flow initialNodes={nodes} initialEdges={edges} /> : tab == 1 ? <h1>Tracking Sheet</h1> : 
+                        <><h1>Profile</h1>
+                        <h3>First Name: {first}</h3>
+                        <h3>Last Name: {last}</h3>
+                        <h3>Year: {year}</h3>
+                        <h3>Major: {major}</h3>
+                        </>
+                    }
+                    
+                    {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
+                </Content>
+                <RequirementsSidebar switchTree={() => { }} />
+            </Layout>
+        </Layout>
+        <Modal title="Get Started!" open={signup} onClose={handleClose} footer={[]}>
+            
+            <p>Tell us a little bit about yourself to customize your roadmap experience!</p>
+            <br></br>
+            <Form layout='vertical'>
                         <Form.Item label="First Name" style={{
                             width: "50%",
                             marginBottom: "10px"
