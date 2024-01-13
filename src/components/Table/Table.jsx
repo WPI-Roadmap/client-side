@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { CompactTable } from '@table-library/react-table-library/compact';
 import { useTheme } from '@table-library/react-table-library/theme';
