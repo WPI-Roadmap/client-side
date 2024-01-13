@@ -11,7 +11,7 @@ import RequirementsSidebar from './Requirements/Requirements.js';
 
 import 'reactflow/dist/style.css';
 
-const data = require('./Courses.json');
+const data = require('./courses.json');
 const { Option } = Select;
 const { Header, Sider, Content } = Layout;
 
@@ -318,16 +318,28 @@ function Dashboard() {
                             style={{
                                 padding: 0,
                                 background: colorBgContainer,
+                                position: "relative",
+                                height: 0,
                             }}
                         >
                             <Button
                                 type="text"
                                 icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                                 onClick={() => setCollapsed(!collapsed)}
+                                className="sideButt"
                                 style={{
                                     fontSize: '16px',
-                                    width: 64,
-                                    height: 64,
+                                    width: 48,
+                                    height: 48,
+                                    position: "absolute",
+                                    top: 16,
+                                    left: 16,
+                                    zIndex: 1,
+                                    background: "black",
+                                    color: "white",
+                                    borderStyle: "solid",
+                                    borderWidth: 1,
+                                    borderColor: "white",
                                 }}
                             />
                         </Header>
