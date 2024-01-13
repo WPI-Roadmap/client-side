@@ -7,13 +7,13 @@ import { MenuFoldOutlined, MenuUnfoldOutlined, ApartmentOutlined, FileTextOutlin
 import ReactFlow from 'reactflow';
 import Flow from './Flow.js';
 import RequirementsSidebar from './Requirements/Requirements.js';
+import Table from "../Table/Table.jsx"
 
 import 'reactflow/dist/style.css';
 
-var data = require('./Courses.json');
+var data = require('./courses.json');
 
 const { Header, Sider, Content } = Layout;
-var data = require('./Courses.json');
 
 function Dashboard() {
 
@@ -185,13 +185,34 @@ function Dashboard() {
 
     const navigate = useNavigate();
 
-    let [q, setQ] = useState(1);
+    let [tab, setTab] = useState(1);
+
+    let windowContent
+    if (tab == 1) {
+        windowContent = <Content
+        style={{
+            margin: '24px 16px',
+            padding: 24,
+            minHeight: 280,
+            background: colorBgContainer,
+            borderRadius: borderRadiusLG,
+        }}
+    >
+        <Flow initialNodes={nodes} initialEdges={edges} />
+        {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
+    </Content>;
+    } else {
+        windowContent = <Table />
+    }
 
     return (
         <Layout style={{ height: "100vh" }}>
             <Sider trigger={null} collapsible collapsed={collapsed}>
                 <div className="demo-logo-vertical" />
                 <Menu
+                    onClick={(e) => {
+                        setTab(e.key);
+                    }}
                     theme="dark"
                     mode="inline"
                     defaultSelectedKeys={['1']}
@@ -227,18 +248,7 @@ function Dashboard() {
                         }}
                     />
                 </Header>
-                <Content
-                    style={{
-                        margin: '24px 16px',
-                        padding: 24,
-                        minHeight: 280,
-                        background: colorBgContainer,
-                        borderRadius: borderRadiusLG,
-                    }}
-                >
-                    <Flow initialNodes={nodes} initialEdges={edges} />
-                    {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
-                </Content>
+                {windowContent}
                 <RequirementsSidebar switchTree={() => { }} />
             </Layout>
         </Layout>
