@@ -104,7 +104,7 @@ function Dashboard() {
     }
     id++;
     
-    setEdges(tempEdges.reverse());
+    setEdges(tempEdges);
     setNodes(tempCourses);
 }
     useState(() => setCourses(), []);
@@ -246,7 +246,7 @@ function Dashboard() {
           <Flow initialNodes={nodes} initialEdges={edges}/>
           {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
         </Content>
-        <RequirementsSidebar />
+        <RequirementsSidebar switchTree={() => {}} />
       </Layout>
     </Layout>
     );

@@ -13,9 +13,11 @@ import 'reactflow/dist/style.css';
 
 const elk = new ELK();
 const elkOptions = {
-  'elk.algorithm': 'layered',
-  'elk.layered.spacing.nodeNodeBetweenLayers': '100',
-  'elk.spacing.nodeNode': '80',
+    "elk.algorithm": 'layered',
+    "elk.padding": "[left=50, top=50, right=50, bottom=50]",
+    separateConnectedComponents: false,
+    "spacing.nodeNode": 100,
+    "spacing.nodeNodeBetweenLayers": 100
 };
 
 const getLayoutedElements = (nodes, edges, options = {}) => {

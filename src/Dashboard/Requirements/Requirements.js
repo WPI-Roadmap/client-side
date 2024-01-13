@@ -162,7 +162,7 @@ const allRequirements = {
 
 
 
-function RequirementsSidebar(switchTree) {
+function RequirementsSidebar({switchTree}) {
 
     const [requirements, setRequirements] = useState(allRequirements['cs'])
 
@@ -181,7 +181,7 @@ function RequirementsSidebar(switchTree) {
 
                 <b>Subject:</b>
                 <Select
-                    defaultValue="wpe"
+                    defaultValue="cs"
                     style={{
                         height: "auto",
                         width: "12em",
