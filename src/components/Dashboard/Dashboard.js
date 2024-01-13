@@ -11,7 +11,7 @@ import RequirementsSidebar from './Requirements/Requirements.js';
 
 import 'reactflow/dist/style.css';
 
-const data = require('./courses.json');
+const data = require('./Courses.json');
 const { Option } = Select;
 const { Header, Sider, Content } = Layout;
 
@@ -94,6 +94,8 @@ function Dashboard() {
                     desc: data.Report_Entry[i]["Course_Description"],
                     parentNode: courseCode.length == 3 ? 6 + data.Report_Entry.length : Number(courseCode.substring(0, 1)) - 1 + data.Report_Entry.length,
                     courseType: courseCode.length == 3 ? 7 : courseCode.substring(0, 1),
+                    courseCode: data["Report_Entry"][i]["Course_Title"].slice(0, data["Report_Entry"][i]["Course_Title"].indexOf(" - ")).trim(),
+                    professor: data["Report_Entry"][i]["Instructors"] ? data["Report_Entry"][i]["Instructors"] : "",
                 });
                 if (id % 2 == 0) {
                     x += 100;
@@ -153,11 +155,13 @@ function Dashboard() {
 
         for (let i = 1; i <= 7; i++) {
             tempCourses.push({
-                id: i - 1 + data.Report_Entry.length,
-                data: { label: (i == 7 ? 'Grad' : i + '000') + 'Courses' },
-                style: { display: "none" },
-                type: 'group',
-                courseType: i,
+              id: i-1 + data.Report_Entry.length,
+              data: { label: (i == 7 ? 'Grad' : i + '000') + 'Courses' },
+              style: { display: "none" },
+              type: 'group',
+              courseType: i,
+              courseCode: "",
+              professor: ""
             })
         }
 
