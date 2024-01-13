@@ -10,10 +10,9 @@ import RequirementsSidebar from './Requirements/Requirements.js';
 
 import 'reactflow/dist/style.css';
 
-var data = require('./Courses.json');
+var data = require('./courses.json');
 
 const { Header, Sider, Content } = Layout;
-var data = require('./Courses.json');
 
 function Dashboard() {
 
