@@ -10,6 +10,7 @@ import Flow from './Flow.js';
 import RequirementsSidebar from './Requirements/Requirements.js';
 
 import 'reactflow/dist/style.css';
+import Table from '../Table/Table.jsx';
 
 var data = require('./Courses.json');
 const { Option } = Select;
@@ -314,7 +315,7 @@ function Dashboard() {
                     }}
                 >
                     {
-                        tab == 0 ? <Flow initialNodes={nodes} initialEdges={edges} /> : tab == 1 ? <h1>Tracking Sheet</h1> : 
+                        tab == 0 ? <Flow initialNodes={nodes} initialEdges={edges} /> : tab == 1 ? <Table/> : 
                         <><h1>Profile</h1>
                         <h3>First Name: {first}</h3>
                         <h3>Last Name: {last}</h3>

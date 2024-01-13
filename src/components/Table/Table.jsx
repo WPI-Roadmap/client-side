@@ -99,18 +99,22 @@ const App = () => {
     };
     const defaultColumns = [
         {
-            title: 'name',
+            title: 'Course Title',
             dataIndex: 'name',
             width: '30%',
             editable: true,
         },
         {
-            title: 'age',
+            title: 'Term',
             dataIndex: 'age',
         },
         {
-            title: 'address',
+            title: 'Grade',
             dataIndex: 'address',
+        },
+        {
+            title: "Remove Course",
+            dataIndex: "remove",
         },
         {
             title: 'operation',
