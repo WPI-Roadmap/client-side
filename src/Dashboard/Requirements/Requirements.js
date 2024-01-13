@@ -71,9 +71,6 @@ const requirements = [
     },
 ];
 
-
-const switchTest = () => {};
-
 function RequirementsSidebar(switchTree) {
     return (
         <Sider style={{ padding: '2rem', color: "white",}} 
@@ -87,9 +84,10 @@ function RequirementsSidebar(switchTree) {
                 <Select
                     defaultValue="wpe"
                     style={{
-                        //width: 120,
+                        height: "auto",
+                        width: "12em",
                     }}
-                    // onChange={switchTest}
+                    onChange={switchTree}
                     options={courses}
                     className="course-select"
                 />
@@ -105,7 +103,7 @@ function RequirementsSidebar(switchTree) {
                             <i>{req.label}</i>
                             <br/>
                             <Progress percent={100 * (req.filled / req.needed)}  
-                                format={(percent) => req.filled + "/" + req.needed} 
+                                format={() => req.filled + "/" + req.needed} 
                                 style={{width: "100%", color: "white",}}/>
                         </li>
                     
