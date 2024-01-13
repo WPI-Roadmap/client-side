@@ -55,7 +55,7 @@ function Login() {
         }}
         className="wrapper"
       >
-          <LoginView show={tab == 0}></LoginView>
+          <LoginView show={tab === 0}></LoginView>
       </div>
     </>
   );

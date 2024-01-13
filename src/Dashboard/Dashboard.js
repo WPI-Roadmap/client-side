@@ -1,19 +1,23 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import "./Dashboard.css";
-import { Button, Form, Layout, Menu, theme } from "antd";
+import { Button, Form, Layout, Menu, theme} from "antd";
 
+<<<<<<< HEAD
 import { MenuFoldOutlined, MenuUnfoldOutlined, UploadOutlined, UserOutlined, VideoCameraAddOutlined } from "@ant-design/icons";
 import ReactFlow from 'reactflow';
  
 import 'reactflow/dist/style.css';
 
 var data = require('./Courses.json');
+=======
+import { MenuFoldOutlined, MenuUnfoldOutlined, ApartmentOutlined, FileTextOutlined } from "@ant-design/icons";
+import RequirementsSidebar from "./Requirements/Requirements.js";
+>>>>>>> 6bc99b0e7c64dfedf6786a87090a6842b4917426
 
 const { Header, Sider, Content } = Layout;
 
 function Dashboard() {
-
     const [collapsed, setCollapsed] = useState(false);
 
     const initialNodes = [
@@ -152,18 +156,13 @@ function Dashboard() {
           items={[
             {
               key: '1',
-              icon: <UserOutlined />,
-              label: 'nav 1',
+              icon: <ApartmentOutlined />,
+              label: 'Roadmap',
             },
             {
               key: '2',
-              icon: <VideoCameraAddOutlined />,
-              label: 'nav 2',
-            },
-            {
-              key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3',
+              icon: <FileTextOutlined />,
+              label: 'Tracking Sheet',
             },
           ]}
         />
