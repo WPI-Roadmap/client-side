@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import "./Dashboard.css";
 import { Button, ConfigProvider, Dropdown, Form, Input, Layout, Menu, Modal, Select, theme } from "antd";
-
+import Table from "../Table/Table.jsx";
 
 import { MenuFoldOutlined, MenuUnfoldOutlined, ApartmentOutlined, FileTextOutlined, UserOutlined } from "@ant-design/icons";
 import ReactFlow, { Background, MarkerType } from 'reactflow';
@@ -11,10 +11,9 @@ import RequirementsSidebar from './Requirements/Requirements.js';
 
 import 'reactflow/dist/style.css';
 
-var data = require('./Courses.json');
+const data = require('./Courses.json');
 const { Option } = Select;
 const { Header, Sider, Content } = Layout;
-var data = require('./Courses.json');
 
 function Dashboard() {
 
@@ -31,30 +30,30 @@ function Dashboard() {
 
     const items2 = [
         {
-          key: '1',
-          label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-              1st menu item
-            </a>
-          ),
+            key: '1',
+            label: (
+                <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+                    1st menu item
+                </a>
+            ),
         },
         {
-          key: '2',
-          label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-              2nd menu item
-            </a>
-          ),
+            key: '2',
+            label: (
+                <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+                    2nd menu item
+                </a>
+            ),
         },
         {
-          key: '3',
-          label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-              3rd menu item
-            </a>
-          ),
+            key: '3',
+            label: (
+                <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+                    3rd menu item
+                </a>
+            ),
         },
-      ];
+    ];
 
     const initialNodes = [
         { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
@@ -319,28 +318,16 @@ function Dashboard() {
                     style={{
                         padding: 0,
                         background: colorBgContainer,
-                        position: "relative",
-                        height: 0,
                     }}
                 >
                     <Button
                         type="text"
                         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                         onClick={() => setCollapsed(!collapsed)}
-                        className="sideButt"
                         style={{
                             fontSize: '16px',
-                            width: 48,
-                            height: 48,
-                            position: "absolute",
-                            top: 16,
-                            left: 16,
-                            zIndex: 1,
-                            background: "black",
-                            color: "white",
-                            borderStyle: "solid",
-                            borderWidth: 1,
-                            borderColor: "white",
+                            width: 64,
+                            height: 64,
                         }}
                     />
                 </Header>
@@ -354,7 +341,7 @@ function Dashboard() {
                     }}
                 >
                     {
-                        tab == 0 ? <Flow initialNodes={nodes} initialEdges={edges} /> : tab == 1 ? <h1>Tracking Sheet</h1> : 
+                        tab == 0 ? <Flow initialNodes={nodes} initialEdges={edges} /> : tab == 1 ? <Table/> : 
                         <><h1>Profile</h1>
                         <h3>First Name: {first}</h3>
                         <h3>Last Name: {last}</h3>
@@ -372,69 +359,74 @@ function Dashboard() {
             
             <p>Tell us a little bit about yourself to customize your roadmap experience!</p>
             <br></br>
-            <Form>
-                <Form.Item style={{
-                width: "50%",
-            }}>
-                    <Input placeholder="First Name" size="medium" width={200} onChange={(e) => { setFirst(e.target.value)
-                    }}></Input>
-                </Form.Item>
-                <Form.Item style={{
-                width: "50%",
-            }}>
-                    <Input placeholder="Last Name" size="medium" width={200} onChange={(e) => { setLast(e.target.value)
-                    }}
-                    />
-                </Form.Item>
-                <Form.Item style={{
-                width: "50%",
-            }}>
-                    <Select
-size="medium"
-onChange={(value) => {
-    setYear(value);
-}}
-      >
-        <Option value="Freshman">Freshman</Option>
-        <Option value="Sophomore">Sophomore</Option>
-        <Option value="Junior">Junior</Option>
-        <Option value="Senior">Senior</Option>
-      </Select>
-                </Form.Item>
+            <Form layout='vertical'>
+                        <Form.Item label="First Name" style={{
+                            width: "50%",
+                            marginBottom: "10px"
+                        }}>
+                            <Input size="medium" width={200} onChange={(e) => {
+                                setFirst(e.target.value)
+                            }}></Input>
+                        </Form.Item>
+                        <Form.Item label="Last Name" style={{
+                            width: "50%",
+                            marginBottom: "10px"
+                        }}>
+                            <Input size="medium" width={200} onChange={(e) => {
+                                setLast(e.target.value)
+                            }}
+                            />
+                        </Form.Item>
+                        <Form.Item label="Year" style={{
+                            width: "50%",
+                            marginBottom: "10px"
+                        }}>
+                            <Select
+                                size="medium"
+                                onChange={(value) => {
+                                    setYear(value);
+                                }}
+                            >
+                                <Option value="Freshman">Freshman</Option>
+                                <Option value="Sophomore">Sophomore</Option>
+                                <Option value="Junior">Junior</Option>
+                                <Option value="Senior">Senior</Option>
+                            </Select>
+                        </Form.Item>
 
-                <Form.Item style={{
-                width: "50%",
-            }}>
-                <Select
-size="medium"
-onChange={(value) => {
-    setMajor(value);
-}}
-      >
-                <Option value="Computer Science">Computer Science</Option>
-                <Option value="Mechanical Engineering">Mechanical Engineering</Option>
-                <Option value="Robotics Engineering">Robotics Engineering</Option>
-                <Option value="Electrical Engineering">Electrical Engineering</Option>
-                <Option value="Biomedical Engineering">Biomedical Engineering</Option>
-                <Option value="Chemical Engineering">Chemical Engineering</Option>
-                <Option value="Aerospace Engineering">Aerospace Engineering</Option>
-                <Option value="Civil Engineering">Civil Engineering</Option>
-                <Option value="Biology">Biology</Option>
-                <Option value="Physics">Physics</Option>
-                <Option value="IMGD">IMGD</Option>
-                <Option value="Humanities">Humanities</Option>
-                </Select>
-                </Form.Item>
+                        <Form.Item label="Major" style={{
+                            width: "50%",
+                        }}>
+                            <Select
+                                size="medium"
+                                onChange={(value) => {
+                                    setMajor(value);
+                                }}
+                            >
+                                <Option value="Computer Science">Computer Science</Option>
+                                <Option value="Mechanical Engineering">Mechanical Engineering</Option>
+                                <Option value="Robotics Engineering">Robotics Engineering</Option>
+                                <Option value="Electrical Engineering">Electrical Engineering</Option>
+                                <Option value="Biomedical Engineering">Biomedical Engineering</Option>
+                                <Option value="Chemical Engineering">Chemical Engineering</Option>
+                                <Option value="Aerospace Engineering">Aerospace Engineering</Option>
+                                <Option value="Civil Engineering">Civil Engineering</Option>
+                                <Option value="Biology">Biology</Option>
+                                <Option value="Physics">Physics</Option>
+                                <Option value="IMGD">IMGD</Option>
+                                <Option value="Humanities">Humanities</Option>
+                            </Select>
+                        </Form.Item>
 
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" onClick={() => { setSignup(false) }}>
-                        Signup
-                    </Button>
-                </Form.Item>
-            </Form>
-        </Modal>
-        </ConfigProvider>
-        
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" onClick={() => { setSignup(false) }}>
+                                Signup
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Modal>
+            </ConfigProvider>
+
         </>
     );
 }
