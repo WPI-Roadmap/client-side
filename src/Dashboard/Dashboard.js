@@ -2,20 +2,16 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import "./Dashboard.css";
 import { Button, Form, Layout, Menu, theme} from "antd";
-
-<<<<<<< HEAD
-import { MenuFoldOutlined, MenuUnfoldOutlined, UploadOutlined, UserOutlined, VideoCameraAddOutlined } from "@ant-design/icons";
 import ReactFlow from 'reactflow';
  
 import 'reactflow/dist/style.css';
 
-var data = require('./Courses.json');
-=======
 import { MenuFoldOutlined, MenuUnfoldOutlined, ApartmentOutlined, FileTextOutlined } from "@ant-design/icons";
 import RequirementsSidebar from "./Requirements/Requirements.js";
->>>>>>> 6bc99b0e7c64dfedf6786a87090a6842b4917426
+import Flow from "./Flow.js";
 
 const { Header, Sider, Content } = Layout;
+var data = require('./Courses.json');
 
 function Dashboard() {
     const [collapsed, setCollapsed] = useState(false);
@@ -28,9 +24,7 @@ function Dashboard() {
     let [nodes, setNodes] = useState({});
     
     
-    const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
-
-    
+    const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }, { id: 'e2-3', source: '2', target: '3' }];
 
     let [department, setDepartment] = useState("Computer Science Department");
 
@@ -194,8 +188,10 @@ function Dashboard() {
             borderRadius: borderRadiusLG,
           }}
         >
-          <ReactFlow nodes={nodes} edges={initialEdges} />
+          <Flow initialNodes={nodes} initialEdges={initialEdges}/>
+          {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
         </Content>
+        <RequirementsSidebar />
       </Layout>
     </Layout>
     );
