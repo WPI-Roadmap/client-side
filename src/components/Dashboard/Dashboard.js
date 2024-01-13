@@ -308,6 +308,11 @@ function Dashboard() {
             content: "Here you can view your profile information",
             placement: "right"
         },
+        {
+            target: ".four",
+            content: "This sidebar shows the requirements you have fulfilled so far, and you can check out each category of requirements",
+            placement: "right"
+        },
     ];
 
     const [runTour, setRunTour] = useState(false);
@@ -445,7 +450,7 @@ function Dashboard() {
                                 </>
                             )}
                         </Content>
-                        <RequirementsSidebar changeColorSchema={setColorSchema}/>
+                        <RequirementsSidebar className="four" changeColorSchema={setColorSchema}/>
                 </Layout>
                 </Layout>
                 <Modal
