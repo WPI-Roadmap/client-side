@@ -8,6 +8,7 @@ import {
   Route,
 } from "react-router-dom";
 import Dashboard from './Dashboard/Dashboard';
+import DataParse from './DataParse/DataParse';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard/>}></Route>
+        <Route path="/dataparse" element={<DataParse />}></Route>
       </Routes>
     </BrowserRouter>
   );
