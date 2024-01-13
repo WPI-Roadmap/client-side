@@ -10,15 +10,19 @@ import Flow from './Flow.js';
 import RequirementsSidebar from './Requirements/Requirements.js';
 
 import 'reactflow/dist/style.css';
-import Table from '../Table/Table.jsx';
+import { auth, logout } from "../../Firebase.js";
+import RequestUtils from "../../Utils/RequestUtils.js";
+import { useAuthState } from "react-firebase-hooks/auth";
 
-const data = require('./courses.json');
+const data = require('./Courses.json');
 const { Option } = Select;
 const { Header, Sider, Content } = Layout;
 
 function Dashboard() {
 
     const [collapsed, setCollapsed] = useState(false);
+
+    let [user, loading] = useAuthState(auth);
 
     const handleClose = () => {
         setSignup(false);
@@ -73,6 +77,21 @@ function Dashboard() {
     const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
     let [department, setDepartment] = useState("Computer Science Department");
+
+    function signupyayslay() {
+
+        let reqBody = {
+            "first": first,
+            "last": last,
+            "year": year,
+            "major": major,
+        }
+
+        RequestUtils.post("/user?id=" + user.uid, reqBody).then((res) => {
+            setSignup(false);
+        });
+
+    }
 
 
     let tempCourses = [];
@@ -166,6 +185,18 @@ function Dashboard() {
         setNodes(tempCourses);
     }
     useState(() => setCourses(), []);
+
+    useState(() => {
+        RequestUtils.get('/retrieve?id=' + '"test"').then((response) => response.json())
+        .then((data) => {
+            if (data.status == 200) {
+                setSignup(false);
+            } else {
+                setSignup(true);
+            }
+        });
+
+    });
 
     const services = [
         {
@@ -306,6 +337,18 @@ function Dashboard() {
                             onClick: () => {
                                 setTab(2);
                             }
+                        },
+                        {
+                            key: '4',
+                            icon: <UserOutlined />,
+                            label: 'Logout',
+                            onClick: () => {
+                                logout().then(() => {
+                                    navigate("/");
+                                }
+                                );
+                                
+                            }
                         }
                     ]}
                 />
@@ -416,7 +459,7 @@ function Dashboard() {
                         </Form.Item>
 
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" onClick={() => { setSignup(false) }}>
+                            <Button type="primary" htmlType="submit" onClick={() => { signupyayslay() }}>
                                 Signup
                             </Button>
                         </Form.Item>
