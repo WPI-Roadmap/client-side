@@ -35,6 +35,7 @@ const lerpColor = (h1, h2, progress) => {
 }
 
 const getLayoutedElements = (nodes, edges, colorSchema, options = {}) => {
+  // console.log('changed ' + colorSchema)
   const easyColor = 125;
   const hardColor = 0;
   const graph = {
