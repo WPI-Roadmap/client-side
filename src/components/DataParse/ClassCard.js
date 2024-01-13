@@ -2,14 +2,16 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { Card, Progress } from 'antd';
 import { CodeOutlined, PlusSquareOutlined, InfoCircleOutlined } from '@ant-design/icons';
-
+import profRatings from './ProfessorRating.json';
+import classRatings from './CourseRatings.json';
 import data from './prod-data.json';
 import './ClassCard.css';
 
-const ClassCard = ({index}) => {
+const ClassCard = ({ index }) => {
 
-    
 
+    const courseCode = data["Report_Entry"][index]["Course_Title"].slice(0, data["Report_Entry"][index]["Course_Title"].indexOf(" - ")).trim();
+    const professor = data["Report_Entry"][index]["Instructors"] ? data["Report_Entry"][index]["Instructors"] : "";
     const [OSCARatings, setOscarRatings] = useState([0, 0, 0]);
     //console.log(data["Report_Entry"][index]);
 
@@ -21,9 +23,11 @@ const ClassCard = ({index}) => {
     }
 
     const getOSCARRatings = () => {
-        const temp = [Math.round(Math.random() * 100), Math.round(Math.random() * 100), 0];
-        temp[2] = 0.6 * temp[0] + 0.4 * temp[1];
-        return temp;
+        const courseRating = classRatings[courseCode] ? classRatings[courseCode] : Math.round(Math.random() * 100);
+        const profRating = profRatings[professor] ? profRatings[professor] : Math.round(Math.random() * 100);
+        const projRating = 0.6 * profRating + 0.4 * courseRating;
+
+        return [profRating, courseRating, projRating]
     }
 
     useEffect(() => {
@@ -57,21 +61,21 @@ const ClassCard = ({index}) => {
                 }}
             >
                 <div className="mx-3 px-3">
-                <p><b>Professor: {data["Report_Entry"][index]["Instructors"] ? data["Report_Entry"][index]["Instructors"] : "None Assigned"}</b></p>
-                <p><b>{data["Report_Entry"][index]["Offering_Period"]}</b></p>
-                {/* <p>{getCourseDescription(data["Report_Entry"][index]["Course_Description"].replace(/<\/?[^>]+(>|$)/g, " "))[0]}</p> */}
-                {/* <p>{getCourseDescription(data["Report_Entry"][index]["Course_Description"].replace(/<\/?[^>]+(>|$)/g, " "))[1]}</p> */}
+                    <p><b>Professor: {data["Report_Entry"][index]["Instructors"] ? data["Report_Entry"][index]["Instructors"] : "None Assigned"}</b></p>
+                    <p><b>{data["Report_Entry"][index]["Offering_Period"]}</b></p>
+                    {/* <p>{getCourseDescription(data["Report_Entry"][index]["Course_Description"].replace(/<\/?[^>]+(>|$)/g, " "))[0]}</p> */}
+                    {/* <p>{getCourseDescription(data["Report_Entry"][index]["Course_Description"].replace(/<\/?[^>]+(>|$)/g, " "))[1]}</p> */}
 
-                {data["Report_Entry"][index]["Instructors"] !== "" && (
-                    <div className="">
-                        <p className="less-margin"><i>Professor Difficulty</i></p>
-                        <Progress percent={OSCARatings[0]} format={(percent) => (Math.round(percent / 2) / 10) + "/5"} status="active" strokeColor="#716868" />
-                        <p className="less-margin"><i>Class Difficulty</i></p>
-                        <Progress percent={OSCARatings[1]} format={(percent) => (Math.round(percent / 2) / 10) + "/5"} status="active" strokeColor="#716868" />
-                        <p className="less-margin"><i>Projected Difficulty</i></p>
-                        <Progress percent={OSCARatings[2]} format={(percent) => (Math.round(percent / 2) / 10) + "/5"} status="active" strokeColor="#716868" />
-                    </div>)}
-                    </div>
+                    {data["Report_Entry"][index]["Instructors"] !== "" && (
+                        <div className="">
+                            <p className="less-margin"><i>Professor Rating</i></p>
+                            <Progress percent={OSCARatings[0]} format={(percent) => (Math.round(percent / 2) / 10) + "/5"} status="active" strokeColor="#716868" />
+                            <p className="less-margin"><i>Class Rating</i></p>
+                            <Progress percent={OSCARatings[1]} format={(percent) => (Math.round(percent / 2) / 10) + "/5"} status="active" strokeColor="#716868" />
+                            <p className="less-margin"><i>Projected Rating</i></p>
+                            <Progress percent={OSCARatings[2]} format={(percent) => (Math.round(percent / 2) / 10) + "/5"} status="active" strokeColor="#716868" />
+                        </div>)}
+                </div>
             </Card >
         </>
     );

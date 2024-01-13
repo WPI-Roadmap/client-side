@@ -22,9 +22,10 @@ const elkOptions = {
     // separateConnectedComponents: false,
     // "elk.layered.mergeEdges": false,
     "elk.layered.nodePlacement.bk.fixedAlignment": "BALANCED",
-    "elk.direction": "DOWN",
-    "spacing.nodeNode": 100,
-    "spacing.nodeNodeBetweenLayers": 100
+    "elk.direction": "UP",
+    "spacing.nodeNode": 50,
+    "spacing.nodeNodeBetweenLayers": 50,
+    'elk.partitioning.activate': 'true',
 };
 
 const getLayoutedElements = (nodes, edges, options = {}) => {
@@ -36,8 +37,11 @@ const getLayoutedElements = (nodes, edges, options = {}) => {
       ...node,
       // Adjust the target and source handle positions based on the layout
       // direction.
-      targetPosition: isHorizontal ? 'left' : 'top',
-      sourcePosition: isHorizontal ? 'right' : 'bottom',
+      targetPosition: 'bottom',
+      sourcePosition: 'top',
+      layoutOptions: {
+        'partitioning.partition': 7 - node.courseType,
+      },
 
       // Hardcode a width and height for elk to use when layouting.
       width: 150,
@@ -55,7 +59,6 @@ const getLayoutedElements = (nodes, edges, options = {}) => {
         // and `y` fields.
         position: { x: node.x, y: node.y },
       })),
-
       edges: layoutedGraph.edges,
     }))
     .catch(console.error);
@@ -120,11 +123,6 @@ function FlowWithoutProvider({initialNodes, initialEdges}) {
       onNodeClick={onNodeClick}
       fitView
     >
-      <Panel position="top-right">
-        <button onClick={() => onLayout({ direction: 'DOWN' })}>vertical layout</button>
-
-        <button onClick={() => onLayout({ direction: 'RIGHT' })}>horizontal layout</button>
-      </Panel>
     </ReactFlow>
     <Modal title="Course Information" open={isModalOpen} onCancel={handleCancel} footer={[]}>
       <div>

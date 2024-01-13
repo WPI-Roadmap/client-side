@@ -1,70 +1,76 @@
-# Getting Started with Create React App
+<p align="center">
+  <a href="https://github.com/WPI-Roadmap">
+    <img src="Roadmap.png" alt="Roadmap-WPI" width=200 height=200>
+  </a>
+  <h3 align="center">Roadmap-WPI</h3>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+  <p align="center">
+    A universal solution to introduce you to WPI's major requirement system <br> Developed by WPI students for WPI students (GoatHack 2024).
+    <br>
+    </p>
+</p>
 
-## Available Scripts
+### About
 
-In the project directory, you can run:
+Roadmap-WPI provides a clean, aesthetic visual solution to help incoming WPI students understand the major requirements system. The website is designed to be easy to use and understand, and is a great resource for students to use when planning their academic career by keeping track of their major requirements and progress as well as visualizing prerequisites and course offerings. This project was developed by Randy Huang, Tarun Eswar, Ajay Bhagavatula, Erica Dong, and Charles Tang for the GoatHacks 2024 hackathon at WPI.
 
-### `npm start`
+### Technical
+#### Technology Used
+<div align="center">
+<p align="center"> <a href="https://expressjs.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original-wordmark.svg" alt="express" width="40" height="40"/> </a><a href="https://getbootstrap.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/bootstrap/bootstrap-plain-wordmark.svg" alt="bootstrap" width="40" height="40"/> </a> <a href="https://www.w3schools.com/css/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/> </a>  <a href="https://firebase.google.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="firebase" width="40" height="40"/> </a> <a href="https://www.w3.org/html/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/> </a>  <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/> </a> <a href="https://www.mongodb.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg" alt="mongodb" width="40" height="40"/> </a> <a href="https://nodejs.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="nodejs" width="40" height="40"/> </a> <a href="https://reactjs.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="react" width="40" height="40"/> </a> </p>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+</div>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+#### Local Hosting
 
-### `npm test`
+To run the project locally, you may clone this respository. You must have Node version 18+ installed on your machine.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+git clone https://github.com/WPI-Roadmap/client-side.git
+```
 
-### `npm run build`
+Then, install the dependencies.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+cd client-side
+npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Finally, run the project.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm start
+```
 
-### `npm run eject`
+Go to `localhost:3000` to view the project.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Feature List
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- [x] Roadmap visualization for all majors (hierarchal diagram)
+- [x] Sync with OSCAR.wpi.edu and COURSELISTINGS.wpi.edu for up-to-date course offerings and professor/course ratings
+- [x] Tracking sheet digitization for helping you satisfy major requirements
+- [ ] LLM-based course recommendations based on your major, interests, and satisfaction with past courses
+- [ ] Profile syncing and WPI SSO
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Contributing
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+We'd love to have your help in making Roadmap-WPI better. The project still has work to do before full production launch, but if there's an issue you'd like to see addressed sooner rather than later, let us know. 
 
-## Learn More
+For any concerns, please open an [issue](https://github.com/WPI-Roadmap/client-side/issues), or feel free to, [fork the project and send a pull request](https://github.com/WPI-Roadmap/client-side/pulls). 
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+<hr>
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Versions
+* Version 1.0 (01/14/2024)
+    * Initial Release
+    * See [Commits history]
 
-### Analyzing the Bundle Size
+### License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+[![Open Source Love](https://badges.frapsoft.com/os/v2/open-source-200x33.png?v=103)](#)  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=for-the-badge)](https://github.com/tamzi/ReadMe-MasterTemplates/blob/master/LICENSE)
