@@ -4,7 +4,7 @@ import "./Dashboard.css";
 import { Button, Form, Layout, Menu, theme } from "antd";
 
 import { MenuFoldOutlined, MenuUnfoldOutlined, ApartmentOutlined, FileTextOutlined } from "@ant-design/icons";
-import ReactFlow from 'reactflow';
+import ReactFlow, { Background, MarkerType } from 'reactflow';
 import Flow from './Flow.js';
 import RequirementsSidebar from './Requirements/Requirements.js';
 import Table from "../Table/Table.jsx"
@@ -90,6 +90,12 @@ function Dashboard() {
                             if (tempCourses[j].data.label.match(courseCodeRegex) == courseCodes[k]) {
                                 tempEdges.push({
                                     id: 'e' + first.toString() + '-' + second.toString(),
+                                    type: 'smoothstep',
+                                    markerStart: {
+                                        type: MarkerType.ArrowClosed,
+                                        width: 20,
+                                        height: 20,
+                                    },
                                     source: tempCourses[i].id,
                                     target: tempCourses[j].id
                                 });
@@ -204,7 +210,7 @@ function Dashboard() {
     if (tab == 1) {
         windowContent = <Content
         style={{
-            margin: '24px 16px',
+            margin: 0,//'24px 16px',
             padding: 24,
             minHeight: 280,
             background: colorBgContainer,
@@ -248,16 +254,28 @@ function Dashboard() {
                     style={{
                         padding: 0,
                         background: colorBgContainer,
+                        position: "relative",
+                        height: 0,
                     }}
                 >
                     <Button
                         type="text"
                         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                         onClick={() => setCollapsed(!collapsed)}
+                        className="sideButt"
                         style={{
                             fontSize: '16px',
-                            width: 64,
-                            height: 64,
+                            width: 48,
+                            height: 48,
+                            position: "absolute",
+                            top: 16,
+                            left: 16,
+                            zIndex: 1,
+                            background: "black",
+                            color: "white",
+                            borderStyle: "solid",
+                            borderWidth: 1,
+                            borderColor: "white",
                         }}
                     />
                 </Header>
