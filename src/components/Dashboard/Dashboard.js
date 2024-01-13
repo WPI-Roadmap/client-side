@@ -1,35 +1,79 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import "./Dashboard.css";
-import { Button, Form, Layout, Menu, theme } from "antd";
+import { Button, ConfigProvider, Dropdown, Form, Input, Layout, Menu, Modal, Select, theme } from "antd";
 
-import { MenuFoldOutlined, MenuUnfoldOutlined, ApartmentOutlined, FileTextOutlined } from "@ant-design/icons";
+
+import { MenuFoldOutlined, MenuUnfoldOutlined, ApartmentOutlined, FileTextOutlined, UserOutlined } from "@ant-design/icons";
 import ReactFlow from 'reactflow';
 import Flow from './Flow.js';
 import RequirementsSidebar from './Requirements/Requirements.js';
-import Table from "../Table/Table.jsx"
+
 import 'reactflow/dist/style.css';
 
-const data = require('./courses.json');
-
+var data = require('./Courses.json');
+const { Option } = Select;
 const { Header, Sider, Content } = Layout;
-const initialNodes = [
-    { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
-    { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
-];
-const initialTabState = 1;
+var data = require('./Courses.json');
 
 function Dashboard() {
 
     const [collapsed, setCollapsed] = useState(false);
-    const [windowContent, setWindowContent] = useState(<></>);
-    let [tab, setTab] = useState(initialTabState);
+
+    const handleClose = () => {
+        setSignup(false);
+    }
+
+    let [first, setFirst] = useState("");
+    let [last, setLast] = useState("");
+    let [year, setYear] = useState("");
+    let [major, setMajor] = useState("");
+
+    const items2 = [
+        {
+          key: '1',
+          label: (
+            <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+              1st menu item
+            </a>
+          ),
+        },
+        {
+          key: '2',
+          label: (
+            <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+              2nd menu item
+            </a>
+          ),
+        },
+        {
+          key: '3',
+          label: (
+            <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+              3rd menu item
+            </a>
+          ),
+        },
+      ];
+
+    const initialNodes = [
+        { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
+        { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
+    ];
 
     let [nodes, setNodes] = useState({});
+
     let [edges, setEdges] = useState({});
-    let [department, setDepartment] = useState("Computer Science Department");
+
+    let [tab, setTab] = useState(0);
+
+    let [signup, setSignup] = useState(true);
+
 
     const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
+
+    let [department, setDepartment] = useState("Computer Science Department");
+
 
     let tempCourses = [];
     let tempEdges = [];
@@ -43,11 +87,14 @@ function Dashboard() {
             // console.log(data.Report_Entry[i]["Course_Section_Owner"])
             if (data.Report_Entry[i]["Course_Section_Owner"] == department && !courseTracking.includes(data.Report_Entry[i]["Course_Title"])) {
                 courseTracking.push(data.Report_Entry[i]["Course_Title"])
+                let courseCode = data.Report_Entry[i]["Course_Title"].match(/\d+/)[0];
                 tempCourses.push({
                     id: id.toString(),
                     position: { x: x, y: y },
                     data: { label: data.Report_Entry[i]["Course_Title"] },
-                    desc: data.Report_Entry[i]["Course_Description"]
+                    desc: data.Report_Entry[i]["Course_Description"],
+                    parentNode: courseCode.length == 3 ? 6 + data.Report_Entry.length : Number(courseCode.substring(0, 1)) - 1 + data.Report_Entry.length,
+                    courseType: courseCode.length == 3 ? 7 : courseCode.substring(0, 1),
                 });
                 if (id % 2 == 0) {
                     x += 100;
@@ -98,6 +145,16 @@ function Dashboard() {
             }
         }
         id++;
+
+        for (let i = 1; i <= 7; i++) {
+            tempCourses.push({
+              id: i-1 + data.Report_Entry.length,
+              data: { label: (i == 7 ? 'Grad' : i + '000') + 'Courses' },
+              style: { display: "none" },
+              type: 'group',
+              courseType: i,
+            })
+        }
 
         setEdges(tempEdges);
         setNodes(tempCourses);
@@ -182,51 +239,50 @@ function Dashboard() {
 
     const navigate = useNavigate();
 
-
-    useEffect(() => {
-        if (tab === 1) {
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-            setWindowContent(<Content
-                style={{
-                    margin: '24px 16px',
-                    padding: 24,
-                    minHeight: 280,
-                    background: colorBgContainer,
-                    borderRadius: borderRadiusLG,
-                }}
-            >
-                <Flow initialNodes={nodes} initialEdges={edges} />
-            </Content>);
-        } else {
-            setWindowContent(<Table />)
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tab])
-
+    let [q, setQ] = useState(1);
 
     return (
+        <>
+        <ConfigProvider
+    theme={{
+      token: {
+        colorPrimary: '#AB2B37',
+        
+      },
+    }}
+  >
         <Layout style={{ height: "100vh" }}>
             <Sider trigger={null} collapsible collapsed={collapsed}>
                 <div className="demo-logo-vertical" />
                 <Menu
-                    onClick={(e) => {
-                        setTab(e.key);
-                        console.log('key', e.key)
-                    }}
                     theme="dark"
                     mode="inline"
-                    defaultSelectedKeys={[`${initialTabState}`]}
+                    defaultSelectedKeys={['1']}
                     items={[
                         {
                             key: '1',
                             icon: <ApartmentOutlined />,
                             label: 'Roadmap',
+                            onClick: () => {
+                                setTab(0);
+                            }
                         },
                         {
                             key: '2',
                             icon: <FileTextOutlined />,
                             label: 'Tracking Sheet',
+                            onClick: () => {
+                                setTab(1);
+                            }
                         },
+                        {
+                            key: '3',
+                            icon: <UserOutlined />,
+                            label: 'Profile',
+                            onClick: () => {
+                                setTab(2);
+                            }
+                        }
                     ]}
                 />
             </Sider>
@@ -248,10 +304,98 @@ function Dashboard() {
                         }}
                     />
                 </Header>
-                {windowContent}
+                <Content
+                    style={{
+                        margin: '24px 16px',
+                        padding: 24,
+                        minHeight: 280,
+                        background: colorBgContainer,
+                        borderRadius: borderRadiusLG,
+                    }}
+                >
+                    {
+                        tab == 0 ? <Flow initialNodes={nodes} initialEdges={edges} /> : tab == 1 ? <h1>Tracking Sheet</h1> : 
+                        <><h1>Profile</h1>
+                        <h3>First Name: {first}</h3>
+                        <h3>Last Name: {last}</h3>
+                        <h3>Year: {year}</h3>
+                        <h3>Major: {major}</h3>
+                        </>
+                    }
+                    
+                    {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
+                </Content>
                 <RequirementsSidebar switchTree={() => { }} />
             </Layout>
         </Layout>
+        <Modal title="Get Started!" open={signup} onClose={handleClose} footer={[]}>
+            
+            <p>Tell us a little bit about yourself to customize your roadmap experience!</p>
+            <br></br>
+            <Form>
+                <Form.Item style={{
+                width: "50%",
+            }}>
+                    <Input placeholder="First Name" size="medium" width={200} onChange={(e) => { setFirst(e.target.value)
+                    }}></Input>
+                </Form.Item>
+                <Form.Item style={{
+                width: "50%",
+            }}>
+                    <Input placeholder="Last Name" size="medium" width={200} onChange={(e) => { setLast(e.target.value)
+                    }}
+                    />
+                </Form.Item>
+                <Form.Item style={{
+                width: "50%",
+            }}>
+                    <Select
+size="medium"
+onChange={(value) => {
+    setYear(value);
+}}
+      >
+        <Option value="Freshman">Freshman</Option>
+        <Option value="Sophomore">Sophomore</Option>
+        <Option value="Junior">Junior</Option>
+        <Option value="Senior">Senior</Option>
+      </Select>
+                </Form.Item>
+
+                <Form.Item style={{
+                width: "50%",
+            }}>
+                <Select
+size="medium"
+onChange={(value) => {
+    setMajor(value);
+}}
+      >
+                <Option value="Computer Science">Computer Science</Option>
+                <Option value="Mechanical Engineering">Mechanical Engineering</Option>
+                <Option value="Robotics Engineering">Robotics Engineering</Option>
+                <Option value="Electrical Engineering">Electrical Engineering</Option>
+                <Option value="Biomedical Engineering">Biomedical Engineering</Option>
+                <Option value="Chemical Engineering">Chemical Engineering</Option>
+                <Option value="Aerospace Engineering">Aerospace Engineering</Option>
+                <Option value="Civil Engineering">Civil Engineering</Option>
+                <Option value="Biology">Biology</Option>
+                <Option value="Physics">Physics</Option>
+                <Option value="IMGD">IMGD</Option>
+                <Option value="Humanities">Humanities</Option>
+                </Select>
+                </Form.Item>
+
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" onClick={() => { setSignup(false) }}>
+                        Signup
+                    </Button>
+                </Form.Item>
+            </Form>
+        </Modal>
+        </ConfigProvider>
+        
+        </>
     );
 }
 
