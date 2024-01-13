@@ -66,6 +66,8 @@ function Dashboard() {
 
     let [tab, setTab] = useState(0);
 
+    let [colorSchema, setColorSchema] = useState("tot");
+
     let [signup, setSignup] = useState(true);
 
 
@@ -261,7 +263,7 @@ function Dashboard() {
             borderRadius: borderRadiusLG,
         }}
     >
-        <Flow initialNodes={nodes} initialEdges={edges} />
+        <Flow initialNodes={nodes} initialEdges={edges} colorSchema={colorSchema} />
         {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
     </Content>;
     } else {
@@ -353,7 +355,7 @@ function Dashboard() {
                     }}
                 >
                     {
-                        tab == 0 ? <Flow initialNodes={nodes} initialEdges={edges} /> : tab == 1 ? <Table/> : 
+                        tab == 0 ? <Flow initialNodes={nodes} initialEdges={edges} colorSchema={colorSchema} /> : tab == 1 ? <Table/> : 
                         <><h1>Profile</h1>
                         <h3>First Name: {first}</h3>
                         <h3>Last Name: {last}</h3>
@@ -364,7 +366,7 @@ function Dashboard() {
                     
                     {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
                 </Content>
-                <RequirementsSidebar switchTree={() => { }} />
+                <RequirementsSidebar switchTree={() => { }} changeColorSchema={setColorSchema} />
             </Layout>
         </Layout>
         <Modal title="Get Started!" open={signup} onClose={handleClose} footer={[]}>

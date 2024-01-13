@@ -34,7 +34,7 @@ const lerpColor = (h1, h2, progress) => {
   return `hsl(${h1 + Math.round((h2-h1) * progress)}, 100%, 80%)`
 }
 
-const getLayoutedElements = (nodes, edges, options = {}) => {
+const getLayoutedElements = (nodes, edges, colorSchema, options = {}) => {
   const easyColor = 125;
   const hardColor = 0;
   const graph = {
@@ -45,7 +45,27 @@ const getLayoutedElements = (nodes, edges, options = {}) => {
       const profRating = profRatings[node.professor] ? profRatings[node.professor] : Math.round(Math.random() * 100);
       const projRating = 0.6 * profRating + 0.4 * courseRating;
       // console.log("rating " + projRating);
-      
+      let style;
+      switch (colorSchema) {
+        case "tot":
+          style = {
+            backgroundColor: lerpColor(easyColor, hardColor, projRating/100),
+          }
+        break;
+        case "prof":
+          style = {
+            backgroundColor: lerpColor(easyColor, hardColor, profRating/100),
+          }
+        break;
+        case "course":
+          style = {
+            backgroundColor: lerpColor(easyColor, hardColor, courseRating/100),
+          }
+        break;
+        default:
+          style = {};
+      }
+
       return {
       ...node,
       // Adjust the target and source handle positions based on the layout
@@ -60,9 +80,7 @@ const getLayoutedElements = (nodes, edges, options = {}) => {
       width: 150,
       height: 50,
       className: "courseNode",
-      style: {
-        backgroundColor: projRating ? lerpColor(easyColor, hardColor, projRating/100) : "white",
-      }
+      style: style,
     }}),
     edges: edges,
   };
@@ -81,32 +99,34 @@ const getLayoutedElements = (nodes, edges, options = {}) => {
     .catch(console.error);
 };
 
-function FlowWithoutProvider({initialNodes, initialEdges}) {
+function FlowWithoutProvider({initialNodes, initialEdges, colorSchema}) {
+
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const { fitView } = useReactFlow();
 
   let [courseCode, setCourseCode] = useState("");
 
-
-
-
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
-  const onLayout = useCallback(
+  let onLayout = useCallback(
     ({ direction, useInitialNodes = false }) => {
       const opts = { 'elk.direction': direction, ...elkOptions };
       const ns = useInitialNodes ? initialNodes : nodes;
       const es = useInitialNodes ? initialEdges : edges;
 
-      getLayoutedElements(ns, es, opts).then(({ nodes: layoutedNodes, edges: layoutedEdges }) => {
+      getLayoutedElements(ns, es, colorSchema, opts).then(({ nodes: layoutedNodes, edges: layoutedEdges }) => {
         setNodes(layoutedNodes);
         setEdges(layoutedEdges);
 
         window.requestAnimationFrame(() => fitView());
       });
     },
-    [nodes, edges]
+    [nodes, edges, colorSchema]
   );
+
+  useLayoutEffect(() => {
+    onLayout({ direction: 'UP', useInitialNodes: true });
+  }, [colorSchema]);
 
   // Calculate the initial layout on mount.
   useLayoutEffect(() => {
