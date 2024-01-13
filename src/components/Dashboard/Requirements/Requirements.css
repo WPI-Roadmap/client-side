@@ -13,6 +13,18 @@ ul {
     padding: 0;
 }
 
+/* .course-select .ant-select-selector, .course-select .ant-select-selection-item {
+    background-color: black !important;
+    border-color: white !important;
+    color: white !important;
+}
+
+.course-select .ant-select-arrow {
+    color: white !important;
+} */
+
+/* TODO: figure out for expanded */
+
 /* .req-courses li .ant-progress-steps-outer {
     display: grid;
     grid-template-rows: 1fr;

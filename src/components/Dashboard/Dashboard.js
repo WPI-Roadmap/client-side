@@ -2,19 +2,18 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import "./Dashboard.css";
 import { Button, ConfigProvider, Dropdown, Form, Input, Layout, Menu, Modal, Select, theme } from "antd";
-
+import Table from "../Table/Table.jsx";
 
 import { MenuFoldOutlined, MenuUnfoldOutlined, ApartmentOutlined, FileTextOutlined, UserOutlined } from "@ant-design/icons";
-import ReactFlow from 'reactflow';
+import ReactFlow, { Background, MarkerType } from 'reactflow';
 import Flow from './Flow.js';
 import RequirementsSidebar from './Requirements/Requirements.js';
 
 import 'reactflow/dist/style.css';
 
-var data = require('./Courses.json');
+const data = require('./courses.json');
 const { Option } = Select;
 const { Header, Sider, Content } = Layout;
-var data = require('./Courses.json');
 
 function Dashboard() {
 
@@ -31,29 +30,30 @@ function Dashboard() {
 
     const items2 = [
         {
-            key: '1',
-            label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                    1st menu item
-                </a>
-            ),
+              key: '1',
+              label: (
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+                          1st menu item
+                    </a>
+              ),
         },
         {
-            key: '2',
-            label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                    2nd menu item
-                </a>
-            ),
+              key: '2',
+              label: (
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+                          2nd menu item
+                    </a>
+              ),
         },
         {
-            key: '3',
-            label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-                    3rd menu item
-                </a>
-            ),
+              key: '3',
+              label: (
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+                          3rd menu item
+                    </a>
+              ),
         },
+    ];
     ];
 
     const initialNodes = [
@@ -95,6 +95,8 @@ function Dashboard() {
                     desc: data.Report_Entry[i]["Course_Description"],
                     parentNode: courseCode.length == 3 ? 6 + data.Report_Entry.length : Number(courseCode.substring(0, 1)) - 1 + data.Report_Entry.length,
                     courseType: courseCode.length == 3 ? 7 : courseCode.substring(0, 1),
+                    courseCode: data["Report_Entry"][i]["Course_Title"].slice(0, data["Report_Entry"][i]["Course_Title"].indexOf(" - ")).trim(),
+                    professor: data["Report_Entry"][i]["Instructors"] ? data["Report_Entry"][i]["Instructors"] : "",
                 });
                 if (id % 2 == 0) {
                     x += 100;
@@ -131,6 +133,12 @@ function Dashboard() {
                             if (tempCourses[j].data.label.match(courseCodeRegex) == courseCodes[k]) {
                                 tempEdges.push({
                                     id: 'e' + first.toString() + '-' + second.toString(),
+                                    type: 'smoothstep',
+                                    markerStart: {
+                                        type: MarkerType.ArrowClosed,
+                                        width: 20,
+                                        height: 20,
+                                    },
                                     source: tempCourses[i].id,
                                     target: tempCourses[j].id
                                 });
@@ -148,11 +156,13 @@ function Dashboard() {
 
         for (let i = 1; i <= 7; i++) {
             tempCourses.push({
-                id: i - 1 + data.Report_Entry.length,
-                data: { label: (i == 7 ? 'Grad' : i + '000') + 'Courses' },
-                style: { display: "none" },
-                type: 'group',
-                courseType: i,
+              id: i-1 + data.Report_Entry.length,
+              data: { label: (i == 7 ? 'Grad' : i + '000') + 'Courses' },
+              style: { display: "none" },
+              type: 'group',
+              courseType: i,
+              courseCode: "",
+              professor: ""
             })
         }
 
@@ -241,13 +251,30 @@ function Dashboard() {
 
     let [q, setQ] = useState(1);
 
+    let windowContent
+    if (tab == 1) {
+        windowContent = <Content
+            style={{
+                margin: 0,//'24px 16px',
+                padding: 24,
+                minHeight: 280,
+                background: colorBgContainer,
+                borderRadius: borderRadiusLG,
+            }}
+        >
+            <Flow initialNodes={nodes} initialEdges={edges} />
+            {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
+        </Content>;
+    } else {
+        // windowContent = <Table />
+    }
+
     return (
         <>
             <ConfigProvider
                 theme={{
                     token: {
                         colorPrimary: '#AB2B37',
-
                     },
                 }}
             >
@@ -286,69 +313,87 @@ function Dashboard() {
                             ]}
                         />
                     </Sider>
+
                     <Layout>
                         <Header
                             style={{
                                 padding: 0,
                                 background: colorBgContainer,
+                                position: "relative",
+                                height: 0,
                             }}
                         >
                             <Button
+                                type="text"
                                 icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                                 onClick={() => setCollapsed(!collapsed)}
+                                className="sideButt"
                                 style={{
                                     fontSize: '16px',
-                                    width: 64,
-                                    height: 64,
+                                    width: 48,
+                                    height: 48,
+                                    position: "absolute",
+                                    top: 16,
+                                    left: 16,
+                                    zIndex: 1,
+                                    background: "black",
+                                    color: "white",
+                                    borderStyle: "solid",
+                                    borderWidth: 1,
+                                    borderColor: "white",
                                 }}
                             />
                         </Header>
                         <Content
                             style={{
-                                margin: '24px 16px',
-                                padding: 24,
+                                padding: 20,
                                 minHeight: 280,
                                 background: colorBgContainer,
                                 borderRadius: borderRadiusLG,
                             }}
                         >
                             {
-                                tab == 0 ? <Flow initialNodes={nodes} initialEdges={edges} /> : tab == 1 ? <h1>Tracking Sheet</h1> :
-                                    <><h1>Profile</h1>
-                                        <h3>First Name: {first}</h3>
-                                        <h3>Last Name: {last}</h3>
-                                        <h3>Year: {year}</h3>
-                                        <h3>Major: {major}</h3>
-                                    </>
+                                tab === 0 ?
+                                    <Flow initialNodes={nodes} initialEdges={edges} /> :
+                                    tab === 1 ? <Table />
+                                        : <>
+                                            <h1>Profile</h1>
+                                            <h3>First Name: {first}</h3>
+                                            <h3>Last Name: {last}</h3>
+                                            <h3>Year: {year}</h3>
+                                            <h3>Major: {major}</h3>
+                                        </>
                             }
 
-                            {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
                         </Content>
                         <RequirementsSidebar switchTree={() => { }} />
                     </Layout>
                 </Layout>
-                <Modal width="25rem" title="Get Started with Roadmap-WPI" open={signup} onClose={handleClose} footer={[]}>
+                <Modal title="Get Started!" open={signup} onClose={handleClose} footer={[]}>
 
-                    <p>Tell us a little bit about yourself to customize your Roadmap-WPI experience!</p>
+                    <p>Tell us a little bit about yourself to customize your roadmap experience!</p>
                     <br></br>
-                    <Form>
-                        <Form.Item style={{
+                    <Form layout='vertical'>
+                        <Form.Item label="First Name" style={{
                             width: "50%",
+                            marginBottom: "10px"
                         }}>
-                            <Input placeholder="First Name" size="medium" width={200} onChange={(e) => {
+                            <Input size="medium" width={200} onChange={(e) => {
                                 setFirst(e.target.value)
                             }}></Input>
                         </Form.Item>
-                        <Form.Item style={{
+                        <Form.Item label="Last Name" style={{
                             width: "50%",
+                            marginBottom: "10px"
                         }}>
-                            <Input placeholder="Last Name" size="medium" width={200} onChange={(e) => {
+                            <Input size="medium" width={200} onChange={(e) => {
                                 setLast(e.target.value)
                             }}
                             />
                         </Form.Item>
-                        <Form.Item style={{
+                        <Form.Item label="Year" style={{
                             width: "50%",
+                            marginBottom: "10px"
                         }}>
                             <Select
                                 size="medium"
@@ -363,7 +408,7 @@ function Dashboard() {
                             </Select>
                         </Form.Item>
 
-                        <Form.Item style={{
+                        <Form.Item label="Major" style={{
                             width: "50%",
                         }}>
                             <Select

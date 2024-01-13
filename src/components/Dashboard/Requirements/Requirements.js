@@ -47,7 +47,7 @@ const courses = [
 const allRequirements = {
     'cs': [
         {
-            label: "4000 Courses",
+            label: "4000-Level Courses",
             needed: 5,
             filled: 3,
         },
@@ -67,7 +67,7 @@ const allRequirements = {
             filled: 2,
         },
         {
-            label: "Social Implications",
+            label: "Social",
             needed: 1,
             filled: 0,
         }
@@ -162,7 +162,7 @@ const allRequirements = {
 
 
 
-function RequirementsSidebar({switchTree}) {
+function RequirementsSidebar({ switchTree }) {
 
     const [requirements, setRequirements] = useState(allRequirements['cs'])
 
@@ -179,7 +179,7 @@ function RequirementsSidebar({switchTree}) {
                 marginBottom: "1.5rem",
             }}>
 
-                <b>Subject:</b>
+                <h2 style={{ marginBottom: 5 }}>Subject</h2>
                 <Select
                     defaultValue="cs"
                     style={{
@@ -200,11 +200,12 @@ function RequirementsSidebar({switchTree}) {
                 flexDirection: "column",
                 gap: "0.5rem",
             }}>
-                <b>Requirements:</b>
-                <ul className="req-courses">
+                <h2 style={{ marginBottom: 5 }}>Requirements</h2>
+
+                <ul className="req-courses" style={{ marginLeft: 5 }}>
                     {requirements.map((req) => {
                         return <li>
-                            <i>{req.label}</i>
+                            {req.label}
                             <br />
                             <Progress percent={100 * (req.filled / req.needed)}
                                 format={(percent) => req.filled + "/" + req.needed}
