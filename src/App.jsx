@@ -8,12 +8,14 @@ import {
 } from "react-router-dom";
 import Dashboard from './components/Dashboard/Dashboard';
 
+
 function App() {
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />}></Route>
+              
             </Routes>
         </BrowserRouter>
     );

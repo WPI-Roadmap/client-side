@@ -134,7 +134,7 @@ const allRequirements = {
             filled: 1
         },
         {
-            label: "Genreal Math",
+            label: "General Math",
             needed: 5,
             filled: 4
         },
