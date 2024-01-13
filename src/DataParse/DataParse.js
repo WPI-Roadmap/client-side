@@ -9,14 +9,15 @@ function DataParse({ course_code }) {
 
     const [currentSlide, setCurrentSlide] = useState(0);
 
-    let classComponents  = [];
+    let classComponents = [];
     let [arraything, setArrayThing] = useState([]);// [450, 451, 452, 453, 454, 455, 456, 457, 458, 459, 460
 
     useEffect(() => {
         // Call the function once on component mount
         for (let i = 0; i < data["Report_Entry"].length; i++) {
             // console.log(data["Report_Entry"][i]["Course_Title"].slice(0, data["Report_Entry"][i]["Course_Title"].indexOf(" - ")).trim());
-            if (data["Report_Entry"][i] && data["Report_Entry"][i]["Course_Title"].slice(0, data["Report_Entry"][i]["Course_Title"].indexOf(" - ")).trim() === course_code) {
+            if (data["Report_Entry"][i] && data["Report_Entry"][i]["Course_Title"].slice(0, data["Report_Entry"][i]["Course_Title"].indexOf(" - ")).trim() === course_code
+                && data["Report_Entry"][i]["Instructor"] !== "") {
                 classComponents.push(<ClassCard key={i} index={i} />);
             }
         }
@@ -25,7 +26,7 @@ function DataParse({ course_code }) {
 
     return (
         <>
-           {arraything[currentSlide]}
+            {arraything[currentSlide]}
             {/* {classComponents.map((value) => (
                 <ClassCard key={value} index={value} />
             ))} */}
