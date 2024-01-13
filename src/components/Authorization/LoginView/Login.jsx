@@ -1,6 +1,6 @@
 // IMPORTS
 import { Button, Form } from "antd";
-
+import { loginWithMicrosoft } from "../../../Firebase"
 // IMAGES
 import publicLogo from "../../../assets/images/public.png";
 import microsoft from "../../../assets/images/Microsoft_icon.svg.png";
@@ -29,11 +29,10 @@ function LoginView(props) {
           size="large"
         >
           <h2>
-            <strong>Welcome</strong>
+            <strong>Welcome to Roadmap-WPI</strong>
           </h2>
           <p className="padded-text">
-            The new way to plan your WPI courses! Login to get started. Note, this
-            is an WPI-student only tool.
+          A universal solution to introduce you to WPI's major requirement system Developed by WPI students for WPI students (GoatHack 2024).
           </p>
           <Form.Item
             wrapperCol={{
@@ -43,11 +42,13 @@ function LoginView(props) {
             <Button
               type="primary"
               className="microsoft"
-              onClick={() => {navigate("/dashboard")}}
+              onClick={() => {
+                loginWithMicrosoft();
+                navigate("/dashboard");
+              }}
             >
               {/* <img src={microsoft} height={"20px"} className="msft"></img> */}
-             Login with Microsoft
-              
+             Continue To App
             </Button>
           </Form.Item>
 

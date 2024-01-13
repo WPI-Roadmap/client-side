@@ -11,7 +11,7 @@ import Table from "../Table/Table.jsx"
 
 import 'reactflow/dist/style.css';
 
-var data = require('./courses.json');
+var data = require('./Courses.json');
 
 const { Header, Sider, Content } = Layout;
 
