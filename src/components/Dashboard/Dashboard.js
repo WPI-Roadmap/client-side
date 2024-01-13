@@ -95,6 +95,8 @@ function Dashboard() {
                     desc: data.Report_Entry[i]["Course_Description"],
                     parentNode: courseCode.length == 3 ? 6 + data.Report_Entry.length : Number(courseCode.substring(0, 1)) - 1 + data.Report_Entry.length,
                     courseType: courseCode.length == 3 ? 7 : courseCode.substring(0, 1),
+                    courseCode: data["Report_Entry"][i]["Course_Title"].slice(0, data["Report_Entry"][i]["Course_Title"].indexOf(" - ")).trim(),
+                    professor: data["Report_Entry"][i]["Instructors"] ? data["Report_Entry"][i]["Instructors"] : "",
                 });
                 if (id % 2 == 0) {
                     x += 100;
@@ -159,6 +161,8 @@ function Dashboard() {
               style: { display: "none" },
               type: 'group',
               courseType: i,
+              courseCode: "",
+              professor: ""
             })
         }
 
@@ -342,7 +346,7 @@ function Dashboard() {
                 </Header>
                 <Content
                     style={{
-                        margin: '24px 16px',
+                        margin: 0,//'24px 16px',
                         padding: 24,
                         minHeight: 280,
                         background: colorBgContainer,

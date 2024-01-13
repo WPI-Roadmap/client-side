@@ -13,6 +13,9 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import DataParse from '../DataParse/DataParse';
 
+import profRatings from '../DataParse/ProfessorRating.json';
+import classRatings from '../DataParse/CourseRatings.json';
+import data from "../DataParse/prod-data.json"
 
 const elk = new ELK();
 const elkOptions = {
@@ -27,12 +30,23 @@ const elkOptions = {
     'elk.partitioning.activate': 'true',
 };
 
+const lerpColor = (h1, h2, progress) => {
+  return `hsl(${h1 + Math.round((h2-h1) * progress)}, 100%, 80%)`
+}
+
 const getLayoutedElements = (nodes, edges, options = {}) => {
-  const isHorizontal = options?.['elk.direction'] === 'RIGHT';
+  const easyColor = 125;
+  const hardColor = 0;
   const graph = {
     id: 'root',
     layoutOptions: options,
-    children: nodes.map((node) => ({
+    children: nodes.map((node) => {
+      const courseRating = classRatings[node.courseCode] ? classRatings[node.courseCode] : Math.round(Math.random() * 100);
+      const profRating = profRatings[node.professor] ? profRatings[node.professor] : Math.round(Math.random() * 100);
+      const projRating = 0.6 * profRating + 0.4 * courseRating;
+      // console.log("rating " + projRating);
+      
+      return {
       ...node,
       // Adjust the target and source handle positions based on the layout
       // direction.
@@ -46,7 +60,10 @@ const getLayoutedElements = (nodes, edges, options = {}) => {
       width: 150,
       height: 50,
       className: "courseNode",
-    })),
+      style: {
+        backgroundColor: projRating ? lerpColor(easyColor, hardColor, projRating/100) : "white",
+      }
+    }}),
     edges: edges,
   };
 
