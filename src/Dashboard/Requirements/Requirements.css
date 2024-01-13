@@ -1,0 +1,28 @@
+.course-select {
+  height: auto;
+  width: 12em;
+}
+
+.req-courses li .ant-progress-text {
+    width: auto;
+    color: inherit;
+}
+
+.req-courses li .ant-progress-inner {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* .req-courses li .ant-progress-steps-outer {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-auto-flow: column;
+    gap: 2px;
+}
+
+.req-courses li .ant-progress-steps-outer .ant-progress-steps-item {
+    width: 100% !important;
+}
+
+.req-courses li .ant-progress-steps-outer .ant-progress-steps-item:not(.ant-progress-steps-item-active) {
+    background-color: rgba(255, 255, 255, 0.3);
+} */

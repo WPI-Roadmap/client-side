@@ -75,7 +75,7 @@ function Dashboard() {
         >
           Content
         </Content>
-        <RequirementsSidebar />
+        <RequirementsSidebar switchTree={() => {}} />
 
       </Layout>
     </Layout>
