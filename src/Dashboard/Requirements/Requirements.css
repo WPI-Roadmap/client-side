@@ -7,6 +7,12 @@
     background-color: rgba(255, 255, 255, 0.3);
 }
 
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
 /* .req-courses li .ant-progress-steps-outer {
     display: grid;
     grid-template-rows: 1fr;
