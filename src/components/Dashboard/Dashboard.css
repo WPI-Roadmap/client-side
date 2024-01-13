@@ -5,3 +5,19 @@
     /* height: 100vh; */
 
 }
+
+.sideButt:hover {
+    background-color: white !important;
+    color: black !important;
+    border-color: black !important;
+}
+
+.courseNode {
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.courseNode:hover {
+    cursor: pointer;
+    background-color: black;
+    color: white;
+}
