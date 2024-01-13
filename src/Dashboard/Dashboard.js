@@ -48,11 +48,14 @@ function Dashboard() {
         // console.log(data.Report_Entry[i]["Course_Section_Owner"])
         if(data.Report_Entry[i]["Course_Section_Owner"] == department && !courseTracking.includes(data.Report_Entry[i]["Course_Title"])) {
             courseTracking.push(data.Report_Entry[i]["Course_Title"])
+            let courseCode = data.Report_Entry[i]["Course_Title"].match(/\d+/)[0];
             tempCourses.push({
                 id: id.toString(),
                 position: { x: x, y: y },
                 data: { label: data.Report_Entry[i]["Course_Title"] },
-                desc: data.Report_Entry[i]["Course_Description"]
+                desc: data.Report_Entry[i]["Course_Description"],
+                parentNode: courseCode.length == 3 ? 6 + data.Report_Entry.length : Number(courseCode.substring(0, 1)) - 1 + data.Report_Entry.length,
+                courseType: courseCode.length == 3 ? 7 : courseCode.substring(0, 1),
             });
             if(id % 2 == 0) {
                 x+=100;
@@ -103,6 +106,16 @@ function Dashboard() {
         }
     }
     id++;
+
+     for (let i = 1; i <= 7; i++) {
+      tempCourses.push({
+        id: i-1 + data.Report_Entry.length,
+        data: { label: (i == 7 ? 'Grad' : i + '000') + 'Courses' },
+        style: { display: 'none', },
+        type: 'group',
+        courseType: i,
+      },)
+    }
     
     setEdges(tempEdges);
     setNodes(tempCourses);
