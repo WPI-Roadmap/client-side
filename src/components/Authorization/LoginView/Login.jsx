@@ -32,7 +32,7 @@ function LoginView(props) {
             <strong>Welcome to Roadmap-WPI</strong>
           </h2>
           <p className="padded-text">
-          A universal solution to introduce you to WPI's major requirement system Developed by WPI students for WPI students (GoatHack 2024).
+          A universal solution to introduce you to WPI's major requirement system Developed by WPI students for WPI students (GoatHacks 2024).
           </p>
           <Form.Item
             wrapperCol={{
@@ -48,23 +48,15 @@ function LoginView(props) {
               }}
             >
               {/* <img src={microsoft} height={"20px"} className="msft"></img> */}
-             Continue To App
+             Begin Your Journey
             </Button>
           </Form.Item>
 
         </Form>
-        <p className="footerText mx-auto">
+        {/* <p className="footerText mx-auto">
           <a
             className="link"
-            href=""
-            target="0"
-          >
-            More information
-          </a>{" "}
-          •{" "}
-          <a
-            className="link"
-            href=""
+            href="https://www.privacypolicies.com/generic/"
             target="0"
           >
             Privacy policy
@@ -72,12 +64,12 @@ function LoginView(props) {
           •{" "}
           <a
             className="link"
-            href=""
+            href="https://github.com/WPI-Roadmap"
             target="0"
           >
             Github
           </a>{" "}
-        </p>
+        </p> */}
       </div>
     </div>
   ) : (
