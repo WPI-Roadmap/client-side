@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import "./Login.css";
 
 // IMAGES
-import pageImage from "../assets/images/cover-image.jpeg";
+import pageImage from "../../assets/images/cover-image.jpeg";
 import LoginView from "./LoginView/Login";
 import { useNavigate } from "react-router";
 

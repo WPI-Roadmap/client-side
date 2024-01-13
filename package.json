@@ -4,6 +4,8 @@
     "private": true,
     "dependencies": {
         "@ant-design/icons": "^5.2.6",
+        "@emotion/react": "^11.11.3",
+        "@table-library/react-table-library": "^4.1.7",
         "antd": "^5.12.8",
         "dayjs": "^1.11.10",
         "elkjs": "^0.9.1",
@@ -28,7 +30,8 @@
         ],
         "rules": {
             "no-unused-vars": "off",
-            "react-hook/exhaustive-deps": "off"
+            "react-hook/exhaustive-deps": "off",
+            "jsx-a11y/anchor-is-valid": "off"
         }
     },
     "browserslist": {

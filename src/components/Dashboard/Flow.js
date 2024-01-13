@@ -1,5 +1,6 @@
+import { Modal } from 'antd';
 import ELK from 'elkjs/lib/elk.bundled.js';
-import React, { useCallback, useLayoutEffect } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
@@ -10,6 +11,9 @@ import ReactFlow, {
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
+import DataParse from '../DataParse/DataParse';
+
+
 
 const elk = new ELK();
 const elkOptions = {
@@ -65,6 +69,11 @@ function FlowWithoutProvider({initialNodes, initialEdges}) {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const { fitView } = useReactFlow();
 
+  let [courseCode, setCourseCode] = useState("");
+
+
+
+
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
   const onLayout = useCallback(
     ({ direction, useInitialNodes = false }) => {
@@ -87,16 +96,40 @@ function FlowWithoutProvider({initialNodes, initialEdges}) {
     onLayout({ direction: 'DOWN', useInitialNodes: true });
   }, []);
 
+
+  function onNodeClick(event, node) {
+    setIsModalOpen(true);
+    setCourseCode(node.data.label.substring(0, 8));
+
+    console.log(node.data.label.substring(0, 8));
+    // Do something when a node is clicked
+    
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  function handleCancel() {
+    setIsModalOpen(false);
+  }
+
   return (
+    <>
     <ReactFlow
       nodes={nodes}
       edges={edges}
       onConnect={onConnect}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
+      onNodeClick={onNodeClick}
       fitView
     >
     </ReactFlow>
+    <Modal title="Course Information" open={isModalOpen} onCancel={handleCancel} footer={[]}>
+      <div>
+        <DataParse course_code={courseCode} />
+        </div>
+    </Modal>
+    </>
   );
 }
 

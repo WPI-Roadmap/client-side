@@ -1,12 +1,13 @@
 import './App.css';
-import Login from './Authorization/Login';
+import Login from './components/Authorization/Login';
 
 import {
     BrowserRouter,
     Routes,
     Route,
 } from "react-router-dom";
-import Dashboard from './Dashboard/Dashboard';
+import Dashboard from './components/Dashboard/Dashboard';
+
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />}></Route>
+              
             </Routes>
         </BrowserRouter>
     );
