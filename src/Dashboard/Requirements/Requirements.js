@@ -1,49 +1,61 @@
-import './index.css';
 import { 
     Dropdown, 
-    Layout }
+    Layout,
+    Select    
+    }
     from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
 
- const items = [    
+ const courses = [    
     {
-      key: '1',
+      value: 'cs',
+      label: "Computer Science"
+    },
+    {
+      value: 'hua',
       label: "Humanities and Arts"
     },
     {
-      key: '2',
+      key: 'wpe',
       label: "Wellness and Physical Education"
     },
-    {
-      key: '3',
-      label: "Social Science"
-    },
   ];
+
+const switchTree = (value) => {
+
+};
 
 // import RequirementsSidebar from "./Requirements.js";
 
 function RequirementsSidebar() {
     return (
-        <>
-        <Sider style={{
-              display: "flex",
-              gap: "2rem"
-            }}
-            width={200}>
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <Sider style={{ padding: '2rem', 
+            }}>
+            <div style={{display: "flex", 
+                        flexDirection: "column", 
+                        gap: "0.5rem",
+                        marginBottom: "1rem",}}>
+                
                 Subject:
-                <Dropdown
-                    menu={{
-                    items,
+                <Select
+                    defaultValue="cs"
+                    style={{
+                        //width: 120,
+                        textWrap: "wrap",
                     }}
-                    placement="bottomLeft"
-                ></Dropdown>
+                    onChange={switchTree}
+                    options={courses}
+                />
+            
             </div>
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <div style={{display: "flex", 
+                        flexDirection: "column", 
+                        gap: "0.5rem",
+                        color: "white",}}>
                 Requirements:
                 <ul>
                     <li>
-                        4000 courses: {4000}/5
+                        4000 courses: {0}/5
                     </li>
                     <li>
                         Systems: {0}/1
@@ -51,7 +63,6 @@ function RequirementsSidebar() {
                 </ul>
             </div>
         </Sider>
-        </>
     )
 }
 
