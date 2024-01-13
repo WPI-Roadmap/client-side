@@ -77,26 +77,30 @@ const EditableCell = ({
     }
     return <td {...restProps}>{childNode}</td>;
 };
+
+const initialData = [
+    {
+        key: '0',
+        name: 'Edward King 0',
+        age: '32',
+        address: 'London, Park Lane no. 0',
+    },
+    {
+        key: '1',
+        name: 'Edward King 1',
+        age: '32',
+        address: 'London, Park Lane no. 1',
+    },
+]
+
 const App = () => {
-    const [dataSource, setDataSource] = useState([
-        {
-            key: '0',
-            name: 'Edward King 0',
-            age: '32',
-            address: 'London, Park Lane no. 0',
-        },
-        {
-            key: '1',
-            name: 'Edward King 1',
-            age: '32',
-            address: 'London, Park Lane no. 1',
-        },
-    ]);
+    const [dataSource, setDataSource] = useState(initialData);
     const [count, setCount] = useState(2);
     const handleDelete = (key) => {
         const newData = dataSource.filter((item) => item.key !== key);
         setDataSource(newData);
     };
+
     const defaultColumns = [
         {
             title: 'name',
@@ -123,6 +127,7 @@ const App = () => {
                 ) : null,
         },
     ];
+
     const handleAdd = () => {
         const newData = {
             key: count,
@@ -133,6 +138,7 @@ const App = () => {
         setDataSource([...dataSource, newData]);
         setCount(count + 1);
     };
+
     const handleSave = (row) => {
         const newData = [...dataSource];
         const index = newData.findIndex((item) => row.key === item.key);
