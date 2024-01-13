@@ -5,6 +5,8 @@ import { Button, Form, Layout, Menu, theme } from "antd";
 
 import { MenuFoldOutlined, MenuUnfoldOutlined, UploadOutlined, UserOutlined, VideoCameraAddOutlined } from "@ant-design/icons";
 import ReactFlow from 'reactflow';
+import Flow from './Flow.js';
+import RequirementsSidebar from './Requirements/Requirements.js';
  
 import 'reactflow/dist/style.css';
 
@@ -90,7 +92,7 @@ function Dashboard() {
                         source: tempCourses[i].id,
                         target: tempCourses[j].id
                     });
-                    console.log(tempCourses[i].data.label + " " + tempCourses[j].data.label)
+                    // console.log(tempCourses[i].data.label + " " + tempCourses[j].data.label)
                     first+=2;
                     second+=2;
                 }
@@ -99,18 +101,10 @@ function Dashboard() {
         }
             
         }
-
-
-            tempEdges.push({
-                id: 'e' + i.toString() + '-' + id.toString(),
-                source: tempCourses[i].id,
-                target: id.toString()
-            });
-        
     }
     id++;
     
-    setEdges(tempEdges);
+    setEdges(tempEdges.reverse());
     setNodes(tempCourses);
 }
     useState(() => setCourses(), []);
@@ -249,7 +243,7 @@ function Dashboard() {
             borderRadius: borderRadiusLG,
           }}
         >
-          <Flow initialNodes={nodes} initialEdges={initialEdges}/>
+          <Flow initialNodes={nodes} initialEdges={edges}/>
           {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
         </Content>
         <RequirementsSidebar />
