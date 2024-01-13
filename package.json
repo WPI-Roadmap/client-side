@@ -35,7 +35,8 @@
         "rules": {
             "no-unused-vars": "off",
             "react-hook/exhaustive-deps": "off",
-            "jsx-a11y/anchor-is-valid": "off"
+            "jsx-a11y/anchor-is-valid": "off",
+            "eqeqeq": "off"
         }
     },
     "browserslist": {
