@@ -31,30 +31,30 @@ function Dashboard() {
 
     const items2 = [
         {
-          key: '1',
-          label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-              1st menu item
-            </a>
-          ),
+            key: '1',
+            label: (
+                <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+                    1st menu item
+                </a>
+            ),
         },
         {
-          key: '2',
-          label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-              2nd menu item
-            </a>
-          ),
+            key: '2',
+            label: (
+                <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+                    2nd menu item
+                </a>
+            ),
         },
         {
-          key: '3',
-          label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-              3rd menu item
-            </a>
-          ),
+            key: '3',
+            label: (
+                <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+                    3rd menu item
+                </a>
+            ),
         },
-      ];
+    ];
 
     const initialNodes = [
         { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
@@ -148,11 +148,11 @@ function Dashboard() {
 
         for (let i = 1; i <= 7; i++) {
             tempCourses.push({
-              id: i-1 + data.Report_Entry.length,
-              data: { label: (i == 7 ? 'Grad' : i + '000') + 'Courses' },
-              style: { display: "none" },
-              type: 'group',
-              courseType: i,
+                id: i - 1 + data.Report_Entry.length,
+                data: { label: (i == 7 ? 'Grad' : i + '000') + 'Courses' },
+                style: { display: "none" },
+                type: 'group',
+                courseType: i,
             })
         }
 
@@ -243,158 +243,159 @@ function Dashboard() {
 
     return (
         <>
-        <ConfigProvider
-    theme={{
-      token: {
-        colorPrimary: '#AB2B37',
-        
-      },
-    }}
-  >
-        <Layout style={{ height: "100vh" }}>
-            <Sider trigger={null} collapsible collapsed={collapsed}>
-                <div className="demo-logo-vertical" />
-                <Menu
-                    theme="dark"
-                    mode="inline"
-                    defaultSelectedKeys={['1']}
-                    items={[
-                        {
-                            key: '1',
-                            icon: <ApartmentOutlined />,
-                            label: 'Roadmap',
-                            onClick: () => {
-                                setTab(0);
-                            }
-                        },
-                        {
-                            key: '2',
-                            icon: <FileTextOutlined />,
-                            label: 'Tracking Sheet',
-                            onClick: () => {
-                                setTab(1);
-                            }
-                        },
-                        {
-                            key: '3',
-                            icon: <UserOutlined />,
-                            label: 'Profile',
-                            onClick: () => {
-                                setTab(2);
-                            }
-                        }
-                    ]}
-                />
-            </Sider>
-            <Layout>
-                <Header
-                    style={{
-                        padding: 0,
-                        background: colorBgContainer,
-                    }}
-                >
-                    <Button
-                        type="text"
-                        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                        onClick={() => setCollapsed(!collapsed)}
-                        style={{
-                            fontSize: '16px',
-                            width: 64,
-                            height: 64,
-                        }}
-                    />
-                </Header>
-                <Content
-                    style={{
-                        margin: '24px 16px',
-                        padding: 24,
-                        minHeight: 280,
-                        background: colorBgContainer,
-                        borderRadius: borderRadiusLG,
-                    }}
-                >
-                    {
-                        tab == 0 ? <Flow initialNodes={nodes} initialEdges={edges} /> : tab == 1 ? <h1>Tracking Sheet</h1> : 
-                        <><h1>Profile</h1>
-                        <h3>First Name: {first}</h3>
-                        <h3>Last Name: {last}</h3>
-                        <h3>Year: {year}</h3>
-                        <h3>Major: {major}</h3>
-                        </>
-                    }
-                    
-                    {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
-                </Content>
-                <RequirementsSidebar switchTree={() => { }} />
-            </Layout>
-        </Layout>
-        <Modal title="Get Started!" open={signup} onClose={handleClose} footer={[]}>
-            
-            <p>Tell us a little bit about yourself to customize your roadmap experience!</p>
-            <br></br>
-            <Form>
-                <Form.Item style={{
-                width: "50%",
-            }}>
-                    <Input placeholder="First Name" size="medium" width={200} onChange={(e) => { setFirst(e.target.value)
-                    }}></Input>
-                </Form.Item>
-                <Form.Item style={{
-                width: "50%",
-            }}>
-                    <Input placeholder="Last Name" size="medium" width={200} onChange={(e) => { setLast(e.target.value)
-                    }}
-                    />
-                </Form.Item>
-                <Form.Item style={{
-                width: "50%",
-            }}>
-                    <Select
-size="medium"
-onChange={(value) => {
-    setYear(value);
-}}
-      >
-        <Option value="Freshman">Freshman</Option>
-        <Option value="Sophomore">Sophomore</Option>
-        <Option value="Junior">Junior</Option>
-        <Option value="Senior">Senior</Option>
-      </Select>
-                </Form.Item>
+            <ConfigProvider
+                theme={{
+                    token: {
+                        colorPrimary: '#AB2B37',
 
-                <Form.Item style={{
-                width: "50%",
-            }}>
-                <Select
-size="medium"
-onChange={(value) => {
-    setMajor(value);
-}}
-      >
-                <Option value="Computer Science">Computer Science</Option>
-                <Option value="Mechanical Engineering">Mechanical Engineering</Option>
-                <Option value="Robotics Engineering">Robotics Engineering</Option>
-                <Option value="Electrical Engineering">Electrical Engineering</Option>
-                <Option value="Biomedical Engineering">Biomedical Engineering</Option>
-                <Option value="Chemical Engineering">Chemical Engineering</Option>
-                <Option value="Aerospace Engineering">Aerospace Engineering</Option>
-                <Option value="Civil Engineering">Civil Engineering</Option>
-                <Option value="Biology">Biology</Option>
-                <Option value="Physics">Physics</Option>
-                <Option value="IMGD">IMGD</Option>
-                <Option value="Humanities">Humanities</Option>
-                </Select>
-                </Form.Item>
+                    },
+                }}
+            >
+                <Layout style={{ height: "100vh" }}>
+                    <Sider trigger={null} collapsible collapsed={collapsed}>
+                        <div className="demo-logo-vertical" />
+                        <Menu
+                            theme="dark"
+                            mode="inline"
+                            defaultSelectedKeys={['1']}
+                            items={[
+                                {
+                                    key: '1',
+                                    icon: <ApartmentOutlined />,
+                                    label: 'Roadmap',
+                                    onClick: () => {
+                                        setTab(0);
+                                    }
+                                },
+                                {
+                                    key: '2',
+                                    icon: <FileTextOutlined />,
+                                    label: 'Tracking Sheet',
+                                    onClick: () => {
+                                        setTab(1);
+                                    }
+                                },
+                                {
+                                    key: '3',
+                                    icon: <UserOutlined />,
+                                    label: 'Profile',
+                                    onClick: () => {
+                                        setTab(2);
+                                    }
+                                }
+                            ]}
+                        />
+                    </Sider>
+                    <Layout>
+                        <Header
+                            style={{
+                                padding: 0,
+                                background: colorBgContainer,
+                            }}
+                        >
+                            <Button
+                                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                                onClick={() => setCollapsed(!collapsed)}
+                                style={{
+                                    fontSize: '16px',
+                                    width: 64,
+                                    height: 64,
+                                }}
+                            />
+                        </Header>
+                        <Content
+                            style={{
+                                margin: '24px 16px',
+                                padding: 24,
+                                minHeight: 280,
+                                background: colorBgContainer,
+                                borderRadius: borderRadiusLG,
+                            }}
+                        >
+                            {
+                                tab == 0 ? <Flow initialNodes={nodes} initialEdges={edges} /> : tab == 1 ? <h1>Tracking Sheet</h1> :
+                                    <><h1>Profile</h1>
+                                        <h3>First Name: {first}</h3>
+                                        <h3>Last Name: {last}</h3>
+                                        <h3>Year: {year}</h3>
+                                        <h3>Major: {major}</h3>
+                                    </>
+                            }
 
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" onClick={() => { setSignup(false) }}>
-                        Signup
-                    </Button>
-                </Form.Item>
-            </Form>
-        </Modal>
-        </ConfigProvider>
-        
+                            {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
+                        </Content>
+                        <RequirementsSidebar switchTree={() => { }} />
+                    </Layout>
+                </Layout>
+                <Modal width="25rem" title="Get Started with Roadmap-WPI" open={signup} onClose={handleClose} footer={[]}>
+
+                    <p>Tell us a little bit about yourself to customize your Roadmap-WPI experience!</p>
+                    <br></br>
+                    <Form>
+                        <Form.Item style={{
+                            width: "50%",
+                        }}>
+                            <Input placeholder="First Name" size="medium" width={200} onChange={(e) => {
+                                setFirst(e.target.value)
+                            }}></Input>
+                        </Form.Item>
+                        <Form.Item style={{
+                            width: "50%",
+                        }}>
+                            <Input placeholder="Last Name" size="medium" width={200} onChange={(e) => {
+                                setLast(e.target.value)
+                            }}
+                            />
+                        </Form.Item>
+                        <Form.Item style={{
+                            width: "50%",
+                        }}>
+                            <Select
+                                size="medium"
+                                onChange={(value) => {
+                                    setYear(value);
+                                }}
+                            >
+                                <Option value="Freshman">Freshman</Option>
+                                <Option value="Sophomore">Sophomore</Option>
+                                <Option value="Junior">Junior</Option>
+                                <Option value="Senior">Senior</Option>
+                            </Select>
+                        </Form.Item>
+
+                        <Form.Item style={{
+                            width: "50%",
+                        }}>
+                            <Select
+                                size="medium"
+                                onChange={(value) => {
+                                    setMajor(value);
+                                }}
+                            >
+                                <Option value="Computer Science">Computer Science</Option>
+                                <Option value="Mechanical Engineering">Mechanical Engineering</Option>
+                                <Option value="Robotics Engineering">Robotics Engineering</Option>
+                                <Option value="Electrical Engineering">Electrical Engineering</Option>
+                                <Option value="Biomedical Engineering">Biomedical Engineering</Option>
+                                <Option value="Chemical Engineering">Chemical Engineering</Option>
+                                <Option value="Aerospace Engineering">Aerospace Engineering</Option>
+                                <Option value="Civil Engineering">Civil Engineering</Option>
+                                <Option value="Biology">Biology</Option>
+                                <Option value="Physics">Physics</Option>
+                                <Option value="IMGD">IMGD</Option>
+                                <Option value="Humanities">Humanities</Option>
+                            </Select>
+                        </Form.Item>
+
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" onClick={() => { setSignup(false) }}>
+                                Signup
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Modal>
+            </ConfigProvider>
+
         </>
     );
 }
