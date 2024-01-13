@@ -1,23 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import "./Dashboard.css";
-import { Button, Form, Layout, Menu, theme} from "antd";
+import { Button, Form, Layout, Menu, theme } from "antd";
 
-<<<<<<< HEAD
 import { MenuFoldOutlined, MenuUnfoldOutlined, UploadOutlined, UserOutlined, VideoCameraAddOutlined } from "@ant-design/icons";
 import ReactFlow from 'reactflow';
  
 import 'reactflow/dist/style.css';
 
 var data = require('./Courses.json');
-=======
-import { MenuFoldOutlined, MenuUnfoldOutlined, ApartmentOutlined, FileTextOutlined } from "@ant-design/icons";
-import RequirementsSidebar from "./Requirements/Requirements.js";
->>>>>>> 6bc99b0e7c64dfedf6786a87090a6842b4917426
 
 const { Header, Sider, Content } = Layout;
 
 function Dashboard() {
+
     const [collapsed, setCollapsed] = useState(false);
 
     const initialNodes = [
@@ -26,6 +22,8 @@ function Dashboard() {
       ];
 
     let [nodes, setNodes] = useState({});
+
+    let [edges, setEdges] = useState({});
     
     
     const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
@@ -34,8 +32,9 @@ function Dashboard() {
 
     let [department, setDepartment] = useState("Computer Science Department");
 
-    console.log(data)
+
     let tempCourses  = [];
+    let tempEdges = [];
     let courseTracking = [];
     let id = 1;
     let x = 0;
@@ -49,8 +48,9 @@ function Dashboard() {
             tempCourses.push({
                 id: id.toString(),
                 position: { x: x, y: y },
-                data: { label: data.Report_Entry[i]["Course_Title"] }
-            })
+                data: { label: data.Report_Entry[i]["Course_Title"] },
+                desc: data.Report_Entry[i]["Course_Description"]
+            });
             if(id % 2 == 0) {
                 x+=100;
             } else {
@@ -59,8 +59,55 @@ function Dashboard() {
             id++;
         }
     }
-    console.log(tempCourses)
-    console.log(initialNodes)
+
+    let first = 1;
+    let second = 2;
+
+
+    for(var i = 0; i < tempCourses.length; i++) {
+
+        // The text to match against
+        const text = tempCourses[i].desc;
+
+        const courseCodeRegex = /CS\s\d+/g;
+
+        // Use the match method to find all occurrences of the pattern in the text
+        const courseCodes = text.match(courseCodeRegex);
+        
+        // // Print the extracted course codes
+
+
+        for(var j = 0; j < tempCourses.length; j++) {
+            if(courseCodes != null) {
+                console.log(tempCourses[i].data)
+            for(var k = 0; k < courseCodes.length; k++) {
+                console.log(tempCourses[j].data.label.match(courseCodeRegex))
+                if(tempCourses[j].data.label == courseCodes[k]) {
+                    tempEdges.push({
+                        id: 'e' + first.toString() + '-' + second.toString(),
+                        source: tempCourses[i].id,
+                        target: tempCourses[j].id
+                    });
+                    console.log(tempCourses[i].data.label + " " + tempCourses[j].data.label)
+                    first+=2;
+                    second+=2;
+                }
+            }
+        }
+            
+        }
+
+
+            tempEdges.push({
+                id: 'e' + i.toString() + '-' + id.toString(),
+                source: tempCourses[i].id,
+                target: id.toString()
+            });
+        
+    }
+    id++;
+    
+    setEdges(tempEdges);
     setNodes(tempCourses);
 }
     useState(() => setCourses(), []);
@@ -156,13 +203,18 @@ function Dashboard() {
           items={[
             {
               key: '1',
-              icon: <ApartmentOutlined />,
-              label: 'Roadmap',
+              icon: <UserOutlined />,
+              label: 'nav 1',
             },
             {
               key: '2',
-              icon: <FileTextOutlined />,
-              label: 'Tracking Sheet',
+              icon: <VideoCameraAddOutlined />,
+              label: 'nav 2',
+            },
+            {
+              key: '3',
+              icon: <UploadOutlined />,
+              label: 'nav 3',
             },
           ]}
         />
