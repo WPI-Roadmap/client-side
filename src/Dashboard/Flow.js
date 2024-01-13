@@ -15,7 +15,10 @@ const elk = new ELK();
 const elkOptions = {
     "elk.algorithm": 'layered',
     "elk.padding": "[left=50, top=50, right=50, bottom=50]",
-    separateConnectedComponents: false,
+    // separateConnectedComponents: false,
+    // "elk.layered.mergeEdges": false,
+    "elk.layered.nodePlacement.bk.fixedAlignment": "BALANCED",
+    "elk.direction": "DOWN",
     "spacing.nodeNode": 100,
     "spacing.nodeNodeBetweenLayers": 100
 };
@@ -59,21 +62,12 @@ function FlowWithoutProvider({initialNodes, initialEdges}) {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const { fitView } = useReactFlow();
 
-  console.log("tree inf");
-      console.log(initialNodes);
-      console.log(initialEdges);
-
-
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
   const onLayout = useCallback(
     ({ direction, useInitialNodes = false }) => {
       const opts = { 'elk.direction': direction, ...elkOptions };
       const ns = useInitialNodes ? initialNodes : nodes;
       const es = useInitialNodes ? initialEdges : edges;
-
-      console.log("tree inf");
-      console.log(ns);
-      console.log(es);
 
       getLayoutedElements(ns, es, opts).then(({ nodes: layoutedNodes, edges: layoutedEdges }) => {
         setNodes(layoutedNodes);

@@ -5,6 +5,12 @@ body {
     min-height: 20vh;
 }
 
+body, html, #root {
+   height: 100%;
+   margin: 0;
+   padding: 0;
+}
+
 
  .ant-modal-body {
     padding-top: 0px!important;

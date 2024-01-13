@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import "./Dashboard.css";
 import { Button, Form, Layout, Menu, theme } from "antd";
 
-import { MenuFoldOutlined, MenuUnfoldOutlined, UploadOutlined, UserOutlined, VideoCameraAddOutlined } from "@ant-design/icons";
+import { MenuFoldOutlined, MenuUnfoldOutlined, ApartmentOutlined, FileTextOutlined } from "@ant-design/icons";
 import ReactFlow from 'reactflow';
 import Flow from './Flow.js';
 import RequirementsSidebar from './Requirements/Requirements.js';
@@ -190,7 +190,7 @@ function Dashboard() {
     let [ q, setQ ] = useState(1);
 
     return (
-        <Layout>
+        <Layout style={{height: "100vh"}}>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="demo-logo-vertical" />
         <Menu
@@ -200,18 +200,13 @@ function Dashboard() {
           items={[
             {
               key: '1',
-              icon: <UserOutlined />,
-              label: 'nav 1',
+              icon: <ApartmentOutlined />,
+              label: 'Roadmap',
             },
             {
               key: '2',
-              icon: <VideoCameraAddOutlined />,
-              label: 'nav 2',
-            },
-            {
-              key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3',
+              icon: <FileTextOutlined />,
+              label: 'Tracking Sheet',
             },
           ]}
         />
