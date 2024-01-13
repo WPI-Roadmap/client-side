@@ -80,10 +80,11 @@ function Dashboard() {
 
         for(var j = 0; j < tempCourses.length; j++) {
             if(courseCodes != null) {
-                console.log(tempCourses[i].data)
+       
             for(var k = 0; k < courseCodes.length; k++) {
-                console.log(tempCourses[j].data.label.match(courseCodeRegex))
-                if(tempCourses[j].data.label == courseCodes[k]) {
+              
+                if(tempCourses[j].data.label.match(courseCodeRegex) != null) { 
+                if(tempCourses[j].data.label.match(courseCodeRegex) == courseCodes[k]) {
                     tempEdges.push({
                         id: 'e' + first.toString() + '-' + second.toString(),
                         source: tempCourses[i].id,
@@ -93,6 +94,7 @@ function Dashboard() {
                     first+=2;
                     second+=2;
                 }
+            }
             }
         }
             
