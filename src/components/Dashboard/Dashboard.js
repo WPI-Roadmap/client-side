@@ -36,37 +36,37 @@ function Dashboard() {
     let [year, setYear] = useState("");
     let [major, setMajor] = useState("");
 
-    const items2 = [
-        {
-            key: '1',
-            label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                    1st menu item
-                </a>
-            ),
-        },
-        {
-            key: '2',
-            label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                    2nd menu item
-                </a>
-            ),
-        },
-        {
-            key: '3',
-            label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-                    3rd menu item
-                </a>
-            ),
-        },
-    ];
+    // const items2 = [
+    //     {
+    //         key: '1',
+    //         label: (
+    //             <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+    //                 1st menu item
+    //             </a>
+    //         ),
+    //     },
+    //     {
+    //         key: '2',
+    //         label: (
+    //             <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+    //                 2nd menu item
+    //             </a>
+    //         ),
+    //     },
+    //     {
+    //         key: '3',
+    //         label: (
+    //             <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+    //                 3rd menu item
+    //             </a>
+    //         ),
+    //     },
+    // ];
 
-    const initialNodes = [
-        { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
-        { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
-    ];
+    // const initialNodes = [
+    //     { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
+    //     { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
+    // ];
 
     let [nodes, setNodes] = useState({});
 
@@ -77,7 +77,7 @@ function Dashboard() {
     let [signup, setSignup] = useState(true);
 
 
-    const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
+    // const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
     let [department, setDepartment] = useState("Computer Science Department");
 
@@ -114,15 +114,11 @@ function Dashboard() {
             }
         }
 
-        let first = 1;
-        let second = 2;
-
+        let first = 1, second = 2;
 
         for (let i = 0; i < tempCourses.length; i++) {
-
             // The text to match against
             const text = tempCourses[i].desc;
-
             const courseCodeRegex = /CS\s\d+/g;
 
             // Use the match method to find all occurrences of the pattern in the text
@@ -254,27 +250,6 @@ function Dashboard() {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
 
-    const navigate = useNavigate();
-
-    let [q, setQ] = useState(1);
-
-    let windowContent
-    if (tab == 1) {
-        windowContent = <Content
-            style={{
-                margin: 0,//'24px 16px',
-                padding: 24,
-                minHeight: 280,
-                background: colorBgContainer,
-                borderRadius: borderRadiusLG,
-            }}
-        >
-            <Flow initialNodes={nodes} initialEdges={edges} />
-            {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
-        </Content>;
-    } else {
-        // windowContent = <Table />
-    }
 
     return (
         <>
