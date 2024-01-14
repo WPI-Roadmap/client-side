@@ -2,8 +2,8 @@ class RequestUtils {
 
     static getDomain() {
        //return "https://mams-siso.wpi.edu/api";
-       return "http://localhost:8000";
-    //    return "https://wpi-roadmap-952d0be828e7.herokuapp.com";
+    //    return "http://localhost:8000";
+       return "https://wpi-roadmap-952d0be828e7.herokuapp.com";
     }
 
     /**
