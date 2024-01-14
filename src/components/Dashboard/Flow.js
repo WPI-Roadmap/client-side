@@ -19,13 +19,13 @@ import classRatingsJSON from '../DataParse/CourseRatings.json';
 const elk = new ELK();
 const elkOptions = {
     "elk.algorithm": 'layered',
-    "elk.padding": "[left=50, top=50, right=50, bottom=50]",
+    // "elk.padding": "[left=50, top=50, right=50, bottom=50]",
     // separateConnectedComponents: false,
     // "elk.layered.mergeEdges": false,
     "elk.layered.nodePlacement.bk.fixedAlignment": "BALANCED",
     "elk.direction": "UP",
-    "spacing.nodeNode": 100,
-    "spacing.nodeNodeBetweenLayers": 100,
+    "spacing.nodeNode": 25,
+    "spacing.nodeNodeBetweenLayers": 25,
     'elk.partitioning.activate': 'true',
 };
 
@@ -49,7 +49,7 @@ const getLayoutedElements = (nodes, edges, colorSchema, coursesTaken, profRating
       const projRating = 0.6 * profRating + 0.4 * courseRating;
 
       let gradRe = new RegExp("[A-Z]{2,3} [5-9][0-9]*")
-      let style = {};
+      let style = {fontSize: "1rem", width: "auto", maxWidth:"7.5em"};
       switch (colorSchema) {
         case "tot":
           style.backgroundColor = lerpColor(hardColor, easyColor, projRating/100.0);
@@ -61,7 +61,7 @@ const getLayoutedElements = (nodes, edges, colorSchema, coursesTaken, profRating
           style.backgroundColor = lerpColor(hardColor, easyColor, courseRating/100.0);
         break;
         case 'level':
-          style.backgroundColor = lerpColor(easyColor, hardColor, gradRe.test(node.courseCode));
+          style.backgroundColor = lerpColor(0, 240, node.courseType/7.0);
         break;
         default:
           style = {};
@@ -85,8 +85,8 @@ const getLayoutedElements = (nodes, edges, colorSchema, coursesTaken, profRating
       },
 
       // Hardcode a width and height for elk to use when layouting.
-      width: 150,
-      height: 50,
+      width: 400,
+      height: 150,
       className: "courseNode",
       style: style,
     }}),

@@ -92,7 +92,6 @@ function Dashboard() {
     let y = 0;
 
     function setCourses() {
-        console.log(department);
         tempCourses = [];
         tempEdges = [];
         courseTracking = [];
