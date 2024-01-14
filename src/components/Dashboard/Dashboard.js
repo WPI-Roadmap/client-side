@@ -23,7 +23,7 @@ import { auth, logout } from "../../Firebase.js";
 import RequestUtils from "../../Utils/RequestUtils.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const data = require('./Courses.json');
+const data = require('./courses.json');
 const { Option } = Select;
 const { Header, Sider, Content } = Layout;
 
@@ -54,7 +54,7 @@ function Dashboard() {
             navigate("/");
             setLogout(false);
         }
-        if(!user && !loading) {
+        if (!user && !loading) {
             navigate("/");
         }
 
@@ -135,7 +135,7 @@ function Dashboard() {
                 tempCourses.push({
                     id: id.toString(),
                     position: { x: x, y: y },
-                    data: { courseCode: courseCode, courseTitle: data["Report_Entry"][i]["Course_Title"].substring(3 + courseCode.length), showTitle: showTitle},//label: data.Report_Entry[i]["Course_Title"] },
+                    data: { courseCode: courseCode, courseTitle: data["Report_Entry"][i]["Course_Title"].substring(3 + courseCode.length), showTitle: showTitle },//label: data.Report_Entry[i]["Course_Title"] },
                     desc: data.Report_Entry[i]["Course_Description"],
                     // parentNode: courseNum.length == 3 ? 6 + data.Report_Entry.length : Number(courseNum.substring(0, 1)) - 1 + data.Report_Entry.length,
                     courseType: courseNum.length == 3 ? 7 : courseNum.substring(0, 1),
@@ -438,77 +438,44 @@ function Dashboard() {
                             theme="dark"
                             mode="inline"
                             defaultSelectedKeys={['1']}
-                            style={{}}
-                        >
-
-                            <Menu.Item
-                                title="roadmap"
-                                key="1"
-                            >
-                                <ApartmentOutlined />
-                                <span>Roadmap</span>
-                            </Menu.Item>
-                            <Menu.Item
-                                title="roadmap"
-                                key="2"
-                            >
-                                <FileTextOutlined />
-                                <span>Tracking Sheet</span>
-                            </Menu.Item>
-                            <Menu.Item
-                                title="roadmap"
-                                style={{
-                                }}
-                                key="3"
-                            >
-                                <UserOutlined />
-                                <span>Profile</span>
-                            </Menu.Item>
-                            <Menu.Item
-                                title="logout"
-                                key="4"
-                            >
-                                <BiLogOut style={{ marginRight: 10.5 }} />
-                                <span>Logout</span>
-                            </Menu.Item>
-                            {/* items={[
-                                    {
-                                        key: '1',
-                                        icon: <ApartmentOutlined />,
-                                        label: 'Roadmap',
-                                        onClick: () => {
-                                            setTab(0);
-                                        }
-                                    },
-                                    {
-                                        key: '2',
-                                        icon: <FileTextOutlined />,
-                                        label: 'Tracking Sheet',
-                                        onClick: () => {
-                                            setTab(1);
-                                        }
-                                    },
-                                    {
-                                        key: '3',
-                                        icon: <UserOutlined />,
-                                        label: 'Profile',
-                                        onClick: () => {
-                                            setTab(2);
-                                        },
-                                        className: 'three',
-                                    },
-                                    {
-                                        key: "4",
-                                        icon: <BiLogOut style={{ transform: 'rotate(90deg)' }} />,
-                                        label: "Logout",
-                                        onClick: () => {
-                                            logout();
-                                            setLogout(true);
-                                        }
-
+                            items={[
+                                {
+                                    key: '1',
+                                    icon: <ApartmentOutlined />,
+                                    label: 'Roadmap',
+                                    onClick: () => {
+                                        setTab(0);
                                     }
-                                ]} */}
-                        </Menu>
+                                },
+                                {
+                                    key: '2',
+                                    icon: <FileTextOutlined />,
+                                    label: 'Tracking Sheet',
+                                    onClick: () => {
+                                        setTab(1);
+                                    }
+                                },
+                                {
+                                    key: '3',
+                                    icon: <UserOutlined />,
+                                    label: 'Profile',
+                                    onClick: () => {
+                                        setTab(2);
+                                    },
+                                    className: 'three',
+                                },
+                                {
+                                    key: "4",
+                                    icon: <BiLogOut style={{ transform: 'rotate(90deg)' }} />,
+                                    label: "Logout",
+                                    onClick: () => {
+                                        logout();
+                                        setLogout(true);
+                                    }
+
+                                }
+                            ]}
+                        />
                     </Sider>
 
                     <Layout>
@@ -628,7 +595,7 @@ function Dashboard() {
                                 </div>
                             )}
                         </Content>
-                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema} userCourses={coursesTaken} setShowTitle={setShowTitle}/>
+                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema} userCourses={coursesTaken} setShowTitle={setShowTitle} />
                     </Layout>
                 </Layout>
                 <Modal title="Getting Started!" open={signup} onCancel={handleClose} footer={[]}>
