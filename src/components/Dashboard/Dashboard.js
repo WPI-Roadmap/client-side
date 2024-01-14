@@ -7,6 +7,7 @@ import Table from "../Table/Table.jsx";
 import { MenuFoldOutlined, MenuUnfoldOutlined, ApartmentOutlined, FileTextOutlined, UserOutlined } from "@ant-design/icons";
 import ReactFlow, { Background, MarkerType } from 'reactflow';
 import Flow from './Flow.js';
+import Profile from "./Profile.js";
 import RequirementsSidebar from './Requirements/Requirements.js';
 
 import 'reactflow/dist/style.css';
@@ -30,30 +31,29 @@ function Dashboard() {
 
     const items2 = [
         {
-              key: '1',
-              label: (
-                    <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                          1st menu item
-                    </a>
-              ),
+            key: '1',
+            label: (
+                <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+                    1st menu item
+                </a>
+            ),
         },
         {
-              key: '2',
-              label: (
-                    <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                          2nd menu item
-                    </a>
-              ),
+            key: '2',
+            label: (
+                <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+                    2nd menu item
+                </a>
+            ),
         },
         {
-              key: '3',
-              label: (
-                    <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-                          3rd menu item
-                    </a>
-              ),
+            key: '3',
+            label: (
+                <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+                    3rd menu item
+                </a>
+            ),
         },
-    ];
     ];
 
     const initialNodes = [
@@ -156,13 +156,13 @@ function Dashboard() {
 
         for (let i = 1; i <= 7; i++) {
             tempCourses.push({
-              id: i-1 + data.Report_Entry.length,
-              data: { label: (i == 7 ? 'Grad' : i + '000') + 'Courses' },
-              style: { display: "none" },
-              type: 'group',
-              courseType: i,
-              courseCode: "",
-              professor: ""
+                id: i - 1 + data.Report_Entry.length,
+                data: { label: (i == 7 ? 'Grad' : i + '000') + 'Courses' },
+                style: { display: "none" },
+                type: 'group',
+                courseType: i,
+                courseCode: "",
+                professor: ""
             })
         }
 
@@ -357,11 +357,7 @@ function Dashboard() {
                                     <Flow initialNodes={nodes} initialEdges={edges} /> :
                                     tab === 1 ? <Table />
                                         : <>
-                                            <h1>Profile</h1>
-                                            <h3>First Name: {first}</h3>
-                                            <h3>Last Name: {last}</h3>
-                                            <h3>Year: {year}</h3>
-                                            <h3>Major: {major}</h3>
+                                            <Profile first={first} last={last} major={major} year={year} setFirst={setFirst} setLast={setLast} setMajor={setMajor} setYear={setYear}/>
                                         </>
                             }
 
