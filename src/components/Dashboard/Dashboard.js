@@ -439,13 +439,11 @@ function Dashboard() {
                                 },
                                 {
                                     key: "4",
-                                    icon: <BiLogOut style={{rotate:180}} />,
+                                    icon: <BiLogOut style={{ transform: 'rotate(90deg)' }} />,
                                     label: "Logout",
                                     onClick: () => {
                                         logout();
                                         setLogout(true);
-
-
                                     }
 
                                 }
@@ -566,7 +564,7 @@ function Dashboard() {
 
                             )}
                         </Content>
-                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema} userCourses={coursesTaken}/>
+                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema} userCourses={coursesTaken} />
                     </Layout>
                 </Layout>
                 <Modal title="Get Started!" open={signup} onCancel={handleClose} footer={[]}>
