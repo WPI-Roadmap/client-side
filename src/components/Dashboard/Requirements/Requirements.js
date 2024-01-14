@@ -319,7 +319,7 @@ function RequirementsSidebar({changeDepartment, changeColorSchema, className="",
 
 
     return (
-        <Sider className={className} style={{ padding: '2rem', color: "white", }}
+        <Sider className={className} style={{ paddingTop: '0.5rem', paddingLeft: '1.8rem', paddingRight: '1.8rem', color: "white", }}
             width="auto">
             <div style={{
                 display: "flex",
@@ -328,7 +328,7 @@ function RequirementsSidebar({changeDepartment, changeColorSchema, className="",
                 marginBottom: "1.5rem",
             }}>
 
-                <h2 style={{ marginBottom: 5 }}>Subject</h2>
+                <h2 style={{ marginTop: 5, marginBottom: 5 }}>Subject</h2>
                 <Select
                     defaultValue="cs"
                     style={{
@@ -350,7 +350,7 @@ function RequirementsSidebar({changeDepartment, changeColorSchema, className="",
                 gap: "0.5rem",
                 marginBottom: "1.5rem",
             }}>
-                <b>Color Schema</b>
+                <h2 style={{ marginTop: 5, marginBottom: 5 }}>Color Schema</h2>
                 <Select
                     defaultValue="tot"
                     style={{
@@ -369,7 +369,7 @@ function RequirementsSidebar({changeDepartment, changeColorSchema, className="",
                 flexDirection: "column",
                 gap: "0.5rem",
             }}>
-                <h2 style={{ marginBottom: 5 }}>Requirements</h2>
+                <h2 style={{ marginTop: 5, marginBottom: 5 }}>Requirements</h2>
 
                 <ul className="req-courses" style={{ marginLeft: 5 }}>
                     {requirements.map((req) => {
