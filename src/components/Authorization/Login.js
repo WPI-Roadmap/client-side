@@ -6,7 +6,7 @@ import "./Login.css";
 
 // IMAGES
 import pageImage from "../../assets/images/cover-image.jpeg";
-import LoginView from "./LoginView/Login";
+import LoginView from "./LoginView/LoginView";
 import { useNavigate } from "react-router";
 
 // LOGIN PAGE

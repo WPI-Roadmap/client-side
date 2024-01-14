@@ -1,0 +1,8 @@
+.br-10 {
+    border-radius: 50px;
+}
+
+.ant-col.ant-form-item-label {
+    padding: 0 !important;
+}
+
