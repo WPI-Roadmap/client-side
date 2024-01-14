@@ -17,7 +17,7 @@ export default memo(({ data, isConnectable }) => {
         justifyContent: "center",
         alignItems: "center",
         padding: data.showTitle ? 10 : 20,
-        fontSize: "1.5rem", width: "auto", maxWidth:"10em"
+        fontSize: "1.5rem", width: "9em", minHeight: "4em"
       }}>
           <b>{data.courseCode}</b>
           { data.showTitle ?  <span style={{textAlign: "center"}}>{data.courseTitle}</span> : <></>}
