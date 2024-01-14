@@ -135,7 +135,7 @@ function LoginView(props) {
         </Form>
 
         <Button
-          type="secondary"
+          type="default"
           className="register"
           htmlType="submit"
           onClick={() => setTab(!tab)}
