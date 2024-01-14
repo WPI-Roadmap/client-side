@@ -26,7 +26,7 @@ import {
     FileTextOutlined,
     UserOutlined,
     LogoutOutlined,
-    InfoCircleFilled,
+    InfoCircleOutlined  
 } from "@ant-design/icons";
 import ReactFlow, { Background, MarkerType } from "reactflow";
 import Flow from "./Flow.js";
@@ -557,7 +557,7 @@ function Dashboard() {
                         />
                     </div>
                     <Popover content={usesForEachTabDesc}>
-                        <InfoCircleFilled
+                        <InfoCircleOutlined
                             style={{
                                 background: "transparent",
                                 color: "white",
