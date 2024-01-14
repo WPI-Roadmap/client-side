@@ -15,12 +15,7 @@ import { useNavigate } from "react-router";
 
 // FIREBASE CONFIG
 const firebaseConfig = {
-    apiKey: "AIzaSyCaGXV8uK00pSjswXam4G8z4es_WkCx6B4",
-    authDomain: "roadmap-wpi.firebaseapp.com",
-    projectId: "roadmap-wpi",
-    storageBucket: "roadmap-wpi.appspot.com",
-    messagingSenderId: "619098314080",
-    appId: "1:619098314080:web:d4d7acca43c684c83aba05"
+    
 };
 
 const app = initializeApp(firebaseConfig);
