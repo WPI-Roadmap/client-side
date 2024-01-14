@@ -9,10 +9,12 @@ import data from './prod-data.json';
 import './ClassCard.css';
 import { auth } from "../../Firebase";
 import RequestUtils from "../../Utils/RequestUtils";
+import { SelectKeyProvide } from "@ant-design/pro-components";
 
-const ClassCard = ({ index }) => {
+const ClassCard = ({ index, setConfettiOn }) => {
 
     let [user, loading] = useAuthState(auth);
+
 
     const courseCode = data["Report_Entry"][index]["Course_Title"].slice(0, data["Report_Entry"][index]["Course_Title"].indexOf(" - ")).trim();
     const professor = data["Report_Entry"][index]["Instructors"] ? data["Report_Entry"][index]["Instructors"] : "";
@@ -39,59 +41,60 @@ const ClassCard = ({ index }) => {
     function getCurrentCourses() {
 
         RequestUtils.get("/retrieve?id=" + user.uid).then((response) => response.json())
-        .then((data) => {
+            .then((data) => {
 
-            let courses = data.data.courses;
+                let courses = data.data.courses;
 
-            if(courses == undefined) {
-                courses = [];
-            }
-            for(let i = 0; i < courses.length; i++) {
-                if(courses[i].courseCode == courseCode) {
-                    setCode(1);
+                if (courses == undefined) {
+                    courses = [];
                 }
-            }
-        });
+                for (let i = 0; i < courses.length; i++) {
+                    if (courses[i].courseCode == courseCode) {
+                        setCode(1);
+                    }
+                }
+            });
 
     }
 
     function addCourse() {
-  
+
         RequestUtils.get("/retrieve?id=" + user.uid).then((response) => response.json())
-        .then((data) => {
-            let courses = data.data.courses;
-   
-            if(courses == undefined) {
-                courses = [];
-            }
+            .then((data) => {
+                let courses = data.data.courses;
 
-            courses.push({
-                "courseCode" : courseCode,
-                "grade" : "N/A",
-                "term": "N/A"
+                if (courses == undefined) {
+                    courses = [];
+                }
+
+                courses.push({
+                    "courseCode": courseCode,
+                    "grade": "N/A",
+                    "term": "N/A"
+                });
+
+                let reqobj = {
+                    "courses": courses
+                }
+
+                RequestUtils.post("/add?id=" + user.uid, reqobj).then((response) => {
+                    setConfettiOn(true);
+                    // alert("Course added!");
+                    // window.location.reload();
+                });
+
+
+                // else {
+                //     RequestUtils.post("add", user.uid, courseCode).then((response) => {
+                //         alert("Course added!");
+                //     });
+                // }
             });
-
-            let reqobj = {
-                "courses" : courses
-            }
-
-            RequestUtils.post("/add?id=" + user.uid, reqobj).then((response) => {
-                alert("Course added!");
-                window.location.reload();
-            });
-
-            
-            // else {
-            //     RequestUtils.post("add", user.uid, courseCode).then((response) => {
-            //         alert("Course added!");
-            //     });
-            // }
-        });
     }
 
     function removeCourse() {
         let reqobj = {
-            course : courseCode
+            course: courseCode
         }
         RequestUtils.post("/delete?id=" + user.uid, reqobj).then((response) => {
             alert("Course removed!");
@@ -114,7 +117,7 @@ const ClassCard = ({ index }) => {
                 title={data["Report_Entry"][index]["Course_Title"].slice(10,).trim()}
                 // + " (" + data["Report_Entry"][index]["Course_Title"].slice(0, 8).trim() + ")"
                 extra={<CodeOutlined style={{ color: "white" }} />}
-                actions={[<a onClick={() => 
+                actions={[<a onClick={() =>
                     code == 0 ? addCourse() : removeCourse()}>{code == 0 ? <PlusSquareOutlined /> : <MinusSquareOutlined></MinusSquareOutlined>}</a>, <a href="https://courselistings.wpi.edu" target="_blank">{<InfoCircleOutlined />}</a>]}
                 bodyStyle={{
                     padding: 5,
@@ -148,6 +151,7 @@ const ClassCard = ({ index }) => {
                         </div>)}
                 </div>
             </Card >
+            
         </>
     );
 

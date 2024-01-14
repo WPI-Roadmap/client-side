@@ -23,6 +23,7 @@ import { auth, logout } from "../../Firebase.js";
 import RequestUtils from "../../Utils/RequestUtils.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 
+
 const data = require('./courses.json');
 const { Option } = Select;
 const { Header, Sider, Content } = Layout;
@@ -85,11 +86,11 @@ function Dashboard() {
             major: major,
         }
 
-        RequestUtils.post("/updateUser?id=" + user.uid, reqbody).then((response) => response.json()) 
-        .then((data) => {
-            alert("User updated successfully!");
-        });
-        
+        RequestUtils.post("/updateUser?id=" + user.uid, reqbody).then((response) => response.json())
+            .then((data) => {
+                alert("User updated successfully!");
+            });
+
 
     }
 
@@ -664,9 +665,11 @@ function Dashboard() {
                     </Form>
                 </Modal>
             </ConfigProvider>
-
         </>
     );
 }
 
+
+
 export default Dashboard;
+
