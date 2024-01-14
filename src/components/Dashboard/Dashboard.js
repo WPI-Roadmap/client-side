@@ -36,16 +36,15 @@ function Dashboard() {
     const handleClose = () => {
         setSignup(false);
     };
+
     let [logoutUser, setLogout] = useState(false);
-
-
 
     let [first, setFirst] = useState("");
     let [last, setLast] = useState("");
     let [year, setYear] = useState("");
     let [major, setMajor] = useState("");
     let [coursesTaken, setCoursesTaken] = useState([]);
-
+    const [reqSidebar, setReqSidebar] = useState(false);
 
     // console.log(user)
     useEffect(() => {
@@ -57,6 +56,11 @@ function Dashboard() {
 
     }, [user]);
 
+    useEffect(() => {
+        setReqSidebar(
+            <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema} userCourses={coursesTaken} />
+        )
+    }, [coursesTaken]);
 
 
     const signupyayslay = () => {
@@ -162,8 +166,7 @@ function Dashboard() {
                 if (courseCodes.length > 0) {
                     for (var k = 0; k < courseCodes.length; k++) {
                         if (
-                            tempCourses[j].courseCode !=
-                            null
+                            tempCourses[j].courseCode != null
                         ) {
                             if (
                                 tempCourses[j].courseCode == courseCodes[k]
@@ -297,8 +300,10 @@ function Dashboard() {
     ];
 
     const {
-        token: { colorBgContainer, borderRadiusLG },
+        token: { borderRadiusLG },
     } = theme.useToken();
+
+    const colorBgContainer = "#3d405b"
 
     const navigate = useNavigate();
 
@@ -583,59 +588,25 @@ function Dashboard() {
                                         {/* <p>Following: n/a, Followers: n/a (Coming Soon!)</p> */}
                                     </Form>
                                 </div>
-
                             )}
                         </Content>
                         <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema} userCourses={coursesTaken} />
                     </Layout>
                 </Layout>
-                <Modal title="Get Started!" open={signup} onCancel={handleClose} footer={[]}>
+                <Modal title="Getting Started!" open={signup} onCancel={handleClose} footer={[]}>
 
-                    <p>Tell us a little bit about yourself to customize your roadmap experience!</p>
-                    <br></br>
-                    <Form layout='vertical'>
-                        <Form.Item label="First Name" style={{
+                    <p style={{ marginBottom: 20 }}>Tell us a little bit about yourself to customize your roadmap experience!</p>
+                    <Form layout='vertical' style={{ marginBottom: 0 }}>
+                        <Form.Item label="Major" required style={{
                             width: "50%",
                             marginBottom: "10px"
-                        }}>
-                            <Input size="medium" width={200} onChange={(e) => {
-                                setFirst(e.target.value)
-                            }}></Input>
-                        </Form.Item>
-                        <Form.Item label="Last Name" style={{
-                            width: "50%",
-                            marginBottom: "10px"
-                        }}>
-                            <Input size="medium" width={200} onChange={(e) => {
-                                setLast(e.target.value)
-                            }}
-                            />
-                        </Form.Item>
-                        <Form.Item label="Year" style={{
-                            width: "50%",
-                            marginBottom: "10px"
-                        }}>
-                            <Select
-                                size="medium"
-                                onChange={(value) => {
-                                    setYear(value);
-                                }}
-                            >
-                                <Option value="Freshman">Freshman</Option>
-                                <Option value="Sophomore">Sophomore</Option>
-                                <Option value="Junior">Junior</Option>
-                                <Option value="Senior">Senior</Option>
-                            </Select>
-                        </Form.Item>
-
-                        <Form.Item label="Major" style={{
-                            width: "50%",
                         }}>
                             <Select
                                 size="medium"
                                 onChange={(value) => {
                                     setMajor(value);
                                 }}
+                                placeholder="Select a major"
                             >
                                 <Option value="Computer Science">Computer Science</Option>
                                 <Option value="Mechanical Engineering">Mechanical Engineering</Option>
@@ -651,10 +622,43 @@ function Dashboard() {
                                 <Option value="Humanities">Humanities</Option>
                             </Select>
                         </Form.Item>
-
+                        <Form.Item label="First Name" style={{
+                            width: "50%",
+                            marginBottom: "10px"
+                        }}>
+                            <Input size="medium" placeholder="Enter your first name" width={200} onChange={(e) => {
+                                setFirst(e.target.value)
+                            }}></Input>
+                        </Form.Item>
+                        <Form.Item label="Last Name" style={{
+                            width: "50%",
+                            marginBottom: "10px"
+                        }}>
+                            <Input size="medium" placeholder="Enter your last name" width={200} onChange={(e) => {
+                                setLast(e.target.value)
+                            }}
+                            />
+                        </Form.Item>
+                        <Form.Item label="Year" style={{
+                            width: "50%",
+                            marginBottom: 30
+                        }}>
+                            <Select
+                                size="medium"
+                                placeholder="Select your year"
+                                onChange={(value) => {
+                                    setYear(value);
+                                }}
+                            >
+                                <Option value="Freshman">Freshman</Option>
+                                <Option value="Sophomore">Sophomore</Option>
+                                <Option value="Junior">Junior</Option>
+                                <Option value="Senior">Senior</Option>
+                            </Select>
+                        </Form.Item>
                         <Form.Item>
                             <Button type="primary" htmlType="submit" onClick={() => { signupyayslay() }}>
-                                Sign Up
+                                Continue
                             </Button>
                         </Form.Item>
                     </Form>
