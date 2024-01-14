@@ -387,9 +387,10 @@ function RequirementsSidebar({changeDepartment, changeColorSchema, className="",
                     className="color-select"
                 />
                 <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                    <div style={{  }}>Show Course Titles</div>
+                    <div >Show Course Titles</div>
                     <Switch style={{
                         width: 5,
+                        marginLeft: 10
                     }}
                         defaultChecked onChange={(value) => {setShowTitle(value);}} />
                 </div>
