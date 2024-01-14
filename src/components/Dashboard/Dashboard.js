@@ -124,12 +124,12 @@ function Dashboard() {
     let y = 0;
 
     function setCourses() {
+        console.log(data);
         tempCourses = [];
         tempEdges = [];
         let encounteredCodes = new Set();
 
         for (var i = 0; i < data.Report_Entry.length; i++) {
-            // console.log(data.Report_Entry[i]["Course_Section_Owner"])
             if (
                 data.Report_Entry[i]["Course_Section_Owner"] == department &&
                 !courseTracking.includes(data.Report_Entry[i]["Course_Title"])

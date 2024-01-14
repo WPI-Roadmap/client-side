@@ -35,7 +35,6 @@ const lerpColor = (h1, h2, progress) => {
 }
 
 const getLayoutedElements = (nodes, edges, colorSchema, coursesTaken, options = {}) => {
-  console.log("changed");
   const easyColor = 125;
   const hardColor = -50;
   const codesLeft = new Set();
@@ -46,18 +45,21 @@ const getLayoutedElements = (nodes, edges, colorSchema, coursesTaken, options = 
     children: nodes.map((node) => {
       const courseRating = classRatings[node.courseCode] ? classRatings[node.courseCode] : Math.round(Math.random() * 100);
       const profRating = profRatings[node.professor] ? profRatings[node.professor] : Math.round(Math.random() * 100);
+      // shouldn't be nan so often
       const projRating = 0.6 * profRating + 0.4 * courseRating;
+      // console.log(profRatings[node.professor] + " " + node.professor)
+
       let gradRe = new RegExp("[A-Z]{2,3} [5-9][0-9]*")
       let style = {};
       switch (colorSchema) {
         case "tot":
-          style.backgroundColor = lerpColor(hardColor, easyColor, projRating/100);
+          style.backgroundColor = lerpColor(hardColor, easyColor, projRating/100.0);
         break;
         case "prof":
-          style.backgroundColor = lerpColor(hardColor, easyColor, profRating/100);
+          style.backgroundColor = lerpColor(hardColor, easyColor, profRating/100.0);
         break;
         case "course":
-          style.backgroundColor = lerpColor(hardColor, easyColor, courseRating/100);
+          style.backgroundColor = lerpColor(hardColor, easyColor, courseRating/100.0);
         break;
         // case 'level':
         //   style = {
@@ -66,6 +68,10 @@ const getLayoutedElements = (nodes, edges, colorSchema, coursesTaken, options = 
         // break;
         default:
           style = {};
+      }
+      if (codesLeft.has(node.courseCode)) {
+        style.backgroundColor = "rgb(138, 138, 138)";
+        style.color = "rgb(225, 225, 225)";
       }
 
       return {
@@ -137,9 +143,7 @@ function FlowWithoutProvider({initialNodes, initialEdges, colorSchema, coursesTa
 
   function onNodeClick(event, node) {
     setIsModalOpen(true);
-    setCourseCode(node.data.label.substring(0, 8));
-
-    console.log(node.data.label.substring(0, 8));
+    setCourseCode(node.courseCode);
     // Do something when a node is clicked
     
   };
