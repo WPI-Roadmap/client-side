@@ -18,6 +18,12 @@ import DataParse from '../DataParse/DataParse';
 import profRatingsJSON from '../DataParse/ProfessorRating.json';
 import classRatingsJSON from '../DataParse/CourseRatings.json';
 
+import CourseNode from "./CourseNode.js";
+
+const nodeTypes = {
+  courseNode: CourseNode,
+};
+
 const elk = new ELK();
 const elkOptions = {
   "elk.algorithm": 'layered',
@@ -50,7 +56,10 @@ const getLayoutedElements = (nodes, edges, colorSchema, coursesTaken, profRating
       if (profRatings[node.professor] == NaN) console.log(node.professor);
       const projRating = 0.6 * profRating + 0.4 * courseRating;
 
-      let style = { fontSize: "1.5rem", width: "auto", maxWidth: "10em" };
+      let style = {
+        borderStyle: "solid",
+        borderRadius: 15,
+      };
       switch (colorSchema) {
         case "tot":
           style.backgroundColor = lerpColor(hardColor, easyColor, projRating / 100.0);
@@ -163,20 +172,20 @@ function FlowWithoutProvider({ initialNodes, initialEdges, colorSchema, coursesT
 
   return (
     <>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onConnect={onConnect}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onNodeClick={onNodeClick}
-        fitView
-      >
-      </ReactFlow>
-      <Modal title="Course Information" open={isModalOpen} onCancel={handleCancel} footer={[]}>
-        <div>
-          {confettiOn && <p>Reload page to refresh changes. You may safely close this popup and reload later.</p>}
-          {!confettiOn && (<DataParse course_code={courseCode} setConfettiOn={setConfettiOn} />)}
+    <ReactFlow
+      nodes={nodes}
+      edges={edges}
+      onConnect={onConnect}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+      onNodeClick={onNodeClick}
+      nodeTypes={nodeTypes}
+      fitView
+    >
+    </ReactFlow>
+    <Modal title="Course Information" open={isModalOpen} onCancel={handleCancel} footer={[]}>
+      <div>
+        <DataParse course_code={courseCode} />
         </div>
         {confettiOn && (<Button type="primary" onClick={() => {
           setConfettiOn(false);
