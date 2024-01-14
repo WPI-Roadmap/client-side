@@ -220,6 +220,7 @@ function Dashboard() {
         setNodes(tempCourses);
     }
     useState(() => setCourses(), []);
+    useEffect(() => {setCourses()}, [department]);
 
     useState(() => {
         if (user == null) {
@@ -368,7 +369,7 @@ function Dashboard() {
     }, [user]);
 
     const getUserInfo = () => {
-        
+        try {
         RequestUtils.get('/retrieve?id=' + user.uid).then((response) => response.json())
         .then((data) => {
             console.log(data)
@@ -381,6 +382,10 @@ function Dashboard() {
                 setSignup(true);
             }
         });
+    } catch {
+        
+    }
+        
     }
 
 
