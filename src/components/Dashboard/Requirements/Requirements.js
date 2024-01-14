@@ -101,14 +101,6 @@ const colors = [
         value: "course",
         label: "Course Rating"
     },
-    {
-        value: "area",
-        label: "Area"
-    },
-    {
-        value: "diff",
-        label: "Difficulty"
-    },
 ]
 
 const depNames = {
@@ -299,6 +291,8 @@ function RequirementsSidebar({changeDepartment, changeColorSchema, className="",
         //     console.log(temp);
         // });
     }
+
+
 
     useEffect(() => {
         if(user) {

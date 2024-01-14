@@ -38,7 +38,7 @@ import { auth, logout } from "../../Firebase.js";
 import RequestUtils from "../../Utils/RequestUtils.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const data = require("./courses.json");
+const data = require('./courses.json');
 const { Option } = Select;
 const { Header, Sider, Content } = Layout;
 
@@ -249,7 +249,7 @@ function Dashboard() {
                 tempCourses.push({
                     id: id.toString(),
                     position: { x: x, y: y },
-                    data: { courseCode: courseCode, courseTitle: data["Report_Entry"][i]["Course_Title"].substring(3 + courseCode.length), showTitle: showTitle},//label: data.Report_Entry[i]["Course_Title"] },
+                    data: { courseCode: courseCode, courseTitle: data["Report_Entry"][i]["Course_Title"].substring(3 + courseCode.length), showTitle: showTitle },//label: data.Report_Entry[i]["Course_Title"] },
                     desc: data.Report_Entry[i]["Course_Description"],
                     // parentNode: courseNum.length == 3 ? 6 + data.Report_Entry.length : Number(courseNum.substring(0, 1)) - 1 + data.Report_Entry.length,
                     courseType: courseNum.length == 3 ? 7 : courseNum.substring(0, 1),
@@ -576,7 +576,6 @@ function Dashboard() {
                         style={{}}
                         collapsedWidth={55}
                     >
-                        <div className="demo-logo-vertical" />
                         <Menu
                             theme="dark"
                             mode="inline"
@@ -639,7 +638,7 @@ function Dashboard() {
                         </Header>
                         <Content
                             style={{
-                                padding: 15,
+                                padding: 20,
                                 minHeight: 280,
                                 background: "#F2F2F2",
                             }}
@@ -654,11 +653,7 @@ function Dashboard() {
                             ) : tab === 1 ? (
                                 <Table />
                             ) : (
-                                <div
-                                    style={{
-                                        margin: "30px",
-                                    }}
-                                >
+                                <div>
                                     <h1 style={{ marginTop: 5 }}>Profile</h1>
                                     <Form layout="vertical">
                                         <Form.Item
@@ -795,7 +790,7 @@ function Dashboard() {
                                 </div>
                             )}
                         </Content>
-                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema} userCourses={coursesTaken} setShowTitle={setShowTitle}/>
+                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema} userCourses={coursesTaken} setShowTitle={setShowTitle} />
                     </Layout>
                 </Layout>
                 <Modal

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Button, Form, Input, Popconfirm, Table } from 'antd';
+import { AutoComplete, Button, Form, Input, Popconfirm, Table } from 'antd';
 import RequestUtils from '../../Utils/RequestUtils';
 import { auth } from '../../Firebase';
 
@@ -94,14 +94,37 @@ const App = () => {
     let [ user, loading ] = useAuthState(auth);
     const [dataSource, setDataSource] = useState([]);
 
+    let [autoFill, setAutoFill] = useState([]);
+
+    let [course, setCourse] = useState("");
+
 
     useEffect(() => {
         if (user) {
             addData();
+            populateAutoFill();
         }
 
 
     }, [user]);
+
+    function populateAutoFill() {
+        let temp = [];
+        let tracker = [];
+        const data = require('../Dashboard/courses.json');
+
+        for (let i = 0; i < data.Report_Entry.length; i++) {
+            if(!tracker.includes(data.Report_Entry[i].Course_Title.split("-")[0].substring(0, data.Report_Entry[i].Course_Title.split("-")[0].length - 1))){
+            tracker.push(data.Report_Entry[i].Course_Title.split("-")[0].substring(0, data.Report_Entry[i].Course_Title.split("-")[0].length - 1));
+            temp.push({
+                value: data.Report_Entry[i].Course_Title.split("-")[0].substring(0, data.Report_Entry[i].Course_Title.split("-")[0].length - 1),
+            })
+        }
+        }
+
+        setAutoFill(temp);
+
+    }
 
     function addData() {
         let temp = [];
@@ -136,7 +159,8 @@ const App = () => {
             }
 
         RequestUtils.post("/delete?id=" + user.uid, reqObj).then((response) => response.json()).then((data) => {
-            alert("Course Deleted!")
+            // alert("Course Deleted!")
+            addData();
         });
         } catch (err) {
             console.log("Error deleting course: " + err);
@@ -145,6 +169,40 @@ const App = () => {
         const newData = dataSource.filter((item) => item.key !== key);
         setDataSource(newData);
     };
+
+    const addCourse = () => {
+        RequestUtils.get("/retrieve?id=" + user.uid).then((response) => response.json())
+        .then((data) => {
+            let courses = data.data.courses;
+   
+            if(courses == undefined) {
+                courses = [];
+            }
+
+            courses.push({
+                "courseCode" : course,
+                "grade" : "N/A",
+                "term": "N/A"
+            });
+
+            let reqobj = {
+                "courses" : courses
+            }
+
+            RequestUtils.post("/add?id=" + user.uid, reqobj).then((response) => {
+                // alert("Course added!");
+                // window.location.reload();
+                addData();
+            });
+
+            
+            // else {
+            //     RequestUtils.post("add", user.uid, courseCode).then((response) => {
+            //         alert("Course added!");
+            //     });
+            // }
+        });
+    }
 
     const defaultColumns = [
         // {
@@ -225,6 +283,8 @@ const App = () => {
     return (
         <div>
             <p>Click on the cells below to add the term you plan to take the course as well as the grade you recieve.</p>
+            <AutoComplete options={autoFill} style={{ width: 200 }} onSelect={(val) => setCourse(val)}></AutoComplete> <Button onClick={() => addCourse()}>Add Course</Button>
+            <br></br><br></br>
             <Table
                 components={components}
                 rowClassName={() => 'editable-row'}
