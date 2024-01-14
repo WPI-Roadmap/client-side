@@ -62,12 +62,11 @@ const getLayoutedElements = (nodes, edges, colorSchema, coursesTaken, profRating
         case 'level':
           style.backgroundColor = lerpColor(0, 240, node.courseType/7.0);
         break;
-        default:
-          style = {};
       }
       if (codesLeft.has(node.courseCode)) {
-        style.backgroundColor = "rgb(138, 138, 138)";
-        style.color = "rgb(225, 225, 225)";
+        style.backgroundColor = "#e5e5e5"
+        style.color = "#b0b0b0"
+        style.borderColor = "#b0b0b0"
       }
       if (node.type === "group") {
         style.display = "none";

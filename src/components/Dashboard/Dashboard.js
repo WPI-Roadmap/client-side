@@ -466,7 +466,7 @@ function Dashboard() {
                         </Header>
                         <Content
                             style={{
-                                padding: 25,
+                                padding: 15,
                                 minHeight: 280,
                                 background: "#F2F2F2",
                             }}
