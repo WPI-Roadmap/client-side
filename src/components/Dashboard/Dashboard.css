@@ -7,9 +7,7 @@
 }
 
 .sideButt:hover {
-    background-color: white !important;
-    color: black !important;
-    border-color: black !important;
+    color: #AB2B37 !important;
 }
 
 .courseNode {

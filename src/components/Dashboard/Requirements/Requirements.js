@@ -4,7 +4,7 @@ import {
     Dropdown,
     Layout,
     Select,
-    Progress
+    Progress,
 }
     from 'antd';
 const { Header, Content, Footer, Sider } = Layout;

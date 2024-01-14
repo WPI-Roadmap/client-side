@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import "./Dashboard.css";
-import { Button, ConfigProvider, Dropdown, Form, Input, Layout, Menu, Modal, Select, theme } from "antd";
+import { Button, ConfigProvider, Dropdown, Form, Input, Layout, Menu, Modal, Select, Image, theme } from "antd";
 import Table from "../Table/Table.jsx";
 
 import { MenuFoldOutlined, MenuUnfoldOutlined, ApartmentOutlined, FileTextOutlined, UserOutlined } from "@ant-design/icons";
@@ -82,7 +82,7 @@ function Dashboard() {
     let y = 0;
 
     function setCourses() {
-        for (var i = 0; i < data.Report_Entry.length; i++) {
+        for (let i = 0; i < data.Report_Entry.length; i++) {
             // console.log(data.Report_Entry[i]["Course_Section_Owner"])
             if (data.Report_Entry[i]["Course_Section_Owner"] == department && !courseTracking.includes(data.Report_Entry[i]["Course_Title"])) {
                 courseTracking.push(data.Report_Entry[i]["Course_Title"])
@@ -110,7 +110,7 @@ function Dashboard() {
         let second = 2;
 
 
-        for (var i = 0; i < tempCourses.length; i++) {
+        for (let i = 0; i < tempCourses.length; i++) {
 
             // The text to match against
             const text = tempCourses[i].desc;
@@ -123,10 +123,10 @@ function Dashboard() {
             // // Print the extracted course codes
 
 
-            for (var j = 0; j < tempCourses.length; j++) {
+            for (let j = 0; j < tempCourses.length; j++) {
                 if (courseCodes != null) {
 
-                    for (var k = 0; k < courseCodes.length; k++) {
+                    for (let k = 0; k < courseCodes.length; k++) {
 
                         if (tempCourses[j].data.label.match(courseCodeRegex) != null) {
                             if (tempCourses[j].data.label.match(courseCodeRegex) == courseCodes[k]) {
@@ -155,13 +155,13 @@ function Dashboard() {
 
         for (let i = 1; i <= 7; i++) {
             tempCourses.push({
-              id: i-1 + data.Report_Entry.length,
-              data: { label: (i == 7 ? 'Grad' : i + '000') + 'Courses' },
-              style: { display: "none" },
-              type: 'group',
-              courseType: i,
-              courseCode: "",
-              professor: ""
+                id: i - 1 + data.Report_Entry.length,
+                data: { label: (i == 7 ? 'Grad' : i + '000') + 'Courses' },
+                style: { display: "none" },
+                type: 'group',
+                courseType: i,
+                courseCode: "",
+                professor: ""
             })
         }
 
@@ -277,8 +277,37 @@ function Dashboard() {
                     },
                 }}
             >
+                <Header>
+                    <Button
+                        type="text"
+                        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                        onClick={() => setCollapsed(!collapsed)}
+                        className="sideButt"
+                        style={{
+                            width: 48,
+                            height: 48,
+                            position: "absolute",
+                            left: 6,
+                            top: 9,
+                            zIndex: 1,
+                            background: "transparent",
+                            color: "white",
+                        }}
+                    />
+                    <Image
+                        style={{marginLeft: 10}}
+                        width={200}
+                        src="/logo-white.png"
+                    />
+                </Header>
                 <Layout style={{ height: "100vh" }}>
-                    <Sider trigger={null} collapsible collapsed={collapsed}>
+                    <Sider
+                        trigger={null}
+                        collapsible
+                        collapsed={collapsed}
+                        style={{}}
+                        collapsedWidth={55}
+                    >
                         <div className="demo-logo-vertical" />
                         <Menu
                             theme="dark"
@@ -322,26 +351,7 @@ function Dashboard() {
                                 height: 0,
                             }}
                         >
-                            <Button
-                                type="text"
-                                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                                onClick={() => setCollapsed(!collapsed)}
-                                className="sideButt"
-                                style={{
-                                    fontSize: '16px',
-                                    width: 48,
-                                    height: 48,
-                                    position: "absolute",
-                                    top: 16,
-                                    left: 16,
-                                    zIndex: 1,
-                                    background: "black",
-                                    color: "white",
-                                    borderStyle: "solid",
-                                    borderWidth: 1,
-                                    borderColor: "white",
-                                }}
-                            />
+
                         </Header>
                         <Content
                             style={{
@@ -432,8 +442,8 @@ function Dashboard() {
                         </Form.Item>
 
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" onClick={() => { setSignup(false) }}>
-                                Signup
+                            <Button type="primary" htmlType="submit" style={{marginBottom:-10}} onClick={() => { setSignup(false) }}>
+                                Continue
                             </Button>
                         </Form.Item>
                     </Form>
