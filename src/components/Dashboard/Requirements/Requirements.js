@@ -160,9 +160,40 @@ const allRequirements = {
     ]
 };
 
+const colors = [
+    {
+        value: "plain",
+        label: "Plain"
+    },
+    {
+        value: "tot",
+        label: "Total Rating"
+    },
+    {
+        value: "level",
+        label: "Level"
+    },
+    {
+        value: "area",
+        label: "Area"
+    },
+    {
+        value: "diff",
+        label: "Difficulty"
+    },
+    {
+        value: "prof",
+        label: "Professor Rating"
+    },
+    {
+        value: "course",
+        label: "Course Rating"
+    },
+    
+]
 
 
-function RequirementsSidebar({ switchTree }) {
+function RequirementsSidebar({changeColorSchema, className=""}) {
 
     const [requirements, setRequirements] = useState(allRequirements['cs'])
 
@@ -170,7 +201,7 @@ function RequirementsSidebar({ switchTree }) {
         setRequirements(allRequirements[category])
     }
     return (
-        <Sider style={{ padding: '2rem', color: "white", }}
+        <Sider className={className} style={{ padding: '2rem', color: "white", }}
             width="auto">
             <div style={{
                 display: "flex",
@@ -188,12 +219,31 @@ function RequirementsSidebar({ switchTree }) {
                     }}
                     onChange={(value) => {
                         setReqCategory(value);
-                        switchTree();
                     }}
                     options={courses}
                     className="course-select"
                 />
 
+            </div>
+            <div style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+                marginBottom: "1.5rem",
+            }}>
+                <b>Color Schema</b>
+                <Select
+                    defaultValue="tot"
+                    style={{
+                        height: "auto",
+                        width: "12em",
+                    }}
+                    onChange={(value) => {
+                        changeColorSchema(value)
+                    }}
+                    options={colors}
+                    className="color-select"
+                />
             </div>
             <div style={{
                 display: "flex",

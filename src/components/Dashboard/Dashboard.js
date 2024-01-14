@@ -2,14 +2,22 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import "./Dashboard.css";
 import { Button, ConfigProvider, Dropdown, Form, Input, Layout, Menu, Modal, Select, Image, theme } from "antd";
+
+import Joyride from 'react-joyride';
+import {
+    MenuFoldOutlined,
+    MenuUnfoldOutlined,
+    ApartmentOutlined,
+    FileTextOutlined,
+    UserOutlined,
+} from "@ant-design/icons";
+import ReactFlow, { Background, MarkerType } from "reactflow";
+import Flow from "./Flow.js";
+import RequirementsSidebar from "./Requirements/Requirements.js";
+
 import Table from "../Table/Table.jsx";
 
-import { MenuFoldOutlined, MenuUnfoldOutlined, ApartmentOutlined, FileTextOutlined, UserOutlined } from "@ant-design/icons";
-import ReactFlow, { Background, MarkerType } from 'reactflow';
-import Flow from './Flow.js';
-import RequirementsSidebar from './Requirements/Requirements.js';
-
-import 'reactflow/dist/style.css';
+import "reactflow/dist/style.css";
 
 const data = require('./courses.json');
 const { Option } = Select;
@@ -295,7 +303,7 @@ function Dashboard() {
                         }}
                     />
                     <Image
-                        style={{marginLeft: 10}}
+                        style={{ marginLeft: 10 }}
                         width={200}
                         src="/logo-white.png"
                     />
@@ -442,7 +450,7 @@ function Dashboard() {
                         </Form.Item>
 
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" style={{marginBottom:-10}} onClick={() => { setSignup(false) }}>
+                            <Button type="primary" htmlType="submit" style={{ marginBottom: -10 }} onClick={() => { setSignup(false) }}>
                                 Continue
                             </Button>
                         </Form.Item>

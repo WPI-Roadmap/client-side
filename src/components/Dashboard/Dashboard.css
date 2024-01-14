@@ -1,9 +1,11 @@
-
-
 .one {
-    background-color: #FFAEBC;
+    background-color: #ffaebc;
     /* height: 100vh; */
-
+}
+.tour-item {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 .sideButt:hover {
