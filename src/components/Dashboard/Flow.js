@@ -13,9 +13,8 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import DataParse from '../DataParse/DataParse';
 
-import profRatings from '../DataParse/ProfessorRating.json';
-import classRatings from '../DataParse/CourseRatings.json';
-import data from "../DataParse/prod-data.json"
+import profRatingsJSON from '../DataParse/ProfessorRating.json';
+import classRatingsJSON from '../DataParse/CourseRatings.json';
 
 const elk = new ELK();
 const elkOptions = {
@@ -34,7 +33,7 @@ const lerpColor = (h1, h2, progress) => {
   return `hsl(${h1 + Math.round((h2-h1) * progress)}, 100%, 80%)`
 }
 
-const getLayoutedElements = (nodes, edges, colorSchema, coursesTaken, options = {}) => {
+const getLayoutedElements = (nodes, edges, colorSchema, coursesTaken, profRatings, classRatings, options = {}) => {
   const easyColor = 125;
   const hardColor = -50;
   const codesLeft = new Set();
@@ -46,8 +45,8 @@ const getLayoutedElements = (nodes, edges, colorSchema, coursesTaken, options = 
       const courseRating = classRatings[node.courseCode] ? classRatings[node.courseCode] : Math.round(Math.random() * 100);
       const profRating = profRatings[node.professor] ? profRatings[node.professor] : Math.round(Math.random() * 100);
       // shouldn't be nan so often
+      if(profRatings[node.professor] == NaN) console.log(node.professor);
       const projRating = 0.6 * profRating + 0.4 * courseRating;
-      // console.log(profRatings[node.professor] + " " + node.professor)
 
       let gradRe = new RegExp("[A-Z]{2,3} [5-9][0-9]*")
       let style = {};
@@ -70,6 +69,9 @@ const getLayoutedElements = (nodes, edges, colorSchema, coursesTaken, options = 
       if (codesLeft.has(node.courseCode)) {
         style.backgroundColor = "rgb(138, 138, 138)";
         style.color = "rgb(225, 225, 225)";
+      }
+      if (node.type === "group") {
+        style.display = "none";
       }
 
       return {
@@ -110,6 +112,9 @@ function FlowWithoutProvider({initialNodes, initialEdges, colorSchema, coursesTa
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const { fitView } = useReactFlow();
 
+  const [profRatings, setProfRatings] = useState(profRatingsJSON);
+  const [classRatings, setClassRatings] = useState(classRatingsJSON);
+ 
   let [courseCode, setCourseCode] = useState("");
 
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
@@ -119,14 +124,14 @@ function FlowWithoutProvider({initialNodes, initialEdges, colorSchema, coursesTa
       const ns = useInitialNodes ? initialNodes : nodes;
       const es = useInitialNodes ? initialEdges : edges;
 
-      getLayoutedElements(ns, es, colorSchema, coursesTaken, opts).then(({ nodes: layoutedNodes, edges: layoutedEdges }) => {
+      getLayoutedElements(ns, es, colorSchema, coursesTaken, profRatings, classRatings, opts).then(({ nodes: layoutedNodes, edges: layoutedEdges }) => {
         setNodes(layoutedNodes);
         setEdges(layoutedEdges);
 
         window.requestAnimationFrame(() => fitView());
       });
     },
-    [nodes, edges, initialNodes, initialEdges, colorSchema, coursesTaken]
+    [nodes, edges, initialNodes, initialEdges, colorSchema, coursesTaken, profRatings, classRatings]
   );
 
   useLayoutEffect(() => {
