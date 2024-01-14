@@ -4,7 +4,7 @@ import {
     Dropdown,
     Layout,
     Select,
-    Progress
+    Progress,
 }
     from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
@@ -47,7 +47,7 @@ const courses = [
 const allRequirements = {
     'cs': [
         {
-            label: "4000 Courses",
+            label: "4000-Level Courses",
             needed: 5,
             filled: 3,
         },
@@ -67,7 +67,7 @@ const allRequirements = {
             filled: 2,
         },
         {
-            label: "Social Implications",
+            label: "Social",
             needed: 1,
             filled: 0,
         }
@@ -160,9 +160,40 @@ const allRequirements = {
     ]
 };
 
+const colors = [
+    {
+        value: "plain",
+        label: "Plain"
+    },
+    {
+        value: "tot",
+        label: "Total Rating"
+    },
+    {
+        value: "level",
+        label: "Level"
+    },
+    {
+        value: "area",
+        label: "Area"
+    },
+    {
+        value: "diff",
+        label: "Difficulty"
+    },
+    {
+        value: "prof",
+        label: "Professor Rating"
+    },
+    {
+        value: "course",
+        label: "Course Rating"
+    },
+    
+]
 
 
-function RequirementsSidebar({switchTree}) {
+function RequirementsSidebar({changeColorSchema, className=""}) {
 
     const [requirements, setRequirements] = useState(allRequirements['cs'])
 
@@ -170,7 +201,7 @@ function RequirementsSidebar({switchTree}) {
         setRequirements(allRequirements[category])
     }
     return (
-        <Sider style={{ padding: '2rem', color: "white", }}
+        <Sider className={className} style={{ padding: '2rem', color: "white", }}
             width="auto">
             <div style={{
                 display: "flex",
@@ -179,7 +210,7 @@ function RequirementsSidebar({switchTree}) {
                 marginBottom: "1.5rem",
             }}>
 
-                <b>Subject:</b>
+                <h2 style={{ marginBottom: 5 }}>Subject</h2>
                 <Select
                     defaultValue="cs"
                     style={{
@@ -188,7 +219,6 @@ function RequirementsSidebar({switchTree}) {
                     }}
                     onChange={(value) => {
                         setReqCategory(value);
-                        switchTree();
                     }}
                     options={courses}
                     className="course-select"
@@ -199,12 +229,33 @@ function RequirementsSidebar({switchTree}) {
                 display: "flex",
                 flexDirection: "column",
                 gap: "0.5rem",
+                marginBottom: "1.5rem",
             }}>
-                <b>Requirements:</b>
-                <ul className="req-courses">
+                <b>Color Schema</b>
+                <Select
+                    defaultValue="tot"
+                    style={{
+                        height: "auto",
+                        width: "12em",
+                    }}
+                    onChange={(value) => {
+                        changeColorSchema(value)
+                    }}
+                    options={colors}
+                    className="color-select"
+                />
+            </div>
+            <div style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+            }}>
+                <h2 style={{ marginBottom: 5 }}>Requirements</h2>
+
+                <ul className="req-courses" style={{ marginLeft: 5 }}>
                     {requirements.map((req) => {
                         return <li>
-                            <i>{req.label}</i>
+                            {req.label}
                             <br />
                             <Progress percent={100 * (req.filled / req.needed)}
                                 format={(percent) => req.filled + "/" + req.needed}

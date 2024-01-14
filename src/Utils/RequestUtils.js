@@ -27,9 +27,7 @@ class RequestUtils {
      * @param {JSONObject} object 
      * @returns 
      */
-    static post(url, uid, token, object) {
-
-        console.log(JSON.stringify(uid));
+    static post(url, object) {
 
         return fetch(this.getDomain() + url, {
             method: "post",

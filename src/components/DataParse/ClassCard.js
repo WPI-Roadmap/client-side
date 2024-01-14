@@ -4,11 +4,15 @@ import { Card, Progress } from 'antd';
 import { CodeOutlined, PlusSquareOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import profRatings from './ProfessorRating.json';
 import classRatings from './CourseRatings.json';
+import { useAuthState } from "react-firebase-hooks/auth";
 import data from './prod-data.json';
 import './ClassCard.css';
+import { auth } from "../../Firebase";
+import RequestUtils from "../../Utils/RequestUtils";
 
 const ClassCard = ({ index }) => {
 
+    let [user, loading] = useAuthState(auth);
 
     const courseCode = data["Report_Entry"][index]["Course_Title"].slice(0, data["Report_Entry"][index]["Course_Title"].indexOf(" - ")).trim();
     const professor = data["Report_Entry"][index]["Instructors"] ? data["Report_Entry"][index]["Instructors"] : "";
@@ -30,6 +34,40 @@ const ClassCard = ({ index }) => {
         return [profRating, courseRating, projRating]
     }
 
+    function addCourse() {
+  
+        RequestUtils.get("/retrieve?id=" + user.uid).then((response) => response.json())
+        .then((data) => {
+            let courses = data.data.courses;
+   
+            if(courses == undefined) {
+                courses = [];
+            }
+
+            courses.push({
+                "courseCode" : courseCode,
+                "grade" : "N/A",
+                "term": "N/A"
+            });
+
+            let reqobj = {
+                "courses" : courses
+            }
+
+            RequestUtils.post("/add?id=" + user.uid, reqobj).then((response) => {
+                alert("Course added!");
+            });
+
+            
+            // else {
+            //     RequestUtils.post("add", user.uid, courseCode).then((response) => {
+            //         alert("Course added!");
+            //     });
+            // }
+        });
+        
+    }
+
     useEffect(() => {
         // Call the function once on component mount
         setOscarRatings(getOSCARRatings());
@@ -44,7 +82,7 @@ const ClassCard = ({ index }) => {
                 title={data["Report_Entry"][index]["Course_Title"].slice(10,).trim()}
                 // + " (" + data["Report_Entry"][index]["Course_Title"].slice(0, 8).trim() + ")"
                 extra={<CodeOutlined style={{ color: "white" }} />}
-                actions={[<a href="#">{<PlusSquareOutlined />}</a>, <a href="https://courselistings.wpi.edu" target="_blank">{<InfoCircleOutlined />}</a>]}
+                actions={[<a onClick={() => addCourse(courseCode)}>{<PlusSquareOutlined />}</a>, <a href="https://courselistings.wpi.edu" target="_blank">{<InfoCircleOutlined />}</a>]}
                 bodyStyle={{
                     padding: 5,
                     lineHeight: 1,

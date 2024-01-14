@@ -12,10 +12,12 @@
         "elkjs": "^0.9.1",
         "firebase": "^10.7.1",
         "install": "^0.13.0",
+        "intro.js-react": "^1.0.0",
         "npm": "^10.3.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-firebase-hooks": "^5.1.1",
+        "react-joyride": "^2.7.2",
         "react-router": "^6.21.2",
         "react-router-dom": "^6.21.2",
         "react-scripts": "5.0.1",
@@ -36,7 +38,8 @@
         "rules": {
             "no-unused-vars": "off",
             "react-hook/exhaustive-deps": "off",
-            "jsx-a11y/anchor-is-valid": "off"
+            "jsx-a11y/anchor-is-valid": "off",
+            "eqeqeq": "off"
         }
     },
     "browserslist": {

@@ -60,8 +60,7 @@ function LoginView(props) {
             <strong>Welcome to Roadmap-WPI</strong>
           </h2>
           <p className="padded-text">
-            A universal solution to introduce you to WPI's major requirement
-            system Developed by WPI students for WPI students (GoatHack 2024).
+          A universal solution to introduce you to WPI's major requirement system Developed by WPI students for WPI students (GoatHacks 2024).
           </p>
           <Form.Item
             wrapperCol={{
@@ -109,7 +108,7 @@ function LoginView(props) {
             Privacy policy
           </a>{" "}
           •{" "}
-          <a className="link" href="" target="0">
+          <a className="link" href="https://github.com/WPI-Roadmap" target="0">
             Github
           </a>{" "}
         </p>
