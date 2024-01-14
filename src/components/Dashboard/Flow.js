@@ -47,7 +47,7 @@ const getLayoutedElements = (nodes, edges, colorSchema, coursesTaken, options = 
       const courseRating = classRatings[node.courseCode] ? classRatings[node.courseCode] : Math.round(Math.random() * 100);
       const profRating = profRatings[node.professor] ? profRatings[node.professor] : Math.round(Math.random() * 100);
       const projRating = 0.6 * profRating + 0.4 * courseRating;
-      // console.log("rating " + projRating);
+      let gradRe = new RegExp("[A-Z]{2,3} [5-9][0-9]*")
       let style = {};
       switch (colorSchema) {
         case "tot":
@@ -59,10 +59,13 @@ const getLayoutedElements = (nodes, edges, colorSchema, coursesTaken, options = 
         case "course":
           style.backgroundColor = lerpColor(hardColor, easyColor, courseRating/100);
         break;
-      }
-      if (codesLeft.has(node.courseCode)) {
-        style.backgroundColor = "rgb(138, 138, 138)";
-        style.color = "rgb(225, 225, 225)";
+        // case 'level':
+        //   style = {
+        //     backgroundColor: lerpColor(easyColor, hardColor, )
+        //   }
+        // break;
+        default:
+          style = {};
       }
 
       return {

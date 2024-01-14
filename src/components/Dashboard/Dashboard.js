@@ -15,10 +15,8 @@ import {
 import ReactFlow, { Background, MarkerType } from "reactflow";
 import Flow from "./Flow.js";
 import RequirementsSidebar from "./Requirements/Requirements.js";
-
 import Table from "../Table/Table.jsx";
-
-
+import Profile from "./Profile.js";
 import 'reactflow/dist/style.css';
 import { auth, logout } from "../../Firebase.js";
 import RequestUtils from "../../Utils/RequestUtils.js";
@@ -37,8 +35,9 @@ function Dashboard() {
     const handleClose = () => {
         setSignup(false);
     };
+    let [logoutUser, setLogout] = useState(false);
 
-   
+
 
     let [first, setFirst] = useState("");
     let [last, setLast] = useState("");
@@ -47,7 +46,15 @@ function Dashboard() {
     let [coursesTaken, setCoursesTaken] = useState([]);
 
 
+    // console.log(user)
+    useEffect(() => {
+        // console.log(logoutUser)
+        if (user == null && logoutUser) {
+            navigate("/");
+            setLogout(false);
+        }
 
+    }, [user]);
 
 
     // const items2 = [
@@ -97,21 +104,17 @@ function Dashboard() {
     ];
 
     let [nodes, setNodes] = useState({});
-
     let [edges, setEdges] = useState({});
-
     let [tab, setTab] = useState(0);
 
-    let [signup, setSignup] = useState(true);
+    let [signup, setSignup] = useState(false);
 
     let [colorSchema, setColorSchema] = useState("tot");
-
 
 
     // const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
     let [department, setDepartment] = useState("Computer Science Department");
-
 
     let tempCourses = [];
     let tempEdges = [];
@@ -124,7 +127,7 @@ function Dashboard() {
         tempCourses = [];
         tempEdges = [];
         let encounteredCodes = new Set();
-    
+
         for (var i = 0; i < data.Report_Entry.length; i++) {
             // console.log(data.Report_Entry[i]["Course_Section_Owner"])
             if (
@@ -191,7 +194,6 @@ function Dashboard() {
                                     source: tempCourses[i].id,
                                     target: tempCourses[j].id
                                 });
-                                // console.log(tempCourses[i].data.label + " " + tempCourses[j].data.label)
                                 first += 2;
                                 second += 2;
                             }
@@ -219,22 +221,21 @@ function Dashboard() {
         setNodes(tempCourses);
     }
     useState(() => setCourses(), []);
-    useEffect(() => {setCourses()}, [department]);
+    useEffect(() => { setCourses() }, [department]);
 
     useState(() => {
         if (user == null) {
             return;
         }
         RequestUtils.get('/retrieve?id=' + user.uid).then((response) => response.json())
-        .then((data) => {
-            console.log(data)
-            if (data.status == 200) {
-                setSignup(false);
-            } else {
-                setSignup(true);
-            }
-        });
-
+            .then((data) => {
+                console.log(data)
+                if (data.status == 200) {
+                    setSignup(false);
+                } else {
+                    setSignup(true);
+                }
+            });
     });
 
     const services = [
@@ -357,7 +358,7 @@ function Dashboard() {
 
     const [runTour, setRunTour] = useState(false);
     useEffect(() => {
-        if(localStorage.getItem("visited") != true) {
+        if (localStorage.getItem("visited") != true) {
             setRunTour(true);
             localStorage.setItem("visited", true);
         }
@@ -369,23 +370,24 @@ function Dashboard() {
 
     const getUserInfo = () => {
         try {
-        RequestUtils.get('/retrieve?id=' + user.uid).then((response) => response.json())
-        .then((data) => {
-            console.log(data)
-            if (data.status == 200) {
-                setFirst(data.data.name);
-                setLast(data.data.last);
-                setYear(data.data.year);
-                setMajor(data.data.major);
-                setCoursesTaken(data.data.courses);
-            } else {
-                setSignup(true);
-            }
-        });
-    } catch {
-        
-    }
-        
+            RequestUtils.get('/retrieve?id=' + user.uid).then((response) => response.json())
+                .then((data) => {
+                    console.log(data.status)
+                    if (data.status == 200) {
+                        setFirst(data.data.name);
+                        setLast(data.data.last);
+                        setYear(data.data.year);
+                        setMajor(data.data.major);
+                        setCoursesTaken(data.data.courses);
+                    }
+                    if (data.status == 404) {
+                        console.log(data.status)
+                        setSignup(true);
+                    }
+                });
+        } catch {
+            console.log("Error in retrieving user info.")
+        }
     }
 
 
@@ -423,6 +425,9 @@ function Dashboard() {
                         style={{ marginLeft: 10 }}
                         width={200}
                         src="/logo-white.png"
+                    />
+                    <Menu
+
                     />
                 </Header>
                 <Layout style={{ height: "100vh" }}>
@@ -470,7 +475,9 @@ function Dashboard() {
                                     label: "Logout",
                                     onClick: () => {
                                         logout();
-                                        navigate("/");
+                                        setLogout(true);
+
+
                                     }
 
                                 }
@@ -493,8 +500,7 @@ function Dashboard() {
                             style={{
                                 padding: 20,
                                 minHeight: 280,
-                                background: colorBgContainer,
-                                borderRadius: borderRadiusLG,
+                                background: "#F2F2F2",
                             }}
                         >
                             {tab === 0 ? (
@@ -508,20 +514,13 @@ function Dashboard() {
                                 <Table />
                             ) : (
                                 <>
-                                    <br>
-                                    </br>
-                                    <br>
-                                    </br>
-                                    <h1 className="mt-5 py-5">Profile</h1>
-                                    <h3>First Name: {first}</h3>
-                                    <h3>Last Name: {last}</h3>
-                                    <h3>Year: {year}</h3>
-                                    <h3>Major: {major}</h3>
+                                    <Profile  />
+                                    {/*first={first} setFirst={setFirst} last={last} setLast={setLast} year={year} setYear={setYear} major={major} setMajor={setMajor} */}
                                 </>
                             )}
                         </Content>
-                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema}/>
-                </Layout>
+                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema} />
+                    </Layout>
                 </Layout>
                 <Modal title="Get Started!" open={signup} onCancel={handleClose} footer={[]}>
 
@@ -588,7 +587,7 @@ function Dashboard() {
 
                         <Form.Item>
                             <Button type="primary" htmlType="submit" onClick={() => { signupyayslay() }}>
-                                Signup
+                                Sign Up
                             </Button>
                         </Form.Item>
                     </Form>

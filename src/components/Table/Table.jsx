@@ -1,5 +1,9 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Button, Form, Input, Popconfirm, Table } from 'antd';
+import RequestUtils from '../../Utils/RequestUtils';
+import { auth } from '../../Firebase';
+
+import { useAuthState } from 'react-firebase-hooks/auth';
 const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }) => {
     const [form] = Form.useForm();
@@ -42,6 +46,15 @@ const EditableCell = ({
                 ...record,
                 ...values,
             });
+            let fullObj = {...record, ...values};
+
+            RequestUtils.post("/update", fullObj).then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+            });
+
+            console.log({...record, ...values})
+
         } catch (errInfo) {
             console.log('Save failed:', errInfo);
         }
@@ -78,23 +91,46 @@ const EditableCell = ({
     return <td {...restProps}>{childNode}</td>;
 };
 
-const initialData = [
-    {
-        key: '0',
-        name: 'Edward King 0',
-        age: '32',
-        address: 'London, Park Lane no. 0',
-    },
-    {
-        key: '1',
-        name: 'Edward King 1',
-        age: '32',
-        address: 'London, Park Lane no. 1',
-    },
-]
 
 const App = () => {
-    const [dataSource, setDataSource] = useState(initialData);
+
+    let [ user, loading ] = useAuthState(auth);
+    const [dataSource, setDataSource] = useState([]);
+
+
+    useEffect(() => {
+        if (user) {
+            addData();
+        }
+
+
+    }, [user]);
+
+    function addData() {
+        let temp = [];
+        RequestUtils.get("/retrieve?id=" + user.uid).then((response) => response.json())
+        .then((data) => {
+            try{
+            for (let i = 0; i < data.data.courses.length; i++) {
+                temp.push({
+                    key: i,
+                    id: user.uid,
+                    course: data.data.courses[i].courseCode,
+                    grade: data.data.courses[i].grade,
+                    term: data.data.courses[i].term,
+                })
+            }
+        } catch (err){
+            console.log(err);
+        }
+            console.log(data.data.courses);
+            console.log(temp)
+            setDataSource(temp);
+        });
+    }
+
+
+
     const [count, setCount] = useState(2);
     const handleDelete = (key) => {
         const newData = dataSource.filter((item) => item.key !== key);
@@ -103,25 +139,27 @@ const App = () => {
 
     const defaultColumns = [
         {
-            title: 'Course Title',
-            dataIndex: 'name',
+            title: 'UserID',
+            dataIndex: "id",
             width: '30%',
-            editable: true,
+        },
+        {
+            title: 'Course Title',
+            dataIndex: 'course',
+            width: '10%',
         },
         {
             title: 'Term',
-            dataIndex: 'age',
+            dataIndex: 'term',
+            editable: true,
         },
         {
             title: 'Grade',
-            dataIndex: 'address',
+            dataIndex: 'grade',
+            editable: true,
         },
         {
-            title: "Remove Course",
-            dataIndex: "remove",
-        },
-        {
-            title: 'operation',
+            title: 'Remove Course',
             dataIndex: 'operation',
             render: (_, record) =>
                 dataSource.length >= 1 ? (
@@ -176,6 +214,7 @@ const App = () => {
     });
     return (
         <div>
+            <p>Click on the cells below to add the term you plan to take the course as well as the grade you recieve.</p>
             <Table
                 components={components}
                 rowClassName={() => 'editable-row'}
