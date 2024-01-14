@@ -34,10 +34,11 @@ provider.setCustomParameters({
 
 // AUTHENTICATION WITH EMAIL AND PASSWORD
 const logInWithEmailAndPassword = async (email, password) => {
-    console.log(auth)
     try {
-        await signInWithEmailAndPassword(auth, email, password);
-    } catch (err) {
+        await signInWithEmailAndPassword(auth, email, password).then((res) => {
+            console.log(res); 
+        });
+    } catch {
         return "Invalid password or email";
     }
 };
