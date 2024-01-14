@@ -63,6 +63,11 @@ const getLayoutedElements = (nodes, edges, colorSchema, options = {}) => {
             backgroundColor: lerpColor(easyColor, hardColor, courseRating/100),
           }
         break;
+        // case 'level':
+        //   style = {
+        //     backgroundColor: lerpColor(easyColor, hardColor, )
+        //   }
+        // break;
         default:
           style = {};
       }

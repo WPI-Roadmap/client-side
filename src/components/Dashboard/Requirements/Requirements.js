@@ -202,7 +202,7 @@ const depNames = {
 }
 
 
-function RequirementsSidebar({changeDepartment, changeColorSchema}) {
+function RequirementsSidebar({changeDepartment, changeColorSchema, className=""}) {
 
     const [requirements, setRequirements] = useState(allRequirements['cs'])
 
@@ -210,7 +210,7 @@ function RequirementsSidebar({changeDepartment, changeColorSchema}) {
         setRequirements(allRequirements[category])
     }
     return (
-        <Sider style={{ padding: '2rem', color: "white", }}
+        <Sider className={className} style={{ padding: '2rem', color: "white", }}
             width="auto">
             <div style={{
                 display: "flex",
