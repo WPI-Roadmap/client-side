@@ -192,8 +192,17 @@ const colors = [
     
 ]
 
+const depNames = {
+    "cs": "Computer Science Department",
+    "hua": "Humanities and Arts Department",
+    "wpe": "Physical Education and Athletics Department",
+    "ss": "Social Science and Policy Studies Department",
+    "math": "Mathematical Sciences Department",
+    // need iqp, mqp, fe, sci
+}
 
-function RequirementsSidebar({changeColorSchema}) {
+
+function RequirementsSidebar({changeDepartment, changeColorSchema}) {
 
     const [requirements, setRequirements] = useState(allRequirements['cs'])
 
@@ -218,6 +227,7 @@ function RequirementsSidebar({changeColorSchema}) {
                         width: "12em",
                     }}
                     onChange={(value) => {
+                        changeDepartment(depNames[value]);
                         setReqCategory(value);
                     }}
                     options={courses}

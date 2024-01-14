@@ -122,12 +122,12 @@ function FlowWithoutProvider({initialNodes, initialEdges, colorSchema}) {
         window.requestAnimationFrame(() => fitView());
       });
     },
-    [nodes, edges, colorSchema]
+    [nodes, edges, initialNodes, initialEdges, colorSchema]
   );
 
   useLayoutEffect(() => {
     onLayout({ direction: 'UP', useInitialNodes: true });
-  }, [colorSchema]);
+  }, [initialNodes, initialEdges, colorSchema]);
 
   // Calculate the initial layout on mount.
   useLayoutEffect(() => {

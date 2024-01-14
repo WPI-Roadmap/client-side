@@ -100,6 +100,10 @@ function Dashboard() {
     let y = 0;
 
     function setCourses() {
+        tempCourses = [];
+        tempEdges = [];
+        let encounteredCodes = new Set();
+    
         for (var i = 0; i < data.Report_Entry.length; i++) {
             // console.log(data.Report_Entry[i]["Course_Section_Owner"])
             if (
@@ -109,6 +113,7 @@ function Dashboard() {
                 courseTracking.push(data.Report_Entry[i]["Course_Title"]);
                 let courseCode =
                     data.Report_Entry[i]["Course_Title"].match(/\d+/)[0];
+                encounteredCodes.add(data["Report_Entry"][i]["Course_Title"].slice(0, data["Report_Entry"][i]["Course_Title"].search(/\s[0-9]*\s-\s/g)).trim())
                 tempCourses.push({
                     id: id.toString(),
                     position: { x: x, y: y },
@@ -132,27 +137,30 @@ function Dashboard() {
         let second = 2;
 
         for (var i = 0; i < tempCourses.length; i++) {
+
             // The text to match against
             const text = tempCourses[i].desc;
 
-            const courseCodeRegex = /CS\s\d+/g;
-
             // Use the match method to find all occurrences of the pattern in the text
-            const courseCodes = text.match(courseCodeRegex);
-
+            let courseCodes = [];
+            encounteredCodes.forEach((code) => {
+                const regex = new RegExp(code + "\\s\\d+");
+                const match = text.match(regex);
+                if (match !== null) courseCodes = courseCodes.concat(match);
+            })
             // // Print the extracted course codes
 
+            if (courseCodes.length > 0) console.log(courseCodes);
+
             for (var j = 0; j < tempCourses.length; j++) {
-                if (courseCodes != null) {
+                if (courseCodes.length > 0) {
                     for (var k = 0; k < courseCodes.length; k++) {
                         if (
-                            tempCourses[j].data.label.match(courseCodeRegex) !=
+                            tempCourses[j].courseCode !=
                             null
                         ) {
                             if (
-                                tempCourses[j].data.label.match(
-                                    courseCodeRegex
-                                ) == courseCodes[k]
+                                tempCourses[j].courseCode == courseCodes[k]
                             ) {
                                 tempEdges.push({
                                     id:
@@ -196,6 +204,7 @@ function Dashboard() {
         setNodes(tempCourses);
     }
     useState(() => setCourses(), []);
+    useEffect(() => {setCourses()}, [department]);
 
     const services = [
         {
@@ -445,7 +454,7 @@ function Dashboard() {
                                 </>
                             )}
                         </Content>
-                        <RequirementsSidebar changeColorSchema={setColorSchema}/>
+                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema}/>
                 </Layout>
                 </Layout>
                 <Modal
