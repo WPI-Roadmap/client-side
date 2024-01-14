@@ -128,16 +128,22 @@ const App = () => {
 
     const [count, setCount] = useState(2);
     const handleDelete = (key) => {
-        const newData = dataSource.filter((item) => item.key !== key);
-        setDataSource(newData);
+        
 
-        let reqObj = {
-            course: dataSource[key].course,
-        }
+        try {
+            let reqObj = {
+                course: dataSource[key].course,
+            }
 
         RequestUtils.post("/delete?id=" + user.uid, reqObj).then((response) => response.json()).then((data) => {
             alert("Course Deleted!")
         });
+        } catch (err) {
+            console.log("Error deleting course: " + err);
+        }
+
+        const newData = dataSource.filter((item) => item.key !== key);
+        setDataSource(newData);
     };
 
     const defaultColumns = [

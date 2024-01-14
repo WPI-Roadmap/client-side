@@ -21,10 +21,16 @@ function LoginView(props) {
     let [password, setPassword] = useState("");
 
     let [user, loading] = useAuthState(auth);
+    let [error, setError] = useState("");
 
     const login = (values) => {
 
-        tab === false ? logInWithEmailAndPassword(email, password) : registerWithEmailAndPassword(email, password);
+        try {
+            tab === false ? logInWithEmailAndPassword(email, password) : registerWithEmailAndPassword(email, password);
+        } catch (error) {
+            console.log(error);
+            setError(error.message);
+        }
     };
 
     const register = (values) => {
@@ -92,6 +98,9 @@ function LoginView(props) {
                             }
                         ></Input.Password>
                     </Form.Item>
+                    <p className="padded-text">
+                        {error}
+                    </p>
                     <Form.Item>
                         <Button
                             type="primary"
