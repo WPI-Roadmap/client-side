@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import "./Dashboard.css";
 import { Button, ConfigProvider, Dropdown, Space, Form, Input, Layout, Menu, Modal, Select, Image, theme } from "antd";
-import { DownOutlined } from '@ant-design/icons';
+import { BiLogOut } from "react-icons/bi";
 
 import Joyride from 'react-joyride';
 import {
@@ -23,7 +23,7 @@ import { auth, logout } from "../../Firebase.js";
 import RequestUtils from "../../Utils/RequestUtils.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const data = require('./courses.json');
+const data = require('./Courses.json');
 const { Option } = Select;
 const { Header, Sider, Content } = Layout;
 
@@ -92,12 +92,12 @@ function Dashboard() {
     let y = 0;
 
     function setCourses() {
-        console.log(data);
         tempCourses = [];
         tempEdges = [];
+        courseTracking = [];
         let encounteredCodes = new Set();
 
-        for (var i = 0; i < data.Report_Entry.length; i++) {
+        for (let i = 0; i < data.Report_Entry.length; i++) {
             if (
                 data.Report_Entry[i]["Course_Section_Owner"] == department &&
                 !courseTracking.includes(data.Report_Entry[i]["Course_Title"])
@@ -141,7 +141,7 @@ function Dashboard() {
             })
             // // Print the extracted course codes
 
-            for (var j = 0; j < tempCourses.length; j++) {
+            for (let j = 0; j < tempCourses.length; j++) {
                 if (courseCodes.length > 0) {
                     for (var k = 0; k < courseCodes.length; k++) {
                         if (
@@ -177,7 +177,7 @@ function Dashboard() {
             tempCourses.push({
                 id: i - 1 + data.Report_Entry.length,
                 data: { label: (i == 7 ? 'Grad' : i + '000') + 'Courses' },
-                style: { display: "none" },
+                // style: {  },
                 type: 'group',
                 courseType: i,
                 courseCode: "",
@@ -196,14 +196,14 @@ function Dashboard() {
             return;
         }
         RequestUtils.get('/retrieve?id=' + user.uid).then((response) => response.json())
-        .then((data) => {
-            console.log(data)
-            if (data.status == 200) {
-                setSignup(false);
-            } else {
-                setSignup(true);
-            }
-        });
+            .then((data) => {
+                console.log(data)
+                if (data.status == 200) {
+                    setSignup(false);
+                } else {
+                    setSignup(true);
+                }
+            });
 
     });
 
@@ -439,13 +439,11 @@ function Dashboard() {
                                 },
                                 {
                                     key: "4",
-                                    icon: <LogoutOutlined />,
+                                    icon: <BiLogOut style={{ transform: 'rotate(90deg)' }} />,
                                     label: "Logout",
                                     onClick: () => {
                                         logout();
                                         setLogout(true);
-
-
                                     }
 
                                 }
@@ -462,7 +460,9 @@ function Dashboard() {
                                 height: 0,
                             }}
                         >
+                            <Menu>
 
+                            </Menu>
                         </Header>
                         <Content
                             style={{
@@ -564,7 +564,7 @@ function Dashboard() {
 
                             )}
                         </Content>
-                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema} userCourses={coursesTaken}/>
+                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema} userCourses={coursesTaken} />
                     </Layout>
                 </Layout>
                 <Modal title="Get Started!" open={signup} onCancel={handleClose} footer={[]}>

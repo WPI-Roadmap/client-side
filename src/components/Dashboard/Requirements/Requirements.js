@@ -84,20 +84,12 @@ const colors = [
         label: "Plain"
     },
     {
-        value: "tot",
-        label: "Total Rating"
-    },
-    {
         value: "level",
         label: "Level"
     },
     {
-        value: "area",
-        label: "Area"
-    },
-    {
-        value: "diff",
-        label: "Difficulty"
+        value: "tot",
+        label: "Total Rating"
     },
     {
         value: "prof",
@@ -106,6 +98,14 @@ const colors = [
     {
         value: "course",
         label: "Course Rating"
+    },
+    {
+        value: "area",
+        label: "Area"
+    },
+    {
+        value: "diff",
+        label: "Difficulty"
     },
 ]
 
