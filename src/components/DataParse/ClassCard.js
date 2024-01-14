@@ -56,6 +56,7 @@ const ClassCard = ({ index }) => {
 
             RequestUtils.post("/add?id=" + user.uid, reqobj).then((response) => {
                 alert("Course added!");
+                window.location.reload();
             });
 
             

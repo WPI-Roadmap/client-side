@@ -16,9 +16,8 @@ import {
 import ReactFlow, { Background, MarkerType } from "reactflow";
 import Flow from "./Flow.js";
 import RequirementsSidebar from "./Requirements/Requirements.js";
-
 import Table from "../Table/Table.jsx";
-
+import Profile from "./Profile.js";
 import 'reactflow/dist/style.css';
 import { auth, logout } from "../../Firebase.js";
 import RequestUtils from "../../Utils/RequestUtils.js";
@@ -45,11 +44,12 @@ function Dashboard() {
     let [last, setLast] = useState("");
     let [year, setYear] = useState("");
     let [major, setMajor] = useState("");
+    let [coursesTaken, setCoursesTaken] = useState([]);
 
 
-    console.log(user)
+    // console.log(user)
     useEffect(() => {
-        console.log(logoutUser)
+        // console.log(logoutUser)
         if (user == null && logoutUser) {
             navigate("/");
             setLogout(false);
@@ -92,12 +92,12 @@ function Dashboard() {
     let y = 0;
 
     function setCourses() {
+        console.log(data);
         tempCourses = [];
         tempEdges = [];
         let encounteredCodes = new Set();
 
         for (var i = 0; i < data.Report_Entry.length; i++) {
-            // console.log(data.Report_Entry[i]["Course_Section_Owner"])
             if (
                 data.Report_Entry[i]["Course_Section_Owner"] == department &&
                 !courseTracking.includes(data.Report_Entry[i]["Course_Title"])
@@ -140,8 +140,6 @@ function Dashboard() {
                 if (match !== null) courseCodes = courseCodes.concat(match);
             })
             // // Print the extracted course codes
-
-            if (courseCodes.length > 0) console.log(courseCodes);
 
             for (var j = 0; j < tempCourses.length; j++) {
                 if (courseCodes.length > 0) {
@@ -198,14 +196,14 @@ function Dashboard() {
             return;
         }
         RequestUtils.get('/retrieve?id=' + user.uid).then((response) => response.json())
-            .then((data) => {
-                console.log(data)
-                if (data.status == 200) {
-                    setSignup(false);
-                } else {
-                    setSignup(true);
-                }
-            });
+        .then((data) => {
+            console.log(data)
+            if (data.status == 200) {
+                setSignup(false);
+            } else {
+                setSignup(true);
+            }
+        });
 
     });
 
@@ -348,6 +346,7 @@ function Dashboard() {
                         setLast(data.data.last);
                         setYear(data.data.year);
                         setMajor(data.data.major);
+                        setCoursesTaken(data.data.courses);
                     }
                     if (data.status == 404) {
                         console.log(data.status)
@@ -355,6 +354,7 @@ function Dashboard() {
                     }
                 });
         } catch {
+            console.log("Error in retrieving user info.")
         }
     }
 
@@ -394,7 +394,9 @@ function Dashboard() {
                         preview={false}
                         src="/logo-white.png"
                     />
-                    {/* <Dropdown /> */}
+                    <Menu
+
+                    />
                 </Header>
                 <Layout style={{ height: "100vh" }}>
                     <Sider
@@ -474,6 +476,7 @@ function Dashboard() {
                                     initialNodes={nodes}
                                     initialEdges={edges}
                                     colorSchema={colorSchema}
+                                    coursesTaken={coursesTaken}
                                 />
                             ) : tab === 1 ? (
                                 <Table />
