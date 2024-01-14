@@ -1,16 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import "./Dashboard.css";
-import { Button, ConfigProvider, Dropdown, Form, Input, Layout, Menu, Modal, Select, theme } from "antd";
+import { Button, ConfigProvider, Dropdown, Form, Input, Layout, Menu, Modal, Select, Image, theme } from "antd";
+
+import Joyride from 'react-joyride';
+import {
+    MenuFoldOutlined,
+    MenuUnfoldOutlined,
+    ApartmentOutlined,
+    FileTextOutlined,
+    UserOutlined,
+    LogoutOutlined,
+} from "@ant-design/icons";
+import ReactFlow, { Background, MarkerType } from "reactflow";
+import Flow from "./Flow.js";
+import RequirementsSidebar from "./Requirements/Requirements.js";
 import Table from "../Table/Table.jsx";
-
-import { MenuFoldOutlined, MenuUnfoldOutlined, ApartmentOutlined, FileTextOutlined, UserOutlined } from "@ant-design/icons";
-import ReactFlow, { Background, MarkerType } from 'reactflow';
-import Flow from './Flow.js';
 import Profile from "./Profile.js";
-import RequirementsSidebar from './Requirements/Requirements.js';
-
 import 'reactflow/dist/style.css';
+import { auth, logout } from "../../Firebase.js";
+import RequestUtils from "../../Utils/RequestUtils.js";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const data = require('./courses.json');
 const { Option } = Select;
@@ -20,60 +30,79 @@ function Dashboard() {
 
     const [collapsed, setCollapsed] = useState(false);
 
+    let [user, loading] = useAuthState(auth);
+
     const handleClose = () => {
         setSignup(false);
-    }
+    };
+
+
 
     let [first, setFirst] = useState("");
     let [last, setLast] = useState("");
     let [year, setYear] = useState("");
     let [major, setMajor] = useState("");
 
-    const items2 = [
-        {
-            key: '1',
-            label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                    1st menu item
-                </a>
-            ),
-        },
-        {
-            key: '2',
-            label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                    2nd menu item
-                </a>
-            ),
-        },
-        {
-            key: '3',
-            label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-                    3rd menu item
-                </a>
-            ),
-        },
-    ];
+
+
+
+
+    // const items2 = [
+    //     {
+    //         key: '1',
+    //         label: (
+    //             <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+    //                 1st menu item
+    //             </a>
+    //         ),
+    //     },
+    //     {
+    //         key: '2',
+    //         label: (
+    //             <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+    //                 2nd menu item
+    //             </a>
+    //         ),
+    //     },
+    //     {
+    //         key: '3',
+    //         label: (
+    //             <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+    //                 3rd menu item
+    //             </a>
+    //         ),
+    //     },
+    // ];
+
+
+    const signupyayslay = () => {
+        let reqbody = {
+            first: first,
+            last: last,
+            email: user.email,
+            year: year,
+            major: major,
+        }
+        RequestUtils.post('/user?id=' + user.uid, reqbody)
+
+        setSignup(false);
+    }
 
     const initialNodes = [
-        { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
-        { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
+        { id: "1", position: { x: 0, y: 0 }, data: { label: "1" } },
+        { id: "2", position: { x: 0, y: 100 }, data: { label: "2" } },
     ];
 
     let [nodes, setNodes] = useState({});
-
     let [edges, setEdges] = useState({});
-
     let [tab, setTab] = useState(0);
-
     let [signup, setSignup] = useState(true);
+    let [colorSchema, setColorSchema] = useState("tot");
 
 
-    const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
+    // const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
     let [department, setDepartment] = useState("Computer Science Department");
-
 
     let tempCourses = [];
     let tempEdges = [];
@@ -83,11 +112,20 @@ function Dashboard() {
     let y = 0;
 
     function setCourses() {
+        tempCourses = [];
+        tempEdges = [];
+        let encounteredCodes = new Set();
+
         for (var i = 0; i < data.Report_Entry.length; i++) {
             // console.log(data.Report_Entry[i]["Course_Section_Owner"])
-            if (data.Report_Entry[i]["Course_Section_Owner"] == department && !courseTracking.includes(data.Report_Entry[i]["Course_Title"])) {
-                courseTracking.push(data.Report_Entry[i]["Course_Title"])
-                let courseCode = data.Report_Entry[i]["Course_Title"].match(/\d+/)[0];
+            if (
+                data.Report_Entry[i]["Course_Section_Owner"] == department &&
+                !courseTracking.includes(data.Report_Entry[i]["Course_Title"])
+            ) {
+                courseTracking.push(data.Report_Entry[i]["Course_Title"]);
+                let courseCode =
+                    data.Report_Entry[i]["Course_Title"].match(/\d+/)[0];
+                encounteredCodes.add(data["Report_Entry"][i]["Course_Title"].slice(0, data["Report_Entry"][i]["Course_Title"].search(/\s[0-9]*\s-\s/g)).trim())
                 tempCourses.push({
                     id: id.toString(),
                     position: { x: x, y: y },
@@ -107,30 +145,34 @@ function Dashboard() {
             }
         }
 
-        let first = 1;
-        let second = 2;
+        let first = 1, second = 2;
 
-
-        for (var i = 0; i < tempCourses.length; i++) {
-
+        for (let i = 0; i < tempCourses.length; i++) {
             // The text to match against
             const text = tempCourses[i].desc;
-
             const courseCodeRegex = /CS\s\d+/g;
 
             // Use the match method to find all occurrences of the pattern in the text
-            const courseCodes = text.match(courseCodeRegex);
-
+            let courseCodes = [];
+            encounteredCodes.forEach((code) => {
+                const regex = new RegExp(code + "\\s\\d+");
+                const match = text.match(regex);
+                if (match !== null) courseCodes = courseCodes.concat(match);
+            })
             // // Print the extracted course codes
 
+            if (courseCodes.length > 0) console.log(courseCodes);
 
             for (var j = 0; j < tempCourses.length; j++) {
-                if (courseCodes != null) {
-
+                if (courseCodes.length > 0) {
                     for (var k = 0; k < courseCodes.length; k++) {
-
-                        if (tempCourses[j].data.label.match(courseCodeRegex) != null) {
-                            if (tempCourses[j].data.label.match(courseCodeRegex) == courseCodes[k]) {
+                        if (
+                            tempCourses[j].courseCode !=
+                            null
+                        ) {
+                            if (
+                                tempCourses[j].courseCode == courseCodes[k]
+                            ) {
                                 tempEdges.push({
                                     id: 'e' + first.toString() + '-' + second.toString(),
                                     type: 'smoothstep',
@@ -142,7 +184,6 @@ function Dashboard() {
                                     source: tempCourses[i].id,
                                     target: tempCourses[j].id
                                 });
-                                // console.log(tempCourses[i].data.label + " " + tempCourses[j].data.label)
                                 first += 2;
                                 second += 2;
                             }
@@ -170,6 +211,23 @@ function Dashboard() {
         setNodes(tempCourses);
     }
     useState(() => setCourses(), []);
+    useEffect(() => { setCourses() }, [department]);
+
+    useState(() => {
+        if (user == null) {
+            return;
+        }
+        RequestUtils.get('/retrieve?id=' + user.uid).then((response) => response.json())
+            .then((data) => {
+                console.log(data)
+                if (data.status == 200) {
+                    setSignup(false);
+                } else {
+                    setSignup(true);
+                }
+            });
+
+    });
 
     const services = [
         {
@@ -251,23 +309,80 @@ function Dashboard() {
 
     let [q, setQ] = useState(1);
 
-    let windowContent
-    if (tab == 1) {
-        windowContent = <Content
+    let windowContent = (
+        <Content
             style={{
-                margin: 0,//'24px 16px',
+                margin: 0, //'24px 16px',
                 padding: 24,
                 minHeight: 280,
                 background: colorBgContainer,
                 borderRadius: borderRadiusLG,
             }}
         >
-            <Flow initialNodes={nodes} initialEdges={edges} />
+            <Flow initialNodes={nodes} initialEdges={edges} colorSchema={colorSchema} />
             {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
-        </Content>;
-    } else {
-        // windowContent = <Table />
+        </Content>
+    );
+
+    let steps = [
+        {
+            target: ".one",
+            content: "Welcome to WPI Roadmap, here you can view your course roadmap based on course you have taken",
+            placement: "right"
+        },
+        {
+            target: ".two",
+            content: "Here you can view and update your tracking sheet",
+            placement: "right"
+        },
+        {
+            target: ".three",
+            content: "Here you can view your profile information",
+            placement: "right"
+        },
+        {
+            target: ".four",
+            content: "This sidebar shows the requirements you have fulfilled so far, and you can check out each category of requirements",
+            placement: "right"
+        },
+    ];
+
+    const [runTour, setRunTour] = useState(false);
+    useEffect(() => {
+        if (localStorage.getItem("visited") != true) {
+            setRunTour(true);
+            localStorage.setItem("visited", true);
+        }
+        if (user != null) {
+            getUserInfo();
+        }
+
+    }, [user]);
+
+    const getUserInfo = () => {
+        try {
+            RequestUtils.get('/retrieve?id=' + user.uid).then((response) => response.json())
+                .then((data) => {
+                    console.log(data)
+                    if (data.status == 200) {
+                        setFirst(data.data.name);
+                        setLast(data.data.last);
+                        setYear(data.data.year);
+                        setMajor(data.data.major);
+                    } else {
+                        setSignup(true);
+                    }
+                });
+        } catch {
+
+        }
+
     }
+
+
+    const handleTourEnd = () => {
+        setRunTour(false);
+    };
 
     return (
         <>
@@ -278,8 +393,40 @@ function Dashboard() {
                     },
                 }}
             >
+                <Header>
+                    <Button
+                        type="text"
+                        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                        onClick={() => setCollapsed(!collapsed)}
+                        className="sideButt"
+                        style={{
+                            width: 48,
+                            height: 48,
+                            position: "absolute",
+                            left: 6,
+                            top: 9,
+                            zIndex: 1,
+                            background: "transparent",
+                            color: "white",
+                        }}
+                    />
+                    <Image
+                        style={{ marginLeft: 10 }}
+                        width={200}
+                        src="/logo-white.png"
+                    />
+                    <Menu
+
+                    />
+                </Header>
                 <Layout style={{ height: "100vh" }}>
-                    <Sider trigger={null} collapsible collapsed={collapsed}>
+                    <Sider
+                        trigger={null}
+                        collapsible
+                        collapsed={collapsed}
+                        style={{}}
+                        collapsedWidth={55}
+                    >
                         <div className="demo-logo-vertical" />
                         <Menu
                             theme="dark"
@@ -308,7 +455,18 @@ function Dashboard() {
                                     label: 'Profile',
                                     onClick: () => {
                                         setTab(2);
+                                    },
+                                    className: 'three',
+                                },
+                                {
+                                    key: "4",
+                                    icon: <LogoutOutlined />,
+                                    label: "Logout",
+                                    onClick: () => {
+                                        logout();
+                                        navigate("/");
                                     }
+
                                 }
                             ]}
                         />
@@ -323,49 +481,33 @@ function Dashboard() {
                                 height: 0,
                             }}
                         >
-                            <Button
-                                type="text"
-                                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                                onClick={() => setCollapsed(!collapsed)}
-                                className="sideButt"
-                                style={{
-                                    fontSize: '16px',
-                                    width: 48,
-                                    height: 48,
-                                    position: "absolute",
-                                    top: 16,
-                                    left: 16,
-                                    zIndex: 1,
-                                    background: "black",
-                                    color: "white",
-                                    borderStyle: "solid",
-                                    borderWidth: 1,
-                                    borderColor: "white",
-                                }}
-                            />
+
                         </Header>
                         <Content
                             style={{
                                 padding: 20,
                                 minHeight: 280,
-                                background: colorBgContainer,
-                                borderRadius: borderRadiusLG,
+                                background: "#F2F2F2",
                             }}
                         >
-                            {
-                                tab === 0 ?
-                                    <Flow initialNodes={nodes} initialEdges={edges} /> :
-                                    tab === 1 ? <Table />
-                                        : <>
-                                            <Profile first={first} last={last} major={major} year={year} setFirst={setFirst} setLast={setLast} setMajor={setMajor} setYear={setYear}/>
-                                        </>
-                            }
-
+                            {tab === 0 ? (
+                                <Flow
+                                    initialNodes={nodes}
+                                    initialEdges={edges}
+                                    colorSchema={colorSchema}
+                                />
+                            ) : tab === 1 ? (
+                                <Table />
+                            ) : (
+                                <>
+                                    <Profile first={first} setFirst={setFirst} last={last} setLast={setLast} year={year} setYear={setYear} major={major} setMajor={setMajor} />
+                                </>
+                            )}
                         </Content>
-                        <RequirementsSidebar switchTree={() => { }} />
+                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema} />
                     </Layout>
                 </Layout>
-                <Modal title="Get Started!" open={signup} onClose={handleClose} footer={[]}>
+                <Modal title="Get Started!" open={signup} onCancel={handleClose} footer={[]}>
 
                     <p>Tell us a little bit about yourself to customize your roadmap experience!</p>
                     <br></br>
@@ -429,7 +571,7 @@ function Dashboard() {
                         </Form.Item>
 
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" onClick={() => { setSignup(false) }}>
+                            <Button type="primary" htmlType="submit" onClick={() => { signupyayslay() }}>
                                 Signup
                             </Button>
                         </Form.Item>
