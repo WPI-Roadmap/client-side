@@ -5,6 +5,8 @@ import {
     Layout,
     Select,
     Progress,
+    Switch,
+    Collapse
 }
     from 'antd';
 import RequestUtils from "../../../Utils/RequestUtils";
@@ -119,7 +121,7 @@ const depNames = {
 }
 
 
-function RequirementsSidebar({changeDepartment, changeColorSchema, className="", userCourses}) {
+function RequirementsSidebar({changeDepartment, changeColorSchema, className="", userCourses, setShowTitle}) {
     let [user, loading] = useAuthState(auth);
 
     let [subject, setSubject] = useState('cs');
@@ -305,15 +307,21 @@ function RequirementsSidebar({changeDepartment, changeColorSchema, className="",
     }, [subject, userCourses]);
 
 
-
     return (
-        <Sider className={className} style={{ paddingTop: '0.5rem', paddingLeft: '1.8rem', paddingRight: '1.8rem', color: "white", }}
+        <Sider className={className} style={{ 
+            overflow: 'auto',
+            paddingTop: '0.5rem', 
+            paddingLeft: '1.8rem', 
+            paddingRight: '1.8rem', 
+            paddingBottom: '0.5rem',
+            color: "white", 
+        }}
             width="auto">
             <div style={{
                 display: "flex",
                 flexDirection: "column",
                 gap: "0.5rem",
-                marginBottom: "1.5rem",
+                marginBottom: "1rem",
             }}>
 
                 <h2 style={{ marginTop: 5, marginBottom: 5 }}>Subject</h2>
@@ -336,26 +344,7 @@ function RequirementsSidebar({changeDepartment, changeColorSchema, className="",
                 display: "flex",
                 flexDirection: "column",
                 gap: "0.5rem",
-                marginBottom: "1.5rem",
-            }}>
-                <h2 style={{ marginTop: 5, marginBottom: 5 }}>Color Schema</h2>
-                <Select
-                    defaultValue="tot"
-                    style={{
-                        height: "auto",
-                        width: "12em",
-                    }}
-                    onChange={(value) => {
-                        changeColorSchema(value)
-                    }}
-                    options={colors}
-                    className="color-select"
-                />
-            </div>
-            <div style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.5rem",
+                marginBottom: "1rem",
             }}>
                 <h2 style={{ marginTop: 5, marginBottom: 5 }}>Requirements</h2>
 
@@ -366,11 +355,40 @@ function RequirementsSidebar({changeDepartment, changeColorSchema, className="",
                             <br />
                             <Progress percent={100 * (req.filled / req.needed)}
                                 format={(percent) => req.filled + "/" + req.needed}
-                                style={{ width: "100%", color: "white", }} />
+                                style={{ width: "100%", maxWidth: "100%", color: "white", }} />
                         </li>
 
                     })}
                 </ul>
+            </div>
+            <div style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+            }}>
+                <h2 style={{ marginTop: 5, marginBottom: 5 }}>Display Settings</h2>   
+
+                <div style={{marginBottom: 3 }}>Color Schema</div>
+                <Select
+                    defaultValue="tot"
+                    style={{
+                        height: "auto",
+                        width: "12em",
+                        marginBottom: 5,
+                    }}
+                    onChange={(value) => {
+                        changeColorSchema(value)
+                    }}
+                    options={colors}
+                    className="color-select"
+                />
+                <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                    <div style={{  }}>Show Course Titles</div>
+                    <Switch style={{
+                        width: 5,
+                    }}
+                        defaultChecked onChange={(value) => {setShowTitle(value);}} />
+                </div>
             </div>
         </Sider>
     )

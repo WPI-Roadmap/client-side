@@ -23,7 +23,7 @@ import { auth, logout } from "../../Firebase.js";
 import RequestUtils from "../../Utils/RequestUtils.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const data = require('./courses.json');
+const data = require('./Courses.json');
 const { Option } = Select;
 const { Header, Sider, Content } = Layout;
 
@@ -44,7 +44,8 @@ function Dashboard() {
     let [year, setYear] = useState("");
     let [major, setMajor] = useState("");
     let [coursesTaken, setCoursesTaken] = useState([]);
-    const [reqSidebar, setReqSidebar] = useState(false);
+    let [reqSidebar, setReqSidebar] = useState(false);
+    let [showTitle, setShowTitle] = useState(true);
 
     // console.log(user)
     useEffect(() => {
@@ -124,18 +125,20 @@ function Dashboard() {
                 !courseTracking.includes(data.Report_Entry[i]["Course_Title"])
             ) {
                 courseTracking.push(data.Report_Entry[i]["Course_Title"]);
-                let courseCode =
+                let courseNum =
                     data.Report_Entry[i]["Course_Title"].match(/\d+/)[0];
+                let courseCode = data["Report_Entry"][i]["Course_Title"].slice(0, data["Report_Entry"][i]["Course_Title"].indexOf(" - ")).trim();
                 encounteredCodes.add(data["Report_Entry"][i]["Course_Title"].slice(0, data["Report_Entry"][i]["Course_Title"].search(/\s[0-9]*\s-\s/g)).trim())
                 tempCourses.push({
                     id: id.toString(),
                     position: { x: x, y: y },
-                    data: { label: data.Report_Entry[i]["Course_Title"] },
+                    data: { courseCode: courseCode, courseTitle: data["Report_Entry"][i]["Course_Title"].substring(3 + courseCode.length), showTitle: showTitle},//label: data.Report_Entry[i]["Course_Title"] },
                     desc: data.Report_Entry[i]["Course_Description"],
-                    // parentNode: courseCode.length == 3 ? 6 + data.Report_Entry.length : Number(courseCode.substring(0, 1)) - 1 + data.Report_Entry.length,
-                    courseType: courseCode.length == 3 ? 7 : courseCode.substring(0, 1),
-                    courseCode: data["Report_Entry"][i]["Course_Title"].slice(0, data["Report_Entry"][i]["Course_Title"].indexOf(" - ")).trim(),
+                    // parentNode: courseNum.length == 3 ? 6 + data.Report_Entry.length : Number(courseNum.substring(0, 1)) - 1 + data.Report_Entry.length,
+                    courseType: courseNum.length == 3 ? 7 : courseNum.substring(0, 1),
+                    courseCode: courseCode,
                     professor: data["Report_Entry"][i]["Instructors"] ? data["Report_Entry"][i]["Instructors"] : "",
+                    type: "courseNode"
                 });
                 if (id % 2 == 0) {
                     x += 100;
@@ -209,7 +212,7 @@ function Dashboard() {
         setNodes(tempCourses);
     }
     useState(() => setCourses(), []);
-    useEffect(() => { setCourses() }, [department]);
+    useEffect(() => { setCourses() }, [department, showTitle]);
 
     useState(() => {
         if (user == null) {
@@ -590,7 +593,7 @@ function Dashboard() {
                                 </div>
                             )}
                         </Content>
-                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema} userCourses={coursesTaken} />
+                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema} userCourses={coursesTaken} setShowTitle={setShowTitle}/>
                     </Layout>
                 </Layout>
                 <Modal title="Getting Started!" open={signup} onCancel={handleClose} footer={[]}>
