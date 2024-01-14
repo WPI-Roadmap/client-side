@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import "./Dashboard.css";
-import { Button, ConfigProvider, Dropdown, Form, Input, Layout, Menu, Modal, Select, Image, theme } from "antd";
+import { Button, ConfigProvider, Dropdown, Space, Form, Input, Layout, Menu, Modal, Select, Image, theme } from "antd";
+import { DownOutlined } from '@ant-design/icons';
 
 import Joyride from 'react-joyride';
 import {
@@ -17,7 +18,6 @@ import Flow from "./Flow.js";
 import RequirementsSidebar from "./Requirements/Requirements.js";
 
 import Table from "../Table/Table.jsx";
-
 
 import 'reactflow/dist/style.css';
 import { auth, logout } from "../../Firebase.js";
@@ -39,7 +39,7 @@ function Dashboard() {
     };
     let [logoutUser, setLogout] = useState(false);
 
-   
+
 
     let [first, setFirst] = useState("");
     let [last, setLast] = useState("");
@@ -54,36 +54,9 @@ function Dashboard() {
             navigate("/");
             setLogout(false);
         }
-        
+
     }, [user]);
 
-
-    // const items2 = [
-    //     {
-    //         key: '1',
-    //         label: (
-    //             <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-    //                 1st menu item
-    //             </a>
-    //         ),
-    //     },
-    //     {
-    //         key: '2',
-    //         label: (
-    //             <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-    //                 2nd menu item
-    //             </a>
-    //         ),
-    //     },
-    //     {
-    //         key: '3',
-    //         label: (
-    //             <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-    //                 3rd menu item
-    //             </a>
-    //         ),
-    //     },
-    // ];
 
 
     const signupyayslay = () => {
@@ -107,14 +80,8 @@ function Dashboard() {
     let [nodes, setNodes] = useState({});
     let [edges, setEdges] = useState({});
     let [tab, setTab] = useState(0);
-
     let [signup, setSignup] = useState(false);
-
     let [colorSchema, setColorSchema] = useState("tot");
-
-
-    // const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
-
     let [department, setDepartment] = useState("Computer Science Department");
 
     let tempCourses = [];
@@ -128,7 +95,7 @@ function Dashboard() {
         tempCourses = [];
         tempEdges = [];
         let encounteredCodes = new Set();
-    
+
         for (var i = 0; i < data.Report_Entry.length; i++) {
             // console.log(data.Report_Entry[i]["Course_Section_Owner"])
             if (
@@ -224,21 +191,21 @@ function Dashboard() {
         setNodes(tempCourses);
     }
     useState(() => setCourses(), []);
-    useEffect(() => {setCourses()}, [department]);
+    useEffect(() => { setCourses() }, [department]);
 
     useState(() => {
         if (user == null) {
             return;
         }
         RequestUtils.get('/retrieve?id=' + user.uid).then((response) => response.json())
-        .then((data) => {
-            console.log(data)
-            if (data.status == 200) {
-                setSignup(false);
-            } else {
-                setSignup(true);
-            }
-        });
+            .then((data) => {
+                console.log(data)
+                if (data.status == 200) {
+                    setSignup(false);
+                } else {
+                    setSignup(true);
+                }
+            });
 
     });
 
@@ -333,7 +300,6 @@ function Dashboard() {
             }}
         >
             <Flow initialNodes={nodes} initialEdges={edges} colorSchema={colorSchema} />
-            {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
         </Content>
     );
 
@@ -362,7 +328,7 @@ function Dashboard() {
 
     const [runTour, setRunTour] = useState(false);
     useEffect(() => {
-        if(localStorage.getItem("visited") != true) {
+        if (localStorage.getItem("visited") != true) {
             setRunTour(true);
             localStorage.setItem("visited", true);
         }
@@ -374,26 +340,23 @@ function Dashboard() {
 
     const getUserInfo = () => {
         try {
-        RequestUtils.get('/retrieve?id=' + user.uid).then((response) => response.json())
-        .then((data) => {
-            console.log(data.status)
-            if (data.status == 200) {
-                setFirst(data.data.name);
-                setLast(data.data.last);
-                setYear(data.data.year);
-                setMajor(data.data.major);
-            }
-            if(data.status == 404) {
-                console.log(data.status)
-                setSignup(true);
-            }
-        });
-    } catch {
-        
+            RequestUtils.get('/retrieve?id=' + user.uid).then((response) => response.json())
+                .then((data) => {
+                    console.log(data.status)
+                    if (data.status == 200) {
+                        setFirst(data.data.name);
+                        setLast(data.data.last);
+                        setYear(data.data.year);
+                        setMajor(data.data.major);
+                    }
+                    if (data.status == 404) {
+                        console.log(data.status)
+                        setSignup(true);
+                    }
+                });
+        } catch {
+        }
     }
-        
-    }
-
 
     const handleTourEnd = () => {
         setRunTour(false);
@@ -428,11 +391,10 @@ function Dashboard() {
                     <Image
                         style={{ marginLeft: 10 }}
                         width={200}
+                        preview={false}
                         src="/logo-white.png"
                     />
-                    <Menu 
-                    
-                    />
+                    {/* <Dropdown /> */}
                 </Header>
                 <Layout style={{ height: "100vh" }}>
                     <Sider
@@ -480,8 +442,8 @@ function Dashboard() {
                                     onClick: () => {
                                         logout();
                                         setLogout(true);
-                                            
-                            
+
+
                                     }
 
                                 }
@@ -502,7 +464,7 @@ function Dashboard() {
                         </Header>
                         <Content
                             style={{
-                                padding: 20,
+                                padding: 25,
                                 minHeight: 280,
                                 background: "#F2F2F2",
                             }}
@@ -516,21 +478,91 @@ function Dashboard() {
                             ) : tab === 1 ? (
                                 <Table />
                             ) : (
-                                <>
-                                    <br>
-                                    </br>
-                                    <br>
-                                    </br>
-                                    <h1 className="mt-5 py-5">Profile</h1>
-                                    <h3>First Name: {first}</h3>
-                                    <h3>Last Name: {last}</h3>
-                                    <h3>Year: {year}</h3>
-                                    <h3>Major: {major}</h3>
-                                </>
+                                <div>
+                                    <h1 style={{ marginTop: 5 }}>Profile</h1>
+                                    <Form layout='vertical'>
+                                        <Form.Item label="First Name" style={{
+                                            width: "10%",
+                                            minWidth: "200px",
+                                            marginBottom: "10px",
+                                        }}>
+                                            <Input
+                                                size="medium"
+                                                width={200}
+                                                onChange={(e) => {
+                                                    setFirst(e.target.value)
+                                                }}
+                                                defaultValue={first}
+                                            />
+                                        </Form.Item>
+                                        <Form.Item label="Last Name" style={{
+                                            width: "10%",
+                                            minWidth: "200px",
+                                            marginBottom: "10px",
+                                        }}>
+                                            <Input
+                                                size="medium"
+                                                width={200}
+                                                onChange={(e) => {
+                                                    setLast(e.target.value)
+                                                }}
+                                                defaultValue={last}
+                                            />
+                                        </Form.Item>
+                                    </Form>
+
+                                    <Form layout="vertical">
+                                        <Form.Item label="Year" style={{
+                                            width: "10%",
+                                            minWidth: "200px",
+                                            marginBottom: "10px"
+                                        }}>
+                                            <Select
+                                                size="medium"
+                                                onChange={(value) => {
+                                                    setYear(value);
+                                                }}
+                                                defaultValue={year}
+                                            >
+                                                <Option value="Freshman">Freshman</Option>
+                                                <Option value="Sophomore">Sophomore</Option>
+                                                <Option value="Junior">Junior</Option>
+                                                <Option value="Senior">Senior</Option>
+                                            </Select>
+                                        </Form.Item>
+                                        <Form.Item label="Major" style={{
+                                            width: "10%",
+                                            minWidth: "200px",
+                                        }}>
+                                            <Select
+                                                size="medium"
+                                                onChange={(value) => {
+                                                    setMajor(value);
+                                                }}
+                                                defaultValue={major}
+                                            >
+                                                <Option value="Computer Science">Computer Science</Option>
+                                                <Option value="Mechanical Engineering">Mechanical Engineering</Option>
+                                                <Option value="Robotics Engineering">Robotics Engineering</Option>
+                                                <Option value="Electrical Engineering">Electrical Engineering</Option>
+                                                <Option value="Biomedical Engineering">Biomedical Engineering</Option>
+                                                <Option value="Chemical Engineering">Chemical Engineering</Option>
+                                                <Option value="Aerospace Engineering">Aerospace Engineering</Option>
+                                                <Option value="Civil Engineering">Civil Engineering</Option>
+                                                <Option value="Biology">Biology</Option>
+                                                <Option value="Physics">Physics</Option>
+                                                <Option value="IMGD">IMGD</Option>
+                                                <Option value="Humanities">Humanities</Option>
+                                            </Select>
+                                        </Form.Item>
+                                        <p>Following: n/a, Followers: n/a (Coming Soon!)</p>
+                                    </Form>
+                                </div>
+
                             )}
                         </Content>
-                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema}/>
-                </Layout>
+                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema} />
+                    </Layout>
                 </Layout>
                 <Modal title="Get Started!" open={signup} onCancel={handleClose} footer={[]}>
 
