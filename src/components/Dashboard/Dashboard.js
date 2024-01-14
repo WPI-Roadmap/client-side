@@ -128,7 +128,7 @@ function Dashboard() {
                     position: { x: x, y: y },
                     data: { label: data.Report_Entry[i]["Course_Title"] },
                     desc: data.Report_Entry[i]["Course_Description"],
-                    parentNode: courseCode.length == 3 ? 6 + data.Report_Entry.length : Number(courseCode.substring(0, 1)) - 1 + data.Report_Entry.length,
+                    // parentNode: courseCode.length == 3 ? 6 + data.Report_Entry.length : Number(courseCode.substring(0, 1)) - 1 + data.Report_Entry.length,
                     courseType: courseCode.length == 3 ? 7 : courseCode.substring(0, 1),
                     courseCode: data["Report_Entry"][i]["Course_Title"].slice(0, data["Report_Entry"][i]["Course_Title"].indexOf(" - ")).trim(),
                     professor: data["Report_Entry"][i]["Instructors"] ? data["Report_Entry"][i]["Instructors"] : "",
@@ -190,17 +190,17 @@ function Dashboard() {
         }
         id++;
 
-        for (let i = 1; i <= 7; i++) {
-            tempCourses.push({
-                id: i - 1 + data.Report_Entry.length,
-                data: { label: (i == 7 ? 'Grad' : i + '000') + 'Courses' },
-                // style: {  },
-                type: 'group',
-                courseType: i,
-                courseCode: "",
-                professor: ""
-            })
-        }
+        // for (let i = 1; i <= 7; i++) {
+        //     tempCourses.push({
+        //         id: i - 1 + data.Report_Entry.length,
+        //         data: { label: (i == 7 ? 'Grad' : i + '000') + 'Courses' },
+        //         // style: {  },
+        //         type: 'group',
+        //         courseType: i,
+        //         courseCode: "",
+        //         professor: ""
+        //     })
+        // }
 
         setEdges(tempEdges);
         setNodes(tempCourses);

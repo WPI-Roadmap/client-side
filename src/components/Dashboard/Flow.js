@@ -26,7 +26,7 @@ const elkOptions = {
     "elk.direction": "UP",
     "spacing.nodeNode": 25,
     "spacing.nodeNodeBetweenLayers": 25,
-    'elk.partitioning.activate': 'true',
+    // 'elk.partitioning.activate': 'true',
 };
 
 const lerpColor = (h1, h2, progress) => {
@@ -48,8 +48,7 @@ const getLayoutedElements = (nodes, edges, colorSchema, coursesTaken, profRating
       if(profRatings[node.professor] == NaN) console.log(node.professor);
       const projRating = 0.6 * profRating + 0.4 * courseRating;
 
-      let gradRe = new RegExp("[A-Z]{2,3} [5-9][0-9]*")
-      let style = {fontSize: "1rem", width: "auto", maxWidth:"7.5em"};
+      let style = {fontSize: "1.5rem", width: "auto", maxWidth:"10em"};
       switch (colorSchema) {
         case "tot":
           style.backgroundColor = lerpColor(hardColor, easyColor, projRating/100.0);
