@@ -101,7 +101,14 @@ body {
 
   background-color: black;
   color: white
+}
 
+.register {
+  border-radius: 25px!important;
+  margin-top: 0px!important;
+  /* padding-bottom: 10px!important;
+  padding-left: 10px!important;
+  padding-right: 10px!important; */
 }
 
 .note {

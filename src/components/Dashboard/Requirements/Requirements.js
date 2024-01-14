@@ -120,8 +120,9 @@ const depNames = {
 
 
 function RequirementsSidebar({changeDepartment, changeColorSchema, className="", userCourses}) {
-
     let [user, loading] = useAuthState(auth);
+
+    let [subject, setSubject] = useState('cs');
 
     // CS Req array
     let [csReqs, setCSReqs] = useState([0,0,0,0,0]);
@@ -135,40 +136,29 @@ function RequirementsSidebar({changeDepartment, changeColorSchema, className="",
     let [sciReqs, setSciReqs] = useState([0,0]);
     
     function addReq() {
-    for(let i = 0; i < userCourses.length; i++) {
-        if(userCourses[i].courseCode.substring(4,5) == "4") {
-            let temp = csReqs;
-            temp[0] += 1;
-            setCSReqs(temp);
+        let temp = csReqs;
+        for(let i = 0; i < userCourses.length; i++) {
+            const courseNum = userCourses[i].courseCode.match(/\d+/)[0];
+            if(courseNum.length === 4 && courseNum.substring(0, 1) === "4") {
+                temp[0] += 1;
+            }
+            if(CSRequirements["systems"].includes(userCourses[i].courseCode)) {
+                temp[1] += 1;
+            }
+            if(CSRequirements["design"].includes(userCourses[i].courseCode)) {
+                temp[2] += 1;
+            }
+            if(CSRequirements["theory"].includes(userCourses[i].courseCode)) {
+                temp[3] += 1;
+            } 
+            if(CSRequirements["socImps"].includes(userCourses[i].courseCode)) {
+                temp[4] += 1;
+            } 
         }
-        else if(CSRequirements["systems"].includes(userCourses[i].courseCode)) {
-            let temp = csReqs;
-            temp[1] += 1;
-            setCSReqs(temp);
-        } else if(CSRequirements["design"].includes(userCourses[i].courseCode)) {
-            let temp = csReqs;
-            temp[2] += 1;
-            setCSReqs(temp);
-        } else if(CSRequirements["theory"].includes(userCourses[i].courseCode)) {
-            let temp = csReqs;
-            temp[3] += 1;
-            setCSReqs(temp);
-        } else if(CSRequirements["socImps"].includes(userCourses[i].courseCode)) {
-            let temp = csReqs;
-            temp[4] += 1;
-            setCSReqs(temp);
-        } 
-
-
+        setCSReqs(temp);
     }
-}
-    useEffect(() => {
-        if(user) {
-            addReq();
-        }
-    }, [userCourses]);
     
-    const allRequirements = {
+    const getAllRequirements = () => { return {
     'cs': [
         {
             label: "4000-Level Courses",
@@ -282,15 +272,10 @@ function RequirementsSidebar({changeDepartment, changeColorSchema, className="",
             filled: 1
         }
     ]
-};
-
+}};
+    let allRequirements = getAllRequirements();
 
     const [requirements, setRequirements] = useState(allRequirements['cs'])
-
-    const setReqCategory = (category) => {
-        setRequirements(allRequirements[category])
-    }
-    
 
     function getAllCourses() {
         // RequestUtils.get("/retrieve?id=" + user.uid).then((response) => response.json())
@@ -311,10 +296,13 @@ function RequirementsSidebar({changeDepartment, changeColorSchema, className="",
 
     useEffect(() => {
         if(user) {
-            getAllCourses();
+            addReq();
+            allRequirements = getAllRequirements()
+            setRequirements(allRequirements[subject])
+            console.log(requirements);
         }
 
-    }, []);
+    }, [subject, userCourses]);
 
 
 
@@ -337,7 +325,7 @@ function RequirementsSidebar({changeDepartment, changeColorSchema, className="",
                     }}
                     onChange={(value) => {
                         changeDepartment(depNames[value]);
-                        setReqCategory(value);
+                        setSubject(value);
                     }}
                     options={courses}
                     className="course-select"

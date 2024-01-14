@@ -23,7 +23,7 @@ import { auth, logout } from "../../Firebase.js";
 import RequestUtils from "../../Utils/RequestUtils.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const data = require('./Courses.json');
+const data = require('./courses.json');
 const { Option } = Select;
 const { Header, Sider, Content } = Layout;
 
@@ -76,6 +76,23 @@ function Dashboard() {
         setSignup(false);
     }
 
+    const updateUser = () => {
+        let reqbody = {
+            first: first,
+            last: last,
+            email: user.email,
+            year: year,
+            major: major,
+        }
+
+        RequestUtils.post("/updateUser?id=" + user.uid, reqbody).then((response) => response.json()) 
+        .then((data) => {
+            alert("User updated successfully!");
+        });
+        
+
+    }
+
     const initialNodes = [
         { id: "1", position: { x: 0, y: 0 }, data: { label: "1" } },
         { id: "2", position: { x: 0, y: 100 }, data: { label: "2" } },
@@ -115,7 +132,7 @@ function Dashboard() {
                     position: { x: x, y: y },
                     data: { label: data.Report_Entry[i]["Course_Title"] },
                     desc: data.Report_Entry[i]["Course_Description"],
-                    parentNode: courseCode.length == 3 ? 6 + data.Report_Entry.length : Number(courseCode.substring(0, 1)) - 1 + data.Report_Entry.length,
+                    // parentNode: courseCode.length == 3 ? 6 + data.Report_Entry.length : Number(courseCode.substring(0, 1)) - 1 + data.Report_Entry.length,
                     courseType: courseCode.length == 3 ? 7 : courseCode.substring(0, 1),
                     courseCode: data["Report_Entry"][i]["Course_Title"].slice(0, data["Report_Entry"][i]["Course_Title"].indexOf(" - ")).trim(),
                     professor: data["Report_Entry"][i]["Instructors"] ? data["Report_Entry"][i]["Instructors"] : "",
@@ -176,17 +193,17 @@ function Dashboard() {
         }
         id++;
 
-        for (let i = 1; i <= 7; i++) {
-            tempCourses.push({
-                id: i - 1 + data.Report_Entry.length,
-                data: { label: (i == 7 ? 'Grad' : i + '000') + 'Courses' },
-                // style: {  },
-                type: 'group',
-                courseType: i,
-                courseCode: "",
-                professor: ""
-            })
-        }
+        // for (let i = 1; i <= 7; i++) {
+        //     tempCourses.push({
+        //         id: i - 1 + data.Report_Entry.length,
+        //         data: { label: (i == 7 ? 'Grad' : i + '000') + 'Courses' },
+        //         // style: {  },
+        //         type: 'group',
+        //         courseType: i,
+        //         courseCode: "",
+        //         professor: ""
+        //     })
+        // }
 
         setEdges(tempEdges);
         setNodes(tempCourses);
@@ -563,7 +580,12 @@ function Dashboard() {
                                                 <Option value="Humanities">Humanities</Option>
                                             </Select>
                                         </Form.Item>
-                                        <p>Following: n/a, Followers: n/a (Coming Soon!)</p>
+                                        <Form.Item>
+                                            <Button type="primary" htmlType="submit" onClick={() => { updateUser() }}>
+                                                Update
+                                            </Button>
+                                        </Form.Item>
+                                        {/* <p>Following: n/a, Followers: n/a (Coming Soon!)</p> */}
                                     </Form>
                                 </div>
                             )}
