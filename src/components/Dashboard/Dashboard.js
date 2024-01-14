@@ -19,7 +19,7 @@ import Table from "../Table/Table.jsx";
 
 import "reactflow/dist/style.css";
 
-const data = require('./Courses.json');
+const data = require('./courses.json');
 const { Option } = Select;
 const { Header, Sider, Content } = Layout;
 
@@ -69,20 +69,14 @@ function Dashboard() {
     // ];
 
     let [nodes, setNodes] = useState({});
-
     let [edges, setEdges] = useState({});
-
     let [tab, setTab] = useState(0);
-
     let [signup, setSignup] = useState(true);
-
     let [colorSchema, setColorSchema] = useState("tot");
-
 
     // const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
     let [department, setDepartment] = useState("Computer Science Department");
-
 
     let tempCourses = [];
     let tempEdges = [];
@@ -164,7 +158,6 @@ function Dashboard() {
                                     source: tempCourses[i].id,
                                     target: tempCourses[j].id
                                 });
-                                // console.log(tempCourses[i].data.label + " " + tempCourses[j].data.label)
                                 first += 2;
                                 second += 2;
                             }
@@ -302,6 +295,9 @@ function Dashboard() {
                         width={200}
                         src="/logo-white.png"
                     />
+                    <Menu 
+                    
+                    />
                 </Header>
                 <Layout style={{ height: "100vh" }}>
                     <Sider
@@ -360,8 +356,7 @@ function Dashboard() {
                             style={{
                                 padding: 20,
                                 minHeight: 280,
-                                background: colorBgContainer,
-                                borderRadius: borderRadiusLG,
+                                background: "#F2F2F2",
                             }}
                         >
                             {
