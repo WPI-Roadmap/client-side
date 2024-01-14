@@ -503,7 +503,9 @@ function Dashboard() {
                             ) : tab === 1 ? (
                                 <Table />
                             ) : (
-                                <div>
+                                <div style={{
+                                    margin: "30px",
+                                }}>
                                     <h1 style={{ marginTop: 5 }}>Profile</h1>
                                     <Form layout='vertical'>
                                         <Form.Item label="First Name" style={{
@@ -582,7 +584,7 @@ function Dashboard() {
                                         </Form.Item>
                                         <Form.Item>
                                             <Button type="primary" htmlType="submit" onClick={() => { updateUser() }}>
-                                                Update
+                                                Save
                                             </Button>
                                         </Form.Item>
                                         {/* <p>Following: n/a, Followers: n/a (Coming Soon!)</p> */}
