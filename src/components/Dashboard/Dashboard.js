@@ -295,22 +295,22 @@ function Dashboard() {
     let steps = [
         {
             target: ".one",
-            content: "Welcome to WPI Roadmap, here you can view your course roadmap based on course you have taken",
+            content: <span className="tour-item">Welcome to WPI Roadmap, here you can view your course roadmap based on course you have taken</span>,
             placement: "right"
         },
         {
             target: ".two",
-            content: "Here you can view and update your tracking sheet",
+            content: <span className="tour-item">Here you can view and update your tracking sheet</span>,
             placement: "right"
         },
         {
             target: ".three",
-            content: "Here you can view your profile information",
+            content: <span className="tour-item">Here you can view your profile information</span>,
             placement: "right"
         },
         {
             target: ".four",
-            content: "This sidebar shows the requirements you have fulfilled so far, and you can check out each category of requirements",
+            content: <span className="tour-item">This sidebar shows the requirements you have fulfilled so far, and you can check out each category of requirements</span>,
             placement: "right"
         },
     ];
@@ -339,6 +339,11 @@ function Dashboard() {
                 callback={(data) => {
                     if (data.action == "tour:end") {
                         handleTourEnd();
+                    }
+                }}
+                styles = {{
+                    options: {
+                        fontFamily: 'sans-serif',
                     }
                 }}
             />
