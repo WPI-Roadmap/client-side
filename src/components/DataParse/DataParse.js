@@ -17,7 +17,6 @@ function DataParse({ course_code }) {
         console.log("fired")
         for (let i = 0; i < data["Report_Entry"].length; i++) {
             // console.log(data["Report_Entry"][i]["Course_Title"].slice(0, data["Report_Entry"][i]["Course_Title"].indexOf(" - ")).trim());
-            console.log(data["Report_Entry"][i] && data["Report_Entry"][i]["Course_Title"].slice(0, data["Report_Entry"][i]["Course_Title"].indexOf(" - ")).trim(), course_code);
             if (data["Report_Entry"][i] && data["Report_Entry"][i]["Course_Title"].slice(0, data["Report_Entry"][i]["Course_Title"].indexOf(" - ")).trim() == course_code.trim() && data["Report_Entry"][i].Instructors != "") {
                 classComponents.push(<ClassCard key={i} index={i} />);
                 console.log("pushed");

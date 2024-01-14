@@ -44,6 +44,7 @@ function Dashboard() {
     let [last, setLast] = useState("");
     let [year, setYear] = useState("");
     let [major, setMajor] = useState("");
+    let [coursesTaken, setCoursesTaken] = useState([]);
 
 
 
@@ -168,8 +169,6 @@ function Dashboard() {
                 if (match !== null) courseCodes = courseCodes.concat(match);
             })
             // // Print the extracted course codes
-
-            if (courseCodes.length > 0) console.log(courseCodes);
 
             for (var j = 0; j < tempCourses.length; j++) {
                 if (courseCodes.length > 0) {
@@ -378,6 +377,7 @@ function Dashboard() {
                 setLast(data.data.last);
                 setYear(data.data.year);
                 setMajor(data.data.major);
+                setCoursesTaken(data.data.courses);
             } else {
                 setSignup(true);
             }
@@ -502,6 +502,7 @@ function Dashboard() {
                                     initialNodes={nodes}
                                     initialEdges={edges}
                                     colorSchema={colorSchema}
+                                    coursesTaken={coursesTaken}
                                 />
                             ) : tab === 1 ? (
                                 <Table />

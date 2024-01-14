@@ -25,8 +25,8 @@ const elkOptions = {
     // "elk.layered.mergeEdges": false,
     "elk.layered.nodePlacement.bk.fixedAlignment": "BALANCED",
     "elk.direction": "UP",
-    "spacing.nodeNode": 50,
-    "spacing.nodeNodeBetweenLayers": 50,
+    "spacing.nodeNode": 100,
+    "spacing.nodeNodeBetweenLayers": 100,
     'elk.partitioning.activate': 'true',
 };
 
@@ -34,10 +34,12 @@ const lerpColor = (h1, h2, progress) => {
   return `hsl(${h1 + Math.round((h2-h1) * progress)}, 100%, 80%)`
 }
 
-const getLayoutedElements = (nodes, edges, colorSchema, options = {}) => {
-  // console.log('changed ' + colorSchema)
+const getLayoutedElements = (nodes, edges, colorSchema, coursesTaken, options = {}) => {
+  console.log("changed");
   const easyColor = 125;
-  const hardColor = 0;
+  const hardColor = -50;
+  const codesLeft = new Set();
+  if (coursesTaken) coursesTaken.forEach((course) => codesLeft.add(course.courseCode));
   const graph = {
     id: 'root',
     layoutOptions: options,
@@ -46,30 +48,21 @@ const getLayoutedElements = (nodes, edges, colorSchema, options = {}) => {
       const profRating = profRatings[node.professor] ? profRatings[node.professor] : Math.round(Math.random() * 100);
       const projRating = 0.6 * profRating + 0.4 * courseRating;
       // console.log("rating " + projRating);
-      let style;
+      let style = {};
       switch (colorSchema) {
         case "tot":
-          style = {
-            backgroundColor: lerpColor(easyColor, hardColor, projRating/100),
-          }
+          style.backgroundColor = lerpColor(hardColor, easyColor, projRating/100);
         break;
         case "prof":
-          style = {
-            backgroundColor: lerpColor(easyColor, hardColor, profRating/100),
-          }
+          style.backgroundColor = lerpColor(hardColor, easyColor, profRating/100);
         break;
         case "course":
-          style = {
-            backgroundColor: lerpColor(easyColor, hardColor, courseRating/100),
-          }
+          style.backgroundColor = lerpColor(hardColor, easyColor, courseRating/100);
         break;
-        // case 'level':
-        //   style = {
-        //     backgroundColor: lerpColor(easyColor, hardColor, )
-        //   }
-        // break;
-        default:
-          style = {};
+      }
+      if (codesLeft.has(node.courseCode)) {
+        style.backgroundColor = "rgb(138, 138, 138)";
+        style.color = "rgb(225, 225, 225)";
       }
 
       return {
@@ -105,8 +98,7 @@ const getLayoutedElements = (nodes, edges, colorSchema, options = {}) => {
     .catch(console.error);
 };
 
-function FlowWithoutProvider({initialNodes, initialEdges, colorSchema}) {
-
+function FlowWithoutProvider({initialNodes, initialEdges, colorSchema, coursesTaken}) {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const { fitView } = useReactFlow();
@@ -120,19 +112,19 @@ function FlowWithoutProvider({initialNodes, initialEdges, colorSchema}) {
       const ns = useInitialNodes ? initialNodes : nodes;
       const es = useInitialNodes ? initialEdges : edges;
 
-      getLayoutedElements(ns, es, colorSchema, opts).then(({ nodes: layoutedNodes, edges: layoutedEdges }) => {
+      getLayoutedElements(ns, es, colorSchema, coursesTaken, opts).then(({ nodes: layoutedNodes, edges: layoutedEdges }) => {
         setNodes(layoutedNodes);
         setEdges(layoutedEdges);
 
         window.requestAnimationFrame(() => fitView());
       });
     },
-    [nodes, edges, initialNodes, initialEdges, colorSchema]
+    [nodes, edges, initialNodes, initialEdges, colorSchema, coursesTaken]
   );
 
   useLayoutEffect(() => {
     onLayout({ direction: 'UP', useInitialNodes: true });
-  }, [initialNodes, initialEdges, colorSchema]);
+  }, [initialNodes, initialEdges, colorSchema, coursesTaken]);
 
   // Calculate the initial layout on mount.
   useLayoutEffect(() => {
