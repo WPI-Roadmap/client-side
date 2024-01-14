@@ -63,6 +63,11 @@ const getLayoutedElements = (nodes, edges, colorSchema, options = {}) => {
             backgroundColor: lerpColor(easyColor, hardColor, courseRating/100),
           }
         break;
+        // case 'level':
+        //   style = {
+        //     backgroundColor: lerpColor(easyColor, hardColor, )
+        //   }
+        // break;
         default:
           style = {};
       }
@@ -122,12 +127,12 @@ function FlowWithoutProvider({initialNodes, initialEdges, colorSchema}) {
         window.requestAnimationFrame(() => fitView());
       });
     },
-    [nodes, edges, colorSchema]
+    [nodes, edges, initialNodes, initialEdges, colorSchema]
   );
 
   useLayoutEffect(() => {
     onLayout({ direction: 'UP', useInitialNodes: true });
-  }, [colorSchema]);
+  }, [initialNodes, initialEdges, colorSchema]);
 
   // Calculate the initial layout on mount.
   useLayoutEffect(() => {

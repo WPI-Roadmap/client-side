@@ -2,12 +2,14 @@
 import { Button, Form, Input } from "antd";
 import { auth, logInWithEmailAndPassword, loginWithMicrosoft, registerWithEmailAndPassword } from "../../../Firebase";
 // IMAGES
-import publicLogo from "../../../assets/images/public.png";
+// import publicLogo from "../../../assets/images/public.png";
 import microsoft from "../../../assets/images/Microsoft_icon.svg.png";
 import { useNavigate } from "react-router";
 import "./Login.css";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+
+import publicLogo from "../../../assets/images/logo-black.png";
 
 // ADMIN LOGIN VIEW
 function LoginView(props) {
