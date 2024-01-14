@@ -37,6 +37,7 @@ function Dashboard() {
     const handleClose = () => {
         setSignup(false);
     };
+    let [logoutUser, setLogout] = useState(false);
 
    
 
@@ -46,7 +47,15 @@ function Dashboard() {
     let [major, setMajor] = useState("");
 
 
-
+    console.log(user)
+    useEffect(() => {
+        console.log(logoutUser)
+        if (user == null && logoutUser) {
+            navigate("/");
+            setLogout(false);
+        }
+        
+    }, [user]);
 
 
     // const items2 = [
@@ -101,7 +110,7 @@ function Dashboard() {
 
     let [tab, setTab] = useState(0);
 
-    let [signup, setSignup] = useState(true);
+    let [signup, setSignup] = useState(false);
 
     let [colorSchema, setColorSchema] = useState("tot");
 
@@ -371,13 +380,15 @@ function Dashboard() {
         
         RequestUtils.get('/retrieve?id=' + user.uid).then((response) => response.json())
         .then((data) => {
-            console.log(data)
+            console.log(data.status)
             if (data.status == 200) {
                 setFirst(data.data.name);
                 setLast(data.data.last);
                 setYear(data.data.year);
                 setMajor(data.data.major);
-            } else {
+            }
+            if(data.status == 404) {
+                console.log(data.status)
                 setSignup(true);
             }
         });
@@ -465,7 +476,9 @@ function Dashboard() {
                                     label: "Logout",
                                     onClick: () => {
                                         logout();
-                                        navigate("/");
+                                        setLogout(true);
+                                            
+                            
                                     }
 
                                 }
