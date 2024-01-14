@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import "./Dashboard.css";
 import { Button, ConfigProvider, Dropdown, Space, Form, Input, Layout, Menu, Modal, Select, Image, theme } from "antd";
-import { DownOutlined } from '@ant-design/icons';
+import { BiLogOut } from "react-icons/bi";
 
 import Joyride from 'react-joyride';
 import {
@@ -196,14 +196,14 @@ function Dashboard() {
             return;
         }
         RequestUtils.get('/retrieve?id=' + user.uid).then((response) => response.json())
-        .then((data) => {
-            console.log(data)
-            if (data.status == 200) {
-                setSignup(false);
-            } else {
-                setSignup(true);
-            }
-        });
+            .then((data) => {
+                console.log(data)
+                if (data.status == 200) {
+                    setSignup(false);
+                } else {
+                    setSignup(true);
+                }
+            });
 
     });
 
@@ -439,7 +439,7 @@ function Dashboard() {
                                 },
                                 {
                                     key: "4",
-                                    icon: <LogoutOutlined />,
+                                    icon: <BiLogOut style={{rotate:180}} />,
                                     label: "Logout",
                                     onClick: () => {
                                         logout();
@@ -462,7 +462,9 @@ function Dashboard() {
                                 height: 0,
                             }}
                         >
+                            <Menu>
 
+                            </Menu>
                         </Header>
                         <Content
                             style={{
