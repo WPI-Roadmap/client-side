@@ -101,14 +101,6 @@ const colors = [
         value: "course",
         label: "Course Rating"
     },
-    {
-        value: "area",
-        label: "Area"
-    },
-    {
-        value: "diff",
-        label: "Difficulty"
-    },
 ]
 
 const depNames = {
@@ -300,6 +292,8 @@ function RequirementsSidebar({changeDepartment, changeColorSchema, className="",
         // });
     }
 
+
+
     useEffect(() => {
         if(user) {
             addReq();
@@ -386,13 +380,13 @@ function RequirementsSidebar({changeDepartment, changeColorSchema, className="",
                     options={colors}
                     className="color-select"
                 />
-                <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                    <div style={{  }}>Show Course Titles</div>
+             
+                <div style={{marginBottom: 3 }}>Show Course Titles</div>
                     <Switch style={{
                         width: 5,
                     }}
                         defaultChecked onChange={(value) => {setShowTitle(value);}} />
-                </div>
+
             </div>
         </Sider>
     )
