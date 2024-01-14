@@ -67,7 +67,11 @@ function Dashboard() {
             navigate("/");
             setLogout(false);
         }
-    }, [user]);
+        if(!user && !loading) {
+            navigate("/");
+        }
+
+    }, [user, loading]);
 
     useEffect(() => {
         setReqSidebar(
@@ -569,7 +573,9 @@ function Dashboard() {
                             ) : tab === 1 ? (
                                 <Table />
                             ) : (
-                                <div>
+                                <div style={{
+                                    margin: "30px",
+                                }}>
                                     <h1 style={{ marginTop: 5 }}>Profile</h1>
                                     <Form layout="vertical">
                                         <Form.Item
@@ -691,14 +697,8 @@ function Dashboard() {
                                             </Select>
                                         </Form.Item>
                                         <Form.Item>
-                                            <Button
-                                                type="primary"
-                                                htmlType="submit"
-                                                onClick={() => {
-                                                    updateUser();
-                                                }}
-                                            >
-                                                Update
+                                            <Button type="primary" htmlType="submit" onClick={() => { updateUser() }}>
+                                                Save
                                             </Button>
                                         </Form.Item>
                                         {/* <p>Following: n/a, Followers: n/a (Coming Soon!)</p> */}

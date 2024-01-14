@@ -137,23 +137,27 @@ function RequirementsSidebar({changeDepartment, changeColorSchema, className="",
     
     function addReq() {
         let temp = csReqs;
-        for(let i = 0; i < userCourses.length; i++) {
-            const courseNum = userCourses[i].courseCode.match(/\d+/)[0];
-            if(courseNum.length === 4 && courseNum.substring(0, 1) === "4") {
-                temp[0] += 1;
+        try {
+            for(let i = 0; i < userCourses.length; i++) {
+                const courseNum = userCourses[i].courseCode.match(/\d+/)[0];
+                if(courseNum.length === 4 && courseNum.substring(0, 1) === "4") {
+                    temp[0] += 1;
+                }
+                if(CSRequirements["systems"].includes(userCourses[i].courseCode)) {
+                    temp[1] += 1;
+                }
+                if(CSRequirements["design"].includes(userCourses[i].courseCode)) {
+                    temp[2] += 1;
+                }
+                if(CSRequirements["theory"].includes(userCourses[i].courseCode)) {
+                    temp[3] += 1;
+                } 
+                if(CSRequirements["socImps"].includes(userCourses[i].courseCode)) {
+                    temp[4] += 1;
+                } 
             }
-            if(CSRequirements["systems"].includes(userCourses[i].courseCode)) {
-                temp[1] += 1;
-            }
-            if(CSRequirements["design"].includes(userCourses[i].courseCode)) {
-                temp[2] += 1;
-            }
-            if(CSRequirements["theory"].includes(userCourses[i].courseCode)) {
-                temp[3] += 1;
-            } 
-            if(CSRequirements["socImps"].includes(userCourses[i].courseCode)) {
-                temp[4] += 1;
-            } 
+        } catch {
+            
         }
         setCSReqs(temp);
     }
