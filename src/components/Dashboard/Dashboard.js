@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import "./Dashboard.css";
 import { Button, ConfigProvider, Dropdown, Form, Input, Layout, Menu, Modal, Select, Image, theme } from "antd";
@@ -19,7 +19,7 @@ import Table from "../Table/Table.jsx";
 
 import "reactflow/dist/style.css";
 
-const data = require('./courses.json');
+const data = require('./Courses.json');
 const { Option } = Select;
 const { Header, Sider, Content } = Layout;
 
@@ -76,6 +76,8 @@ function Dashboard() {
 
     let [signup, setSignup] = useState(true);
 
+    let [colorSchema, setColorSchema] = useState("tot");
+
 
     // const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
@@ -90,11 +92,20 @@ function Dashboard() {
     let y = 0;
 
     function setCourses() {
-        for (let i = 0; i < data.Report_Entry.length; i++) {
+        tempCourses = [];
+        tempEdges = [];
+        let encounteredCodes = new Set();
+    
+        for (var i = 0; i < data.Report_Entry.length; i++) {
             // console.log(data.Report_Entry[i]["Course_Section_Owner"])
-            if (data.Report_Entry[i]["Course_Section_Owner"] == department && !courseTracking.includes(data.Report_Entry[i]["Course_Title"])) {
-                courseTracking.push(data.Report_Entry[i]["Course_Title"])
-                let courseCode = data.Report_Entry[i]["Course_Title"].match(/\d+/)[0];
+            if (
+                data.Report_Entry[i]["Course_Section_Owner"] == department &&
+                !courseTracking.includes(data.Report_Entry[i]["Course_Title"])
+            ) {
+                courseTracking.push(data.Report_Entry[i]["Course_Title"]);
+                let courseCode =
+                    data.Report_Entry[i]["Course_Title"].match(/\d+/)[0];
+                encounteredCodes.add(data["Report_Entry"][i]["Course_Title"].slice(0, data["Report_Entry"][i]["Course_Title"].search(/\s[0-9]*\s-\s/g)).trim())
                 tempCourses.push({
                     id: id.toString(),
                     position: { x: x, y: y },
@@ -122,18 +133,26 @@ function Dashboard() {
             const courseCodeRegex = /CS\s\d+/g;
 
             // Use the match method to find all occurrences of the pattern in the text
-            const courseCodes = text.match(courseCodeRegex);
-
+            let courseCodes = [];
+            encounteredCodes.forEach((code) => {
+                const regex = new RegExp(code + "\\s\\d+");
+                const match = text.match(regex);
+                if (match !== null) courseCodes = courseCodes.concat(match);
+            })
             // // Print the extracted course codes
 
+            if (courseCodes.length > 0) console.log(courseCodes);
 
-            for (let j = 0; j < tempCourses.length; j++) {
-                if (courseCodes != null) {
-
-                    for (let k = 0; k < courseCodes.length; k++) {
-
-                        if (tempCourses[j].data.label.match(courseCodeRegex) != null) {
-                            if (tempCourses[j].data.label.match(courseCodeRegex) == courseCodes[k]) {
+            for (var j = 0; j < tempCourses.length; j++) {
+                if (courseCodes.length > 0) {
+                    for (var k = 0; k < courseCodes.length; k++) {
+                        if (
+                            tempCourses[j].courseCode !=
+                            null
+                        ) {
+                            if (
+                                tempCourses[j].courseCode == courseCodes[k]
+                            ) {
                                 tempEdges.push({
                                     id: 'e' + first.toString() + '-' + second.toString(),
                                     type: 'smoothstep',
@@ -173,6 +192,7 @@ function Dashboard() {
         setNodes(tempCourses);
     }
     useState(() => setCourses(), []);
+    useEffect(() => {setCourses()}, [department]);
 
     const services = [
         {
@@ -346,7 +366,7 @@ function Dashboard() {
                         >
                             {
                                 tab === 0 ?
-                                    <Flow initialNodes={nodes} initialEdges={edges} /> :
+                                    <Flow initialNodes={nodes} initialEdges={edges} colorSchema={colorSchema}/> :
                                     tab === 1 ? <Table />
                                         : <>
                                             <h1>Profile</h1>
@@ -358,8 +378,8 @@ function Dashboard() {
                             }
 
                         </Content>
-                        <RequirementsSidebar switchTree={() => { }} />
-                    </Layout>
+                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema}/>
+                </Layout>
                 </Layout>
                 <Modal title="Get Started!" open={signup} onClose={handleClose} footer={[]}>
 
