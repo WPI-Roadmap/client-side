@@ -580,7 +580,7 @@ function Dashboard() {
                                                 Update
                                             </Button>
                                         </Form.Item>
-                                        <p>Following: n/a, Followers: n/a (Coming Soon!)</p>
+                                        {/* <p>Following: n/a, Followers: n/a (Coming Soon!)</p> */}
                                     </Form>
                                 </div>
 

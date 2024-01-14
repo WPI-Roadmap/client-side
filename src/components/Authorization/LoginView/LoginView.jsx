@@ -32,7 +32,7 @@ function LoginView(props) {
 
   const login = (values) => {
     try {
-      if (isEqualPW === false) {
+      if (tab && !isEqualPW) {
         throw new Error("Passwords do not match");
       }
       tab === false
