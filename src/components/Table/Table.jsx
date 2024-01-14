@@ -147,15 +147,16 @@ const App = () => {
     };
 
     const defaultColumns = [
-        {
-            title: 'UserID',
-            dataIndex: "id",
-            width: '30%',
-        },
+        // {
+        //     title: 'UserID',
+        //     dataIndex: "id",
+        //     width: '30%',
+        // },
         {
             title: 'Course Title',
             dataIndex: 'course',
-            width: '10%',
+            width: '30%',
+            sorter: true,
         },
         {
             title: 'Term',
