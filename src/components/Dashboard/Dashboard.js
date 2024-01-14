@@ -85,11 +85,11 @@ function Dashboard() {
             major: major,
         }
 
-        RequestUtils.post("/updateUser?id=" + user.uid, reqbody).then((response) => response.json()) 
-        .then((data) => {
-            alert("User updated successfully!");
-        });
-        
+        RequestUtils.post("/updateUser?id=" + user.uid, reqbody).then((response) => response.json())
+            .then((data) => {
+                alert("User updated successfully!");
+            });
+
 
     }
 
@@ -428,49 +428,81 @@ function Dashboard() {
                         style={{}}
                         collapsedWidth={55}
                     >
-                        <div className="demo-logo-vertical" />
                         <Menu
                             theme="dark"
                             mode="inline"
                             defaultSelectedKeys={['1']}
-                            items={[
-                                {
-                                    key: '1',
-                                    icon: <ApartmentOutlined />,
-                                    label: 'Roadmap',
-                                    onClick: () => {
-                                        setTab(0);
-                                    }
-                                },
-                                {
-                                    key: '2',
-                                    icon: <FileTextOutlined />,
-                                    label: 'Tracking Sheet',
-                                    onClick: () => {
-                                        setTab(1);
-                                    }
-                                },
-                                {
-                                    key: '3',
-                                    icon: <UserOutlined />,
-                                    label: 'Profile',
-                                    onClick: () => {
-                                        setTab(2);
-                                    },
-                                    className: 'three',
-                                },
-                                {
-                                    key: "4",
-                                    icon: <BiLogOut style={{ transform: 'rotate(90deg)' }} />,
-                                    label: "Logout",
-                                    onClick: () => {
-                                        logout();
-                                        setLogout(true);
-                                    }
+                            style={{}}
+                        >
 
-                                }
-                            ]}
-                        />
+                            <Menu.Item
+                                title="roadmap"
+                                key="1"
+                            >
+                                <ApartmentOutlined />
+                                <span>Roadmap</span>
+                            </Menu.Item>
+                            <Menu.Item
+                                title="roadmap"
+                                key="2"
+                            >
+                                <FileTextOutlined />
+                                <span>Tracking Sheet</span>
+                            </Menu.Item>
+                            <Menu.Item
+                                title="roadmap"
+                                style={{
+                                }}
+                                key="3"
+                            >
+                                <UserOutlined />
+                                <span>Profile</span>
+                            </Menu.Item>
+                            <Menu.Item
+                                title="logout"
+                                key="4"
+                            >
+                                <BiLogOut style={{ marginRight: 10.5 }} />
+                                <span>Logout</span>
+                            </Menu.Item>
+                            {/* items={[
+                                    {
+                                        key: '1',
+                                        icon: <ApartmentOutlined />,
+                                        label: 'Roadmap',
+                                        onClick: () => {
+                                            setTab(0);
+                                        }
+                                    },
+                                    {
+                                        key: '2',
+                                        icon: <FileTextOutlined />,
+                                        label: 'Tracking Sheet',
+                                        onClick: () => {
+                                            setTab(1);
+                                        }
+                                    },
+                                    {
+                                        key: '3',
+                                        icon: <UserOutlined />,
+                                        label: 'Profile',
+                                        onClick: () => {
+                                            setTab(2);
+                                        },
+                                        className: 'three',
+                                    },
+                                    {
+                                        key: "4",
+                                        icon: <BiLogOut style={{ transform: 'rotate(90deg)' }} />,
+                                        label: "Logout",
+                                        onClick: () => {
+                                            logout();
+                                            setLogout(true);
+                                        }
+
+                                    }
+                                ]} */}
+                        </Menu>
                     </Sider>
 
                     <Layout>
@@ -488,7 +520,7 @@ function Dashboard() {
                         </Header>
                         <Content
                             style={{
-                                padding: 15,
+                                padding: 20,
                                 minHeight: 280,
                                 background: "#F2F2F2",
                             }}
@@ -503,9 +535,7 @@ function Dashboard() {
                             ) : tab === 1 ? (
                                 <Table />
                             ) : (
-                                <div style={{
-                                    margin: "30px",
-                                }}>
+                                <div>
                                     <h1 style={{ marginTop: 5 }}>Profile</h1>
                                     <Form layout='vertical'>
                                         <Form.Item label="First Name" style={{
