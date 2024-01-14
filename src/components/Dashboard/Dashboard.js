@@ -45,14 +45,14 @@ function Dashboard() {
     let [major, setMajor] = useState("");
 
 
-    console.log(user)
+    // console.log(user)
     useEffect(() => {
-        console.log(logoutUser)
+        // console.log(logoutUser)
         if (user == null && logoutUser) {
             navigate("/");
             setLogout(false);
         }
-        
+
     }, [user]);
 
 
@@ -237,7 +237,6 @@ function Dashboard() {
                     setSignup(true);
                 }
             });
-
     });
 
     const services = [
@@ -372,24 +371,23 @@ function Dashboard() {
 
     const getUserInfo = () => {
         try {
-        RequestUtils.get('/retrieve?id=' + user.uid).then((response) => response.json())
-        .then((data) => {
-            console.log(data.status)
-            if (data.status == 200) {
-                setFirst(data.data.name);
-                setLast(data.data.last);
-                setYear(data.data.year);
-                setMajor(data.data.major);
-            }
-            if(data.status == 404) {
-                console.log(data.status)
-                setSignup(true);
-            }
-        });
-    } catch {
-        
-    }
-        
+            RequestUtils.get('/retrieve?id=' + user.uid).then((response) => response.json())
+                .then((data) => {
+                    console.log(data.status)
+                    if (data.status == 200) {
+                        setFirst(data.data.name);
+                        setLast(data.data.last);
+                        setYear(data.data.year);
+                        setMajor(data.data.major);
+                    }
+                    if (data.status == 404) {
+                        console.log(data.status)
+                        setSignup(true);
+                    }
+                });
+        } catch {
+            console.log("Error in retrieving user info.")
+        }
     }
 
 
@@ -478,8 +476,8 @@ function Dashboard() {
                                     onClick: () => {
                                         logout();
                                         setLogout(true);
-                                            
-                            
+
+
                                     }
 
                                 }
@@ -515,7 +513,8 @@ function Dashboard() {
                                 <Table />
                             ) : (
                                 <>
-                                    <Profile first={first} setFirst={setFirst} last={last} setLast={setLast} year={year} setYear={setYear} major={major} setMajor={setMajor} />
+                                    <Profile  />
+                                    {/*first={first} setFirst={setFirst} last={last} setLast={setLast} year={year} setYear={setYear} major={major} setMajor={setMajor} */}
                                 </>
                             )}
                         </Content>
