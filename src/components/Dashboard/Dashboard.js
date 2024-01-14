@@ -42,6 +42,104 @@ const data = require("./courses.json");
 const { Option } = Select;
 const { Header, Sider, Content } = Layout;
 
+const usesForEachTabDesc = (
+    <div
+        style={{
+            maxWidth: "600px",
+            overflowY: "auto",
+            maxHeight: "400px",
+        }}
+    >
+        <div id="courseRoadmap" class="tab">
+            <h2
+                style={{
+                    margin: 0,
+                    marginBottom: '0'
+                }}
+            >
+                Course Roadmap
+            </h2>
+            <p>
+                <strong>Overview</strong>
+                <br />
+                In the "Course Roadmap" tab, discover a visual representation of
+                your academic journey. Navigate through the courses required for
+                your program, view prerequisites, and plan your path to
+                graduation effortlessly.
+            </p>
+            <p>
+                <strong>Filter and Explore</strong>
+                <br />
+                Utilize the filtering options to focus on specific subjects or
+                requirements. Tailor your roadmap to align with your academic
+                interests and degree goals.
+            </p>
+            <p>
+                <strong>Color-Coded Guidance</strong>
+                <br />
+                Benefit from our color-coded system indicating previous student
+                ratings and difficulty levels. Quickly identify highly
+                recommended courses and assess the academic challenges
+                associated with each class.
+            </p>
+            <p>
+                <strong>Prerequisite Dependencies</strong>
+                <br />
+                Easily identify and understand prerequisite dependencies,
+                ensuring a seamless progression through your academic program.
+            </p>
+        </div>
+
+        <div id="trackingSheet" class="tab">
+            <h2
+                style={{
+                    marginTop: '2.5rem',
+                    marginBottom: '0'
+                }}
+            >Tracking Sheet</h2>
+            <p>
+                <strong>Personalized Progress</strong>
+                <br />
+                The "Tracking Sheet" tab provides a personalized overview of
+                your academic progress. Track completed courses, upcoming
+                classes, and any outstanding requirements all in one place.
+            </p>
+            <p>
+                <strong>Credit Tracking</strong>
+                <br />
+                Monitor your earned credits, ensuring you stay on track towards
+                meeting the credit requirements for your degree.
+            </p>
+            <p>
+                <strong>Grade Tracker</strong>
+                <br />
+                Record your grades for each course, enabling you to assess your
+                academic performance over time.
+            </p>
+            <p>
+                <strong>Advisory Notes</strong>
+                <br />
+                Add advisory notes to keep track of important information,
+                deadlines, or insights from academic advisors.
+            </p>
+        </div>
+
+        <div id="profile" class="tab">
+            <h2
+                style={{
+                    marginTop: '2.5rem'
+                }}
+            >Profile</h2>
+            <p>
+                <strong>Personal Information</strong>
+                <br />
+                In the "Profile" tab, manage and update your personal
+                information. This includes Your major and graduating class
+            </p>
+        </div>
+    </div>
+);
+
 function Dashboard() {
     const [collapsed, setCollapsed] = useState(false);
 
@@ -67,10 +165,9 @@ function Dashboard() {
             navigate("/");
             setLogout(false);
         }
-        if(!user && !loading) {
+        if (!user && !loading) {
             navigate("/");
         }
-
     }, [user, loading]);
 
     useEffect(() => {
@@ -440,11 +537,12 @@ function Dashboard() {
                 }}
             >
                 <Header
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                }}>
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                    }}
+                >
                     <div>
                         <Button
                             type="text"
@@ -475,16 +573,16 @@ function Dashboard() {
                             src="/logo-white.png"
                         />
                     </div>
-                    <Popover
-                        content={<div>Hello</div>}
-                    >
+                    <Popover content={usesForEachTabDesc}>
                         <InfoCircleFilled
-                        style={{
-                            background: "transparent",
-                            color: "white",
-                            borderWidth: 0,
-                            justifySelf: "flex-end"
-                        }}/>
+                            style={{
+                                background: "transparent",
+                                color: "white",
+                                borderWidth: 0,
+                                justifySelf: "flex-end",
+                                fontSize: "1.25rem",
+                            }}
+                        />
                     </Popover>
                 </Header>
                 <Layout style={{ height: "100vh" }}>
@@ -573,9 +671,11 @@ function Dashboard() {
                             ) : tab === 1 ? (
                                 <Table />
                             ) : (
-                                <div style={{
-                                    margin: "30px",
-                                }}>
+                                <div
+                                    style={{
+                                        margin: "30px",
+                                    }}
+                                >
                                     <h1 style={{ marginTop: 5 }}>Profile</h1>
                                     <Form layout="vertical">
                                         <Form.Item
@@ -697,7 +797,13 @@ function Dashboard() {
                                             </Select>
                                         </Form.Item>
                                         <Form.Item>
-                                            <Button type="primary" htmlType="submit" onClick={() => { updateUser() }}>
+                                            <Button
+                                                type="primary"
+                                                htmlType="submit"
+                                                onClick={() => {
+                                                    updateUser();
+                                                }}
+                                            >
                                                 Save
                                             </Button>
                                         </Form.Item>
