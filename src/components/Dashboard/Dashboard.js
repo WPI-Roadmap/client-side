@@ -10,6 +10,7 @@ import {
     ApartmentOutlined,
     FileTextOutlined,
     UserOutlined,
+    LogoutOutlined,
 } from "@ant-design/icons";
 import ReactFlow, { Background, MarkerType } from "reactflow";
 import Flow from "./Flow.js";
@@ -17,7 +18,11 @@ import RequirementsSidebar from "./Requirements/Requirements.js";
 
 import Table from "../Table/Table.jsx";
 
-import "reactflow/dist/style.css";
+
+import 'reactflow/dist/style.css';
+import { auth, logout } from "../../Firebase.js";
+import RequestUtils from "../../Utils/RequestUtils.js";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const data = require('./courses.json');
 const { Option } = Select;
@@ -27,14 +32,22 @@ function Dashboard() {
 
     const [collapsed, setCollapsed] = useState(false);
 
+    let [user, loading] = useAuthState(auth);
+
     const handleClose = () => {
         setSignup(false);
-    }
+    };
+
+   
 
     let [first, setFirst] = useState("");
     let [last, setLast] = useState("");
     let [year, setYear] = useState("");
     let [major, setMajor] = useState("");
+
+
+
+
 
     // const items2 = [
     //     {
@@ -63,16 +76,31 @@ function Dashboard() {
     //     },
     // ];
 
-    // const initialNodes = [
-    //     { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
-    //     { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
-    // ];
+
+    const signupyayslay = () => {
+        let reqbody = {
+            first: first,
+            last: last,
+            email: user.email,
+            year: year,
+            major: major,
+        }
+        RequestUtils.post('/user?id=' + user.uid, reqbody)
+
+        setSignup(false);
+    }
+
+    const initialNodes = [
+        { id: "1", position: { x: 0, y: 0 }, data: { label: "1" } },
+        { id: "2", position: { x: 0, y: 100 }, data: { label: "2" } },
+    ];
 
     let [nodes, setNodes] = useState({});
     let [edges, setEdges] = useState({});
     let [tab, setTab] = useState(0);
     let [signup, setSignup] = useState(true);
     let [colorSchema, setColorSchema] = useState("tot");
+
 
     // const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
@@ -187,6 +215,22 @@ function Dashboard() {
     useState(() => setCourses(), []);
     useEffect(() => {setCourses()}, [department]);
 
+    useState(() => {
+        if (user == null) {
+            return;
+        }
+        RequestUtils.get('/retrieve?id=' + user.uid).then((response) => response.json())
+        .then((data) => {
+            console.log(data)
+            if (data.status == 200) {
+                setSignup(false);
+            } else {
+                setSignup(true);
+            }
+        });
+
+    });
+
     const services = [
         {
             id: 'frontend-app',
@@ -263,6 +307,84 @@ function Dashboard() {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
 
+    const navigate = useNavigate();
+
+    let [q, setQ] = useState(1);
+
+    let windowContent = (
+        <Content
+            style={{
+                margin: 0, //'24px 16px',
+                padding: 24,
+                minHeight: 280,
+                background: colorBgContainer,
+                borderRadius: borderRadiusLG,
+            }}
+        >
+            <Flow initialNodes={nodes} initialEdges={edges} colorSchema={colorSchema} />
+            {/* <ReactFlow nodes={nodes} edges={initialEdges} /> */}
+        </Content>
+    );
+
+    let steps = [
+        {
+            target: ".one",
+            content: "Welcome to WPI Roadmap, here you can view your course roadmap based on course you have taken",
+            placement: "right"
+        },
+        {
+            target: ".two",
+            content: "Here you can view and update your tracking sheet",
+            placement: "right"
+        },
+        {
+            target: ".three",
+            content: "Here you can view your profile information",
+            placement: "right"
+        },
+        {
+            target: ".four",
+            content: "This sidebar shows the requirements you have fulfilled so far, and you can check out each category of requirements",
+            placement: "right"
+        },
+    ];
+
+    const [runTour, setRunTour] = useState(false);
+    useEffect(() => {
+        if(localStorage.getItem("visited") != true) {
+            setRunTour(true);
+            localStorage.setItem("visited", true);
+        }
+        if (user != null) {
+            getUserInfo();
+        }
+
+    }, [user]);
+
+    const getUserInfo = () => {
+        try {
+        RequestUtils.get('/retrieve?id=' + user.uid).then((response) => response.json())
+        .then((data) => {
+            console.log(data)
+            if (data.status == 200) {
+                setFirst(data.data.name);
+                setLast(data.data.last);
+                setYear(data.data.year);
+                setMajor(data.data.major);
+            } else {
+                setSignup(true);
+            }
+        });
+    } catch {
+        
+    }
+        
+    }
+
+
+    const handleTourEnd = () => {
+        setRunTour(false);
+    };
 
     return (
         <>
@@ -335,7 +457,18 @@ function Dashboard() {
                                     label: 'Profile',
                                     onClick: () => {
                                         setTab(2);
+                                    },
+                                    className: 'three',
+                                },
+                                {
+                                    key: "4",
+                                    icon: <LogoutOutlined />,
+                                    label: "Logout",
+                                    onClick: () => {
+                                        logout();
+                                        navigate("/");
                                     }
+
                                 }
                             ]}
                         />
@@ -359,24 +492,32 @@ function Dashboard() {
                                 background: "#F2F2F2",
                             }}
                         >
-                            {
-                                tab === 0 ?
-                                    <Flow initialNodes={nodes} initialEdges={edges} colorSchema={colorSchema}/> :
-                                    tab === 1 ? <Table />
-                                        : <>
-                                            <h1>Profile</h1>
-                                            <h3>First Name: {first}</h3>
-                                            <h3>Last Name: {last}</h3>
-                                            <h3>Year: {year}</h3>
-                                            <h3>Major: {major}</h3>
-                                        </>
-                            }
-
+                            {tab === 0 ? (
+                                <Flow
+                                    initialNodes={nodes}
+                                    initialEdges={edges}
+                                    colorSchema={colorSchema}
+                                />
+                            ) : tab === 1 ? (
+                                <Table />
+                            ) : (
+                                <>
+                                    <br>
+                                    </br>
+                                    <br>
+                                    </br>
+                                    <h1 className="mt-5 py-5">Profile</h1>
+                                    <h3>First Name: {first}</h3>
+                                    <h3>Last Name: {last}</h3>
+                                    <h3>Year: {year}</h3>
+                                    <h3>Major: {major}</h3>
+                                </>
+                            )}
                         </Content>
                         <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema}/>
                 </Layout>
                 </Layout>
-                <Modal title="Get Started!" open={signup} onClose={handleClose} footer={[]}>
+                <Modal title="Get Started!" open={signup} onCancel={handleClose} footer={[]}>
 
                     <p>Tell us a little bit about yourself to customize your roadmap experience!</p>
                     <br></br>
@@ -440,8 +581,8 @@ function Dashboard() {
                         </Form.Item>
 
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" style={{ marginBottom: -10 }} onClick={() => { setSignup(false) }}>
-                                Continue
+                            <Button type="primary" htmlType="submit" onClick={() => { signupyayslay() }}>
+                                Signup
                             </Button>
                         </Form.Item>
                     </Form>
