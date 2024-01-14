@@ -24,7 +24,7 @@ import { auth, logout } from "../../Firebase.js";
 import RequestUtils from "../../Utils/RequestUtils.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const data = require('./Courses.json');
+const data = require('./courses.json');
 const { Option } = Select;
 const { Header, Sider, Content } = Layout;
 
@@ -105,9 +105,7 @@ function Dashboard() {
     ];
 
     let [nodes, setNodes] = useState({});
-
     let [edges, setEdges] = useState({});
-
     let [tab, setTab] = useState(0);
 
     let [signup, setSignup] = useState(false);
@@ -115,11 +113,9 @@ function Dashboard() {
     let [colorSchema, setColorSchema] = useState("tot");
 
 
-
     // const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
     let [department, setDepartment] = useState("Computer Science Department");
-
 
     let tempCourses = [];
     let tempEdges = [];
@@ -201,7 +197,6 @@ function Dashboard() {
                                     source: tempCourses[i].id,
                                     target: tempCourses[j].id
                                 });
-                                // console.log(tempCourses[i].data.label + " " + tempCourses[j].data.label)
                                 first += 2;
                                 second += 2;
                             }
@@ -229,6 +224,7 @@ function Dashboard() {
         setNodes(tempCourses);
     }
     useState(() => setCourses(), []);
+    useEffect(() => {setCourses()}, [department]);
 
     useState(() => {
         if (user == null) {
@@ -377,7 +373,7 @@ function Dashboard() {
     }, [user]);
 
     const getUserInfo = () => {
-        
+        try {
         RequestUtils.get('/retrieve?id=' + user.uid).then((response) => response.json())
         .then((data) => {
             console.log(data.status)
@@ -392,6 +388,10 @@ function Dashboard() {
                 setSignup(true);
             }
         });
+    } catch {
+        
+    }
+        
     }
 
 
@@ -429,6 +429,9 @@ function Dashboard() {
                         style={{ marginLeft: 10 }}
                         width={200}
                         src="/logo-white.png"
+                    />
+                    <Menu 
+                    
                     />
                 </Header>
                 <Layout style={{ height: "100vh" }}>
@@ -501,8 +504,7 @@ function Dashboard() {
                             style={{
                                 padding: 20,
                                 minHeight: 280,
-                                background: colorBgContainer,
-                                borderRadius: borderRadiusLG,
+                                background: "#F2F2F2",
                             }}
                         >
                             {tab === 0 ? (
