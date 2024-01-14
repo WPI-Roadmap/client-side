@@ -23,7 +23,7 @@ import { auth, logout } from "../../Firebase.js";
 import RequestUtils from "../../Utils/RequestUtils.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const data = require('./Courses.json');
+const data = require('./courses.json');
 const { Option } = Select;
 const { Header, Sider, Content } = Layout;
 
@@ -70,6 +70,23 @@ function Dashboard() {
         RequestUtils.post('/user?id=' + user.uid, reqbody)
 
         setSignup(false);
+    }
+
+    const updateUser = () => {
+        let reqbody = {
+            first: first,
+            last: last,
+            email: user.email,
+            year: year,
+            major: major,
+        }
+
+        RequestUtils.post("/updateUser?id=" + user.uid, reqbody).then((response) => response.json()) 
+        .then((data) => {
+            alert("User updated successfully!");
+        });
+        
+
     }
 
     const initialNodes = [
@@ -558,7 +575,12 @@ function Dashboard() {
                                                 <Option value="Humanities">Humanities</Option>
                                             </Select>
                                         </Form.Item>
-                                        <p>Following: n/a, Followers: n/a (Coming Soon!)</p>
+                                        <Form.Item>
+                                            <Button type="primary" htmlType="submit" onClick={() => { updateUser() }}>
+                                                Update
+                                            </Button>
+                                        </Form.Item>
+                                        {/* <p>Following: n/a, Followers: n/a (Coming Soon!)</p> */}
                                     </Form>
                                 </div>
 
