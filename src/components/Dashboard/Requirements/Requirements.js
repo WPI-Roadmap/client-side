@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Requirements.css"
 import {
     Dropdown,
@@ -7,6 +7,9 @@ import {
     Progress,
 }
     from 'antd';
+import RequestUtils from "../../../Utils/RequestUtils";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../../Firebase";
 const { Header, Content, Footer, Sider } = Layout;
 
 const courses = [
@@ -44,32 +47,153 @@ const courses = [
     },
 ];
 
-const allRequirements = {
+const CSRequirements = {
+    "systems": [
+        "CS 3013",
+        "CS 4516",
+        "CS 4513",
+        "CS 4515"
+    ],
+    "design": [
+        "CS 3733",
+        "CS 3431",
+        "CS 3041",
+        "CS 4233"
+    ],
+    "theory": [
+        "CS 3133",
+        "CS 4123",
+        "CS 4533",
+        "CS 4120",
+        "CS 4536"
+    ],
+    "socImps" : [
+        "CS 3043",
+        "GOV 2314",
+        "GOV 2315",
+        "IMGD 2000",
+        "IMGD 2001",
+        "RBE 3100"
+    ]
+};
+
+
+const colors = [
+    {
+        value: "plain",
+        label: "Plain"
+    },
+    {
+        value: "tot",
+        label: "Total Rating"
+    },
+    {
+        value: "level",
+        label: "Level"
+    },
+    {
+        value: "area",
+        label: "Area"
+    },
+    {
+        value: "diff",
+        label: "Difficulty"
+    },
+    {
+        value: "prof",
+        label: "Professor Rating"
+    },
+    {
+        value: "course",
+        label: "Course Rating"
+    },
+]
+
+const depNames = {
+    "cs": "Computer Science Department",
+    "hua": "Humanities and Arts Department",
+    "wpe": "Physical Education and Athletics Department",
+    "ss": "Social Science and Policy Studies Department",
+    "math": "Mathematical Sciences Department",
+    // need iqp, mqp, fe, sci
+}
+
+
+function RequirementsSidebar({changeDepartment, changeColorSchema, className="", userCourses}) {
+
+    let [user, loading] = useAuthState(auth);
+
+    // CS Req array
+    let [csReqs, setCSReqs] = useState([0,0,0,0,0]);
+    let [huaReqs, setHUAReqs] = useState([0,0,0,0]);
+    let [wpeReqs, setWPEReqs] = useState([0]);
+    let [ssReqs, setSSReqs] = useState([0]);
+    let [iqpReqs, setIQPReqs] = useState([0]);
+    let [mqpReqs, setMQPReqs] = useState([0]);
+    let [mathReqs, setMathReqs] = useState([0,0,0]);
+    let [feReqs, setFEReqs] = useState([0]);
+    let [sciReqs, setSciReqs] = useState([0,0]);
+    
+    function addReq() {
+    for(let i = 0; i < userCourses.length; i++) {
+        if(userCourses[i].courseCode.substring(4,5) == "4") {
+            let temp = csReqs;
+            temp[0] += 1;
+            setCSReqs(temp);
+        }
+        else if(CSRequirements["systems"].includes(userCourses[i].courseCode)) {
+            let temp = csReqs;
+            temp[1] += 1;
+            setCSReqs(temp);
+        } else if(CSRequirements["design"].includes(userCourses[i].courseCode)) {
+            let temp = csReqs;
+            temp[2] += 1;
+            setCSReqs(temp);
+        } else if(CSRequirements["theory"].includes(userCourses[i].courseCode)) {
+            let temp = csReqs;
+            temp[3] += 1;
+            setCSReqs(temp);
+        } else if(CSRequirements["socImps"].includes(userCourses[i].courseCode)) {
+            let temp = csReqs;
+            temp[4] += 1;
+            setCSReqs(temp);
+        } 
+
+
+    }
+}
+    useEffect(() => {
+        if(user) {
+            addReq();
+        }
+    }, [userCourses]);
+    
+    const allRequirements = {
     'cs': [
         {
             label: "4000-Level Courses",
             needed: 5,
-            filled: 3,
+            filled: csReqs[0],
         },
         {
             label: "Systems",
             needed: 1,
-            filled: 0,
+            filled: csReqs[1],
         },
         {
             label: "Design",
             needed: 1,
-            filled: 1,
+            filled: csReqs[2],
         },
         {
             label: "Theory",
             needed: 5,
-            filled: 2,
+            filled: csReqs[3],
         },
         {
             label: "Social",
             needed: 1,
-            filled: 0,
+            filled: csReqs[4],
         }
     ],
     'hua': [
@@ -160,55 +284,40 @@ const allRequirements = {
     ]
 };
 
-const colors = [
-    {
-        value: "plain",
-        label: "Plain"
-    },
-    {
-        value: "tot",
-        label: "Total Rating"
-    },
-    {
-        value: "level",
-        label: "Level"
-    },
-    {
-        value: "area",
-        label: "Area"
-    },
-    {
-        value: "diff",
-        label: "Difficulty"
-    },
-    {
-        value: "prof",
-        label: "Professor Rating"
-    },
-    {
-        value: "course",
-        label: "Course Rating"
-    },
-    
-]
-
-const depNames = {
-    "cs": "Computer Science Department",
-    "hua": "Humanities and Arts Department",
-    "wpe": "Physical Education and Athletics Department",
-    "ss": "Social Science and Policy Studies Department",
-    "math": "Mathematical Sciences Department",
-    // need iqp, mqp, fe, sci
-}
-
-
-function RequirementsSidebar({changeDepartment, changeColorSchema, className=""}) {
 
     const [requirements, setRequirements] = useState(allRequirements['cs'])
 
     const setReqCategory = (category) => {
         setRequirements(allRequirements[category])
     }
+    
+
+    function getAllCourses() {
+        // RequestUtils.get("/retrieve?id=" + user.uid).then((response) => response.json())
+        // .then((data) => {
+        //     console.log("Test")
+        //     let courses = data.data.courses;
+        //     if(courses == undefined) {
+        //         courses = [];
+        //     }
+        //     let temp = [];
+        //     for(let i = 0; i < courses.length; i++) {
+        //         console.log(courses[i]);
+        //         temp.push(courses[i].courseCode);
+        //     }
+        //     console.log(temp);
+        // });
+    }
+
+    useEffect(() => {
+        if(user) {
+            getAllCourses();
+        }
+
+    }, []);
+
+
+
     return (
         <Sider className={className} style={{ padding: '2rem', color: "white", }}
             width="auto">

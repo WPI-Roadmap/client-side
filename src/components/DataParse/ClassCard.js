@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { Card, Progress } from 'antd';
-import { CodeOutlined, PlusSquareOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { CodeOutlined, PlusSquareOutlined, InfoCircleOutlined, MinusCircleOutlined, MinusSquareOutlined } from '@ant-design/icons';
 import profRatings from './ProfessorRating.json';
 import classRatings from './CourseRatings.json';
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -19,6 +19,8 @@ const ClassCard = ({ index }) => {
     const [OSCARatings, setOscarRatings] = useState([0, 0, 0]);
     //console.log(data["Report_Entry"][index]);
 
+    let [code, setCode] = useState(0);
+
     const getCourseDescription = (inputString) => {
         const endIndex = inputString.toLowerCase().indexOf("recommended background");
         const firstString = inputString.slice(0, endIndex);
@@ -32,6 +34,25 @@ const ClassCard = ({ index }) => {
         const projRating = 0.6 * profRating + 0.4 * courseRating;
 
         return [profRating, courseRating, projRating]
+    }
+
+    function getCurrentCourses() {
+
+        RequestUtils.get("/retrieve?id=" + user.uid).then((response) => response.json())
+        .then((data) => {
+
+            let courses = data.data.courses;
+
+            if(courses == undefined) {
+                courses = [];
+            }
+            for(let i = 0; i < courses.length; i++) {
+                if(courses[i].courseCode == courseCode) {
+                    setCode(1);
+                }
+            }
+        });
+
     }
 
     function addCourse() {
@@ -66,12 +87,22 @@ const ClassCard = ({ index }) => {
             //     });
             // }
         });
-        
+    }
+
+    function removeCourse() {
+        let reqobj = {
+            course : courseCode
+        }
+        RequestUtils.post("/delete?id=" + user.uid, reqobj).then((response) => {
+            alert("Course removed!");
+            window.location.reload();
+        });
     }
 
     useEffect(() => {
         // Call the function once on component mount
         setOscarRatings(getOSCARRatings());
+        getCurrentCourses();
     }, []);
 
 
@@ -83,7 +114,8 @@ const ClassCard = ({ index }) => {
                 title={data["Report_Entry"][index]["Course_Title"].slice(10,).trim()}
                 // + " (" + data["Report_Entry"][index]["Course_Title"].slice(0, 8).trim() + ")"
                 extra={<CodeOutlined style={{ color: "white" }} />}
-                actions={[<a onClick={() => addCourse(courseCode)}>{<PlusSquareOutlined />}</a>, <a href="https://courselistings.wpi.edu" target="_blank">{<InfoCircleOutlined />}</a>]}
+                actions={[<a onClick={() => 
+                    code == 0 ? addCourse() : removeCourse()}>{code == 0 ? <PlusSquareOutlined /> : <MinusSquareOutlined></MinusSquareOutlined>}</a>, <a href="https://courselistings.wpi.edu" target="_blank">{<InfoCircleOutlined />}</a>]}
                 bodyStyle={{
                     padding: 5,
                     lineHeight: 1,
