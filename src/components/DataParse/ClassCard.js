@@ -114,7 +114,7 @@ const ClassCard = ({ index, setConfettiOn }) => {
 
             <Card
                 size="small"
-                title={data["Report_Entry"][index]["Course_Title"].slice(10,).trim()}
+                title={data["Report_Entry"][index]["Course_Title"].substring(3 + courseCode.length)}
                 // + " (" + data["Report_Entry"][index]["Course_Title"].slice(0, 8).trim() + ")"
                 extra={<CodeOutlined style={{ color: "white" }} />}
                 actions={[<a onClick={() =>
