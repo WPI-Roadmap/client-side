@@ -72,6 +72,23 @@ function Dashboard() {
         setSignup(false);
     }
 
+    const updateUser = () => {
+        let reqbody = {
+            first: first,
+            last: last,
+            email: user.email,
+            year: year,
+            major: major,
+        }
+
+        RequestUtils.post("/updateUser?id=" + user.uid, reqbody).then((response) => response.json()) 
+        .then((data) => {
+            alert("User updated successfully!");
+        });
+        
+
+    }
+
     const initialNodes = [
         { id: "1", position: { x: 0, y: 0 }, data: { label: "1" } },
         { id: "2", position: { x: 0, y: 100 }, data: { label: "2" } },
@@ -557,6 +574,11 @@ function Dashboard() {
                                                 <Option value="IMGD">IMGD</Option>
                                                 <Option value="Humanities">Humanities</Option>
                                             </Select>
+                                        </Form.Item>
+                                        <Form.Item>
+                                            <Button type="primary" htmlType="submit" onClick={() => { updateUser() }}>
+                                                Update
+                                            </Button>
                                         </Form.Item>
                                         <p>Following: n/a, Followers: n/a (Coming Soon!)</p>
                                     </Form>
