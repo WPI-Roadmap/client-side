@@ -53,8 +53,11 @@ function Dashboard() {
             navigate("/");
             setLogout(false);
         }
+        if(!user && !loading) {
+            navigate("/");
+        }
 
-    }, [user]);
+    }, [user, loading]);
 
     useEffect(() => {
         setReqSidebar(
