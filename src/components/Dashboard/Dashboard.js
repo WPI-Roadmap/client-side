@@ -566,7 +566,7 @@ function Dashboard() {
 
                             )}
                         </Content>
-                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema} />
+                        <RequirementsSidebar changeDepartment={setDepartment} changeColorSchema={setColorSchema} userCourses={coursesTaken}/>
                     </Layout>
                 </Layout>
                 <Modal title="Get Started!" open={signup} onCancel={handleClose} footer={[]}>

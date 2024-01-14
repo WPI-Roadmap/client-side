@@ -50,11 +50,8 @@ const EditableCell = ({
 
             RequestUtils.post("/update", fullObj).then((response) => response.json())
             .then((data) => {
-                console.log(data);
+     
             });
-
-            console.log({...record, ...values})
-
         } catch (errInfo) {
             console.log('Save failed:', errInfo);
         }
@@ -123,8 +120,6 @@ const App = () => {
         } catch (err){
             console.log(err);
         }
-            console.log(data.data.courses);
-            console.log(temp)
             setDataSource(temp);
         });
     }
@@ -135,6 +130,14 @@ const App = () => {
     const handleDelete = (key) => {
         const newData = dataSource.filter((item) => item.key !== key);
         setDataSource(newData);
+
+        let reqObj = {
+            course: dataSource[key].course,
+        }
+
+        RequestUtils.post("/delete?id=" + user.uid, reqObj).then((response) => response.json()).then((data) => {
+            alert("Course Deleted!")
+        });
     };
 
     const defaultColumns = [
