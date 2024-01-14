@@ -172,21 +172,22 @@ function FlowWithoutProvider({ initialNodes, initialEdges, colorSchema, coursesT
 
   return (
     <>
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onConnect={onConnect}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      onNodeClick={onNodeClick}
-      nodeTypes={nodeTypes}
-      fitView
-    >
-    </ReactFlow>
-    <Modal title="Course Information" open={isModalOpen} onCancel={handleCancel} footer={[]}>
-      <div>
-        <DataParse course_code={courseCode} />
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onConnect={onConnect}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onNodeClick={onNodeClick}
+        nodeTypes={nodeTypes}
+        fitView
+      >
+      </ReactFlow>
+      <Modal title="Course Information" open={isModalOpen} onCancel={handleCancel} footer={[]}>
+        <div>
+          {!confettiOn && (<DataParse course_code={courseCode} setConfettiOn={setConfettiOn} />)}
         </div>
+        {confettiOn && (<p>Reload the page to see changes. You may also safely close this popup and reload at a later time</p>)}
         {confettiOn && (<Button type="primary" onClick={() => {
           setConfettiOn(false);
           window.location.reload();
