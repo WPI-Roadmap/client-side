@@ -597,7 +597,7 @@ function Dashboard() {
 
                         <Form.Item>
                             <Button type="primary" htmlType="submit" onClick={() => { signupyayslay() }}>
-                                Signup
+                                Sign Up
                             </Button>
                         </Form.Item>
                     </Form>
