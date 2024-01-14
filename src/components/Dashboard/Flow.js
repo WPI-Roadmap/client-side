@@ -16,6 +16,12 @@ import DataParse from '../DataParse/DataParse';
 import profRatingsJSON from '../DataParse/ProfessorRating.json';
 import classRatingsJSON from '../DataParse/CourseRatings.json';
 
+import CourseNode from "./CourseNode.js";
+
+const nodeTypes = {
+  courseNode: CourseNode,
+};
+
 const elk = new ELK();
 const elkOptions = {
     "elk.algorithm": 'layered',
@@ -48,7 +54,10 @@ const getLayoutedElements = (nodes, edges, colorSchema, coursesTaken, profRating
       if(profRatings[node.professor] == NaN) console.log(node.professor);
       const projRating = 0.6 * profRating + 0.4 * courseRating;
 
-      let style = {fontSize: "1.5rem", width: "auto", maxWidth:"10em"};
+      let style = {
+        borderStyle: "solid",
+        borderRadius: 15,
+      };
       switch (colorSchema) {
         case "tot":
           style.backgroundColor = lerpColor(hardColor, easyColor, projRating/100.0);
@@ -164,6 +173,7 @@ function FlowWithoutProvider({initialNodes, initialEdges, colorSchema, coursesTa
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onNodeClick={onNodeClick}
+      nodeTypes={nodeTypes}
       fitView
     >
     </ReactFlow>
